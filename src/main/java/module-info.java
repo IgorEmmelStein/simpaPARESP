@@ -9,4 +9,6 @@ module com.mycompany.simpa {
 
     opens com.mycompany.simpa to javafx.fxml;
     exports com.mycompany.simpa;
+    
+    opens controller to javafx.fxml;
 }

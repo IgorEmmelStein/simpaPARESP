@@ -7,7 +7,6 @@ package classes;
 import java.util.Date;
 import java.util.List; 
 
-import java.util.Date;
 
 /**
  * Representa um Aluno atendido pela PARESP. 

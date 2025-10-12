@@ -7,36 +7,35 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import static javafx.application.Application.launch;
 
 /**
- * Ponto de entrada principal da aplicação SIMPA (JavaFX).
+ * JavaFX App.
  */
 public class App extends Application {
 
     private static Scene scene;
 
+    
     @Override
     public void start(Stage stage) throws IOException {
-        // Altera para carregar a tela de Login
-        scene = new Scene(loadFXML("Login"), 600, 400);
-        stage.setTitle("SIMPA - Login");
+        // A chamada deve ser apenas "Login"
+        scene = new Scene(loadFXML("Login"), 640, 480);
         stage.setScene(scene);
         stage.show();
     }
 
-    public static void setRoot(String fxml) throws IOException {
+    static void setRoot(String fxml) throws IOException {
         scene.setRoot(loadFXML(fxml));
     }
 
     private static Parent loadFXML(String fxml) throws IOException {
-        // Assume que o FXML está diretamente em src/main/resources/com/mycompany/simpa/
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("/fxml/" + fxml + ".fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
         return fxmlLoader.load();
-
     }
 
-
-public static void main(String[] args) {
+    public static void main(String[] args) {
         launch();
     }
+
 }
