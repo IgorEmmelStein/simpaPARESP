@@ -21,6 +21,9 @@ public class AdministradorDAO {
 
     private static final String SQL_SELECT_BY_CPF = 
         "SELECT pk_cod_admin, nome, cpf, senha, telefone FROM administrador WHERE cpf = ?";
+    
+    private static final String SQL_SELECT_BY_nome = 
+        "SELECT pk_cod_admin, nome, cpf, senha, telefone FROM administrador WHERE nome = ?";
 
     /**
      * Tenta autenticar um usuário usando o CPF (como nome de usuário) e a senha (hash).
@@ -58,6 +61,41 @@ public class AdministradorDAO {
             return null;
         } catch (SQLException e) {
             throw new DBException("Erro ao buscar administrador por CPF no DB. Detalhe: " + e.getMessage(), e);
+        } finally {
+            ConnectionFactory.closeConnection(conn, st, rs);
+        }
+    }
+    
+    public Administrador buscarPorNome(String nome) {
+        Connection conn = null;
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        
+        try {
+            conn = ConnectionFactory.getConnection();
+            st = conn.prepareStatement(SQL_SELECT_BY_nome);
+            st.setString(1, nome); 
+            
+            rs = st.executeQuery(); 
+            
+            if (rs.next()) {
+                Administrador admin = new Administrador();
+                
+                // Mapeamento
+                admin.setId(rs.getInt("pk_cod_admin"));
+                admin.setCpf(rs.getString("cpf"));
+                admin.setSenhaHash(rs.getString("senha"));
+                admin.setNome(rs.getString("nome"));
+                admin.setTelefone(rs.getString("telefone"));
+                
+                // Definindo o nomeUsuario como o nome (para simplificar)
+                admin.setNomeUsuario(rs.getString("nome")); 
+                
+                return admin;
+            }
+            return null;
+        } catch (SQLException e) {
+            throw new DBException("Erro ao buscar administrador por nome no DB. Detalhe: " + e.getMessage(), e);
         } finally {
             ConnectionFactory.closeConnection(conn, st, rs);
         }

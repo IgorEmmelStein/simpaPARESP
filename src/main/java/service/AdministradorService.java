@@ -34,13 +34,13 @@ public class AdministradorService {
      * @throws BusinessException Se as credenciais estiverem inválidas.
      * @throws DBException Se houver erro de comunicação com o banco.
      */
-    public Usuario login(String cpf, String senha) throws BusinessException, DBException {
-        if (cpf == null || senha == null || cpf.trim().isEmpty() || senha.trim().isEmpty()) {
+    public Usuario login(String nome, String senha) throws BusinessException, DBException {
+        if (nome == null || senha == null || nome.trim().isEmpty() || senha.trim().isEmpty()) {
             throw new BusinessException("Login e senha são obrigatórios.");
         }
         
         // 1. Busca o administrador pelo CPF
-        Administrador adminDoBanco = administradorDAO.buscarPorCpf(cpf);
+        Administrador adminDoBanco = administradorDAO.buscarPorNome(nome);
         
         if (adminDoBanco == null) {
             throw new BusinessException("Usuário não encontrado.");

@@ -45,17 +45,17 @@ public class LoginController {
      */
     @FXML
     private void handleLogin() {
-        String cpf = txtNomeUsuario.getText(); // Usamos o CPF como login
+        String nome = txtNomeUsuario.getText(); // Usamos o nome como login
         String senha = txtSenha.getText();
         
         lblErro.setVisible(false); // <--- O código correto
 
         try {
             // Chama a lógica de negócio na camada Service
-            usuarioLogado = administradorService.login(cpf, senha);
+            usuarioLogado = administradorService.login(nome, senha);
             
             // Se o login for bem-sucedido:
-            
+            //troca de tela..
             // 1. Mensagem de Sucesso (Opcional)
             lblErro.setText("Login bem-sucedido!");
             lblErro.setTextFill(Color.GREEN);

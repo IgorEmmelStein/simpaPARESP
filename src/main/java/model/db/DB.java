@@ -12,7 +12,7 @@ public class DB {
         try {
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/paresp",
                     "root",
-                    "");
+                    "senha");
 
             return con;
         } catch (Exception e) {

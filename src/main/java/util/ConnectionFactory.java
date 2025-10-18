@@ -19,7 +19,7 @@ public class ConnectionFactory {
     // --- Configurações do Banco de Dados ---
     private static final String URL = "jdbc:mysql://localhost:3306/simpaParesp?useTimezone=true&serverTimezone=UTC";
     private static final String USER = "root"; 
-    private static final String PASSWORD = "senha"; 
+    private static final String PASSWORD = ""; 
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver"; 
 
     /**
