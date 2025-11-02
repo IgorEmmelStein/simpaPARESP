@@ -20,7 +20,7 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         // A chamada deve ser apenas "Login"
-        scene = new Scene(loadFXML("Login"), 640, 480);
+        scene = new Scene(loadFXML("TelaLogin"), 900, 600);
         stage.setScene(scene);
         stage.show();
     }
