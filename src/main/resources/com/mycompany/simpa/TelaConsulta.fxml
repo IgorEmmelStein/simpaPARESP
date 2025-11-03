@@ -3,8 +3,8 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.PasswordField?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -12,87 +12,64 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #222222;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginController">
+<AnchorPane prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: F8FFF3;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ConsultaController">
    <children>
-      
-      <VBox layoutX="233.0" layoutY="86.0" prefHeight="485.0" prefWidth="434.0" spacing="15.0" style="-fx-background-color: F8FFF3; -fx-background-radius: 15;" AnchorPane.bottomAnchor="86.79999999999995" AnchorPane.leftAnchor="233.0" AnchorPane.rightAnchor="233.4000000000001" AnchorPane.topAnchor="86.0">
-         <padding>
-            <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
-         </padding>
+      <HBox layoutX="47.0" layoutY="32.0" prefHeight="71.0" prefWidth="602.0">
          <children>
-            <HBox prefHeight="71.0" prefWidth="374.0">
+         
+                              <ImageView fitHeight="56.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true" smooth="false">
+               <image>
+                  <Image url="@fxml/logo_paresp.png" />
+               </image>
+            </ImageView>
+            <VBox prefHeight="71.0" prefWidth="585.0">
                <children>
-               
-                  <ImageView fitHeight="56.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true" smooth="false">
-                     <image>
-                        <Image url="@fxml/logo_paresp.png" />
-                     </image>
-                  </ImageView>
-                  <VBox prefHeight="38.0" prefWidth="318.0">
-                     <children>
-                        
-                        <Label alignment="CENTER" text="Login">
-                           <font>
-                              <Font name="System Bold" size="28.0" />
-                           </font>
-                           <opaqueInsets>
-                              <Insets />
-                           </opaqueInsets>
-                           <VBox.margin>
-                              <Insets left="10.0" />
-                           </VBox.margin>
-                        </Label>
-                        
-                        <Label contentDisplay="BOTTOM" style="-fx-text-fill: #666666;" text="Digite seu login e senha para entrar no sistema!">
-                           <VBox.margin>
-                              <Insets left="10.0" />
-                           </VBox.margin>
-                        </Label>
-                     </children>
-                  </VBox>
+                  
+                                                <Label alignment="CENTER" text="Olá, usuário!">
+                     <font>
+                        <Font name="System Bold" size="28.0" />
+                     </font>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <VBox.margin>
+                        <Insets left="10.0" />
+                     </VBox.margin>
+                  </Label>
+                  
+                                                      <Label contentDisplay="BOTTOM" prefHeight="18.0" prefWidth="484.0" style="-fx-text-fill: #666666;" text="Clique duas vezes nas linhas para verificar ou alterar as informações de cada aluno">
+                     <VBox.margin>
+                        <Insets left="10.0" />
+                     </VBox.margin>
+                  </Label>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+      <HBox layoutX="47.0" layoutY="134.0" prefHeight="441.0" prefWidth="807.0">
+         <children>
+            <HBox prefHeight="100.0" prefWidth="130.0">
+               <children>
+                  <Button fx:id="btnEntrar1" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleLogin" prefHeight="40.0" style="-fx-background-color: cc6464; -fx-background-radius: 8; -fx-font-weight: bold;" text="Excluir">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
+                  
+                        <Button fx:id="btnEntrar" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleLogin" prefHeight="40.0" style="-fx-background-color: #9FD575; -fx-background-radius: 8; -fx-font-weight: bold;" text="Incluir" textFill="#24282e">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
                </children>
             </HBox>
-            
-            <Label text="Nome" VBox.vgrow="NEVER">
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
-            
-            <TextField fx:id="txtNomeUsuario" prefHeight="40.0" style="-fx-background-color: D6E3CC; -fx-background-radius: 8;">
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin></TextField>
-            
-            <Label text="Senha">
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
-            
-            <PasswordField fx:id="txtSenha" prefHeight="40.0" style="-fx-background-color: D6E3CC; -fx-background-radius: 8;">
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin></PasswordField>
-            
-            <Button fx:id="btnEntrar" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleLogin" prefHeight="40.0" style="-fx-background-color: #9FD575; -fx-background-radius: 8; -fx-font-weight: bold;" text="Entrar" textFill="#24282e">
-               <VBox.margin>
-                  <Insets top="10.0" />
-               </VBox.margin>
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Button>
-            
-            <Label fx:id="lblErro" style="-fx-text-fill: red;" text="Mensagem de Erro" visible="false" />
-            
+            <TableView prefHeight="442.0" prefWidth="687.0">
+              <columns>
+                <TableColumn prefWidth="75.0" text="C1" />
+                <TableColumn prefWidth="75.0" text="C2" />
+              </columns>
+            </TableView>
          </children>
-      </VBox>
+      </HBox>
    </children>
 </AnchorPane>

@@ -5,6 +5,7 @@
 package controller;
 
 import classes.Usuario;
+import java.io.IOException;
 import javafx.scene.control.Label; 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -13,15 +14,22 @@ import javafx.fxml.Initializable;
 import service.AdministradorService;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 import util.BusinessException;
 import util.DBException;
 
 public class LoginController {
-
+    
+    
+    private static Scene scene;
+    
     @FXML
     private TextField txtNomeUsuario;
     @FXML
@@ -44,7 +52,7 @@ public class LoginController {
      * Ação disparada ao clicar no botão 'Entrar'.
      */
     @FXML
-    private void handleLogin() {
+    private void handleLogin() throws IOException {
         String nome = txtNomeUsuario.getText(); // Usamos o nome como login
         String senha = txtSenha.getText();
         
@@ -54,12 +62,20 @@ public class LoginController {
             // Chama a lógica de negócio na camada Service
             usuarioLogado = administradorService.login(nome, senha);
             
-            // Se o login for bem-sucedido:
-            //troca de tela..
-            // 1. Mensagem de Sucesso (Opcional)
             lblErro.setText("Login bem-sucedido!");
             lblErro.setTextFill(Color.GREEN);
             lblErro.setVisible(true);
+            
+            // Se o login for bem-sucedido:
+            Parent parent = FXMLLoader.load(getClass().getResource("TelaConsulta.fxml"));
+            Scene scene = new Scene(parent);
+            Stage stage = new Stage();
+            stage.setTitle("Consulta de Clientes");
+            stage.setScene(scene);
+            stage.show();
+                
+            // 1. Mensagem de Sucesso (Opcional)
+           
             
             // 2. Lógica de Navegação:
             // Troca de tela para a área de consulta/gestão (Tela 4)

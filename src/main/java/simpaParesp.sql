@@ -31,7 +31,6 @@ CREATE TABLE IF NOT EXISTS escola (
   PRIMARY KEY (pk_cod_escola)
 ) ENGINE = InnoDB;
 
-
 -- -----------------------------------------------------
 -- Table aluno
 -- -----------------------------------------------------
@@ -137,7 +136,7 @@ VALUES ('12345678901', '12345678', '51999999999', 'Admin Principal');
 
 -- Inserindo uma escola
 INSERT INTO escola (pk_cod_escola, nome, serie)
-VALUES (1, 'Escola Municipal Modelo', '5A');
+ VALUES (1, 'Escola Municipal Modelo', '5A');
 
 -- Agora inserindo o aluno Gustavo
 INSERT INTO aluno (
