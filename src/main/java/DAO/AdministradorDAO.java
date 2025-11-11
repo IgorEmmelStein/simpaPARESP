@@ -24,7 +24,19 @@ public class AdministradorDAO {
     
     private static final String SQL_SELECT_BY_nome = 
         "SELECT pk_cod_admin, nome, cpf, senha, telefone FROM administrador WHERE nome = ?";
-
+    
+    private static final String SQL_INSERT =
+        "INSERT INTO administrador (" +
+        "cpf, senha, telefone, nome)" +
+        "VALUES (?,?,?,?)";
+    
+    private static final String SQL_UPDATE = 
+        "UPDATE administrador SET " +
+        "cpf=?, senha=?, telefone=?, nome=? " +
+        "WHERE pk_cod_admin=?";
+    
+    private static final String SQL_DELETE =
+        "DELETE FROM administrador WHERE pk_cod_admin = ?";
     /**
      * Tenta autenticar um usuário usando o CPF (como nome de usuário) e a senha (hash).
      * @param cpf O CPF do usuário para login.
@@ -101,6 +113,7 @@ public class AdministradorDAO {
         }
     }
 
+    
     // Próximos métodos incluem inserir(), atualizar(), etc. para gerenciar administradores,
     // mas o método de busca por CPF é o mais crítico para o LOGIN.
 }

@@ -4,10 +4,16 @@
  */
 package service;
 
+import DAO.AlunoDAO;
+
 /**
  *
  * @author igore
  */
 public class AlunoService {
+    private AlunoDAO alunoDao;
     
+    public AlunoService(){
+        this.alunoDao = new AlunoDAO();
+    }
 }

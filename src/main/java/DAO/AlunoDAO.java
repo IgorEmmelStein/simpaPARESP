@@ -21,8 +21,6 @@ import util.DBException;
  */
 
 public class AlunoDAO {
-
-    // --- Strings SQL (Atualização de todos os métodos) ---
     
     private static final String SQL_INSERT = 
         "INSERT INTO aluno (" +

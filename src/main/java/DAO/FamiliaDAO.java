@@ -159,7 +159,4 @@ public class FamiliaDAO {
         return familia;
     }
 
-    // NOTA: O método 'excluir' é raramente usado para famílias, pois a exclusão de um aluno 
-    // deve levar a uma inativação, não a uma exclusão em cascata. O método DELETE foi fornecido 
-    // acima, mas deve ser usado com cautela.
 }
