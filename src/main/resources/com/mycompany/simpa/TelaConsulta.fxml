@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -50,7 +51,8 @@
             <children>
                 <VBox prefHeight="200.0" prefWidth="100.0" spacing="8.0">
                     <children>
-                  <TextField fx:id="txtPesquisar" prefHeight="40.0" promptText="🔍 Pesquisar" style="-fx-background-color: D6E3CC; -fx-background-radius: 8;" />
+                        
+                        <TextField fx:id="txtPesquisar" prefHeight="40.0" promptText="🔍 Pesquisar" style="-fx-background-color: D6E3CC; -fx-background-radius: 8;" />
                         <HBox prefWidth="130.0" spacing="8.0">
                             <children>
                                 <Button fx:id="btnExcluirAluno" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" minWidth="100.0" mnemonicParsing="false" onAction="#handleLogin" prefHeight="40.0" style="-fx-background-color: cc6464; -fx-background-radius: 8; -fx-font-weight: bold;" text="X Excluir" />
@@ -58,7 +60,8 @@
                                 <Button fx:id="btnInserirAluno" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" minWidth="100.0" mnemonicParsing="false" onAction="#handleLogin" prefHeight="40.0" style="-fx-background-color: #9FD575; -fx-background-radius: 8; -fx-font-weight: bold;" text="+ Incluir" textFill="#24282e" />
                             </children>
                         </HBox>
-                        <Button fx:id="btnFiltrar" alignment="CENTER" maxWidth="1.7976931348623157E308" minWidth="100.0" mnemonicParsing="false" onAction="#handleLogin" prefHeight="40.0" style="-fx-background-color: D6E3CC; -fx-background-radius: 8; -fx-font-weight: bold;" text="Filtrar" />
+                  <Button fx:id="btnFiltrar" alignment="CENTER" maxWidth="1.7976931348623157E308" minWidth="100.0" mnemonicParsing="false" onAction="#handleLogin" prefHeight="40.0" style="-fx-background-color: D6E3CC; -fx-background-radius: 8; -fx-font-weight: bold;" text="Filtrar" />
+                        
                         <Button fx:id="btnExportar" alignment="CENTER" maxWidth="1.7976931348623157E308" minWidth="100.0" mnemonicParsing="false" onAction="#handleLogin" prefHeight="40.0" style="-fx-background-color: D6E3CC; -fx-background-radius: 8; -fx-font-weight: bold;" text="⬇ Exportar" />
                         <Button fx:id="btnAddEscola" alignment="CENTER" maxWidth="1.7976931348623157E308" minWidth="100.0" mnemonicParsing="false" onAction="#handleLogin" prefHeight="40.0" style="-fx-background-color: D6E3CC; -fx-background-radius: 8; -fx-font-weight: bold;" text="🏠 Adicionar Escola" />
                         <Button fx:id="btnAddUser" alignment="CENTER" maxWidth="1.7976931348623157E308" minWidth="100.0" mnemonicParsing="false" onAction="#handleLogin" prefHeight="40.0" style="-fx-background-color: D6E3CC; -fx-background-radius: 8; -fx-font-weight: bold;" text="+ Adicionar Usuário" />
