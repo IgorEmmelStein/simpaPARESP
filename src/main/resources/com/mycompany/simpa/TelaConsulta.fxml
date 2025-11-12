@@ -12,64 +12,64 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: F8FFF3;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ConsultaController">
-   <children>
-      <HBox layoutX="47.0" layoutY="32.0" prefHeight="71.0" prefWidth="602.0">
-         <children>
+<AnchorPane prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: F8FFF3;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ConsultaController">
+    <children>
+        <HBox layoutX="47.0" layoutY="32.0" prefHeight="71.0" prefWidth="602.0">
+            <children>
          
-                              <ImageView fitHeight="56.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true" smooth="false">
-               <image>
-                  <Image url="@fxml/logo_paresp.png" />
-               </image>
-            </ImageView>
-            <VBox prefHeight="71.0" prefWidth="585.0">
-               <children>
+                <ImageView fitHeight="56.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true" smooth="false">
+                    <image>
+                        <Image url="@fxml/logo_paresp.png" />
+                    </image>
+                </ImageView>
+                <VBox prefHeight="71.0" prefWidth="585.0">
+                    <children>
                   
-                                                <Label alignment="CENTER" text="Olá, usuário!">
-                     <font>
-                        <Font name="System Bold" size="28.0" />
-                     </font>
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                     <VBox.margin>
-                        <Insets left="10.0" />
-                     </VBox.margin>
-                  </Label>
+                        <Label alignment="CENTER" text="Olá, usuário!">
+                            <font>
+                                <Font name="System Bold" size="28.0" />
+                            </font>
+                            <opaqueInsets>
+                                <Insets />
+                            </opaqueInsets>
+                            <VBox.margin>
+                                <Insets left="10.0" />
+                            </VBox.margin>
+                        </Label>
                   
-                                                      <Label contentDisplay="BOTTOM" prefHeight="18.0" prefWidth="484.0" style="-fx-text-fill: #666666;" text="Clique duas vezes nas linhas para verificar ou alterar as informações de cada aluno">
-                     <VBox.margin>
-                        <Insets left="10.0" />
-                     </VBox.margin>
-                  </Label>
-               </children>
-            </VBox>
-         </children>
-      </HBox>
-      <HBox layoutX="47.0" layoutY="134.0" prefHeight="441.0" prefWidth="807.0">
-         <children>
-            <HBox prefHeight="100.0" prefWidth="130.0">
-               <children>
-                  <Button fx:id="btnEntrar1" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleLogin" prefHeight="40.0" style="-fx-background-color: cc6464; -fx-background-radius: 8; -fx-font-weight: bold;" text="Excluir">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Button>
-                  
-                        <Button fx:id="btnEntrar" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleLogin" prefHeight="40.0" style="-fx-background-color: #9FD575; -fx-background-radius: 8; -fx-font-weight: bold;" text="Incluir" textFill="#24282e">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Button>
-               </children>
-            </HBox>
-            <TableView prefHeight="442.0" prefWidth="687.0">
-              <columns>
-                <TableColumn prefWidth="75.0" text="C1" />
-                <TableColumn prefWidth="75.0" text="C2" />
-              </columns>
-            </TableView>
-         </children>
-      </HBox>
-   </children>
+                        <Label contentDisplay="BOTTOM" prefHeight="18.0" prefWidth="484.0" style="-fx-text-fill: #666666;" text="Clique duas vezes nas linhas para verificar ou alterar as informações de cada aluno">
+                            <VBox.margin>
+                                <Insets left="10.0" />
+                            </VBox.margin>
+                        </Label>
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+        <HBox layoutX="24.0" layoutY="134.0" prefHeight="441.0" prefWidth="852.0" spacing="8.0">
+            <children>
+                <VBox prefHeight="200.0" prefWidth="100.0" spacing="8.0">
+                    <children>
+                  <TextField fx:id="txtPesquisar" prefHeight="40.0" promptText="🔍 Pesquisar" style="-fx-background-color: D6E3CC; -fx-background-radius: 8;" />
+                        <HBox prefWidth="130.0" spacing="8.0">
+                            <children>
+                                <Button fx:id="btnExcluirAluno" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" minWidth="100.0" mnemonicParsing="false" onAction="#handleLogin" prefHeight="40.0" style="-fx-background-color: cc6464; -fx-background-radius: 8; -fx-font-weight: bold;" text="X Excluir" />
+                        
+                                <Button fx:id="btnInserirAluno" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" minWidth="100.0" mnemonicParsing="false" onAction="#handleLogin" prefHeight="40.0" style="-fx-background-color: #9FD575; -fx-background-radius: 8; -fx-font-weight: bold;" text="+ Incluir" textFill="#24282e" />
+                            </children>
+                        </HBox>
+                        <Button fx:id="btnFiltrar" alignment="CENTER" maxWidth="1.7976931348623157E308" minWidth="100.0" mnemonicParsing="false" onAction="#handleLogin" prefHeight="40.0" style="-fx-background-color: D6E3CC; -fx-background-radius: 8; -fx-font-weight: bold;" text="Filtrar" />
+                        <Button fx:id="btnExportar" alignment="CENTER" maxWidth="1.7976931348623157E308" minWidth="100.0" mnemonicParsing="false" onAction="#handleLogin" prefHeight="40.0" style="-fx-background-color: D6E3CC; -fx-background-radius: 8; -fx-font-weight: bold;" text="⬇ Exportar" />
+                        <Button fx:id="btnAddEscola" alignment="CENTER" maxWidth="1.7976931348623157E308" minWidth="100.0" mnemonicParsing="false" onAction="#handleLogin" prefHeight="40.0" style="-fx-background-color: D6E3CC; -fx-background-radius: 8; -fx-font-weight: bold;" text="🏠 Adicionar Escola" />
+                        <Button fx:id="btnAddUser" alignment="CENTER" maxWidth="1.7976931348623157E308" minWidth="100.0" mnemonicParsing="false" onAction="#handleLogin" prefHeight="40.0" style="-fx-background-color: D6E3CC; -fx-background-radius: 8; -fx-font-weight: bold;" text="+ Adicionar Usuário" />
+                    </children>
+                </VBox>
+                <TableView fx:id="tabelaAlunos" prefHeight="442.0" prefWidth="716.0">
+                    <columns>
+                        <TableColumn prefWidth="75.0" text="C1" />
+                    </columns>
+                </TableView>
+            </children>
+        </HBox>
+    </children>
 </AnchorPane>
