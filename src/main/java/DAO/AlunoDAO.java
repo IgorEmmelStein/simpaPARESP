@@ -65,7 +65,6 @@ public class AlunoDAO {
             conn = ConnectionFactory.getConnection();
             st = conn.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
             
-            // Mapeamento dos campos (23 parâmetros)
             st.setInt(1, aluno.getFkCodAdmin());
             st.setInt(2, aluno.getFkCodEscola());
             st.setString(3, aluno.getCpf());
@@ -106,7 +105,7 @@ public class AlunoDAO {
         }
     }
     
-    // --- Métodos CRUD (READ) ---
+    // CRUD
     
     public Aluno buscarPorId(int id) {
         Connection conn = null;
@@ -155,9 +154,7 @@ public class AlunoDAO {
     }
     
     /**
-     * Busca alunos ativos por diferentes critérios (nome, num_nis, forma_acesso, saúde) (RF004).
-     * @param criterio A string de busca fornecida pelo usuário.
-     * @return Lista de alunos que correspondem ao critério.
+     * Busca alunos ativos por diferentes critérios (nome, num_nis, forma_acesso, saúde)
      */
     public List<Aluno> buscarPorCriterio(String criterio) {
         Connection conn = null;
@@ -171,7 +168,6 @@ public class AlunoDAO {
             
             String parametroBusca = "%" + criterio + "%";
             
-            // O mesmo parâmetro é usado para buscar em múltiplas colunas (nome, nis, form_acesso, etc.)
             st.setString(1, parametroBusca);
             st.setString(2, parametroBusca);
             st.setString(3, parametroBusca);
@@ -194,7 +190,7 @@ public class AlunoDAO {
         }
     }
 
-    // --- Métodos CRUD (UPDATE) ---
+    // CRUD
 
     public boolean atualizar(Aluno aluno) {
         Connection conn = null;
@@ -241,7 +237,7 @@ public class AlunoDAO {
         }
     }
 
-    // --- Métodos CRUD (DELETE - Soft Delete) ---
+    // --- CRUD (DELETE - Soft Delete) ---
 
     public boolean excluir(int id) {
         Connection conn = null;

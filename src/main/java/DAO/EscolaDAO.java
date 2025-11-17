@@ -41,9 +41,6 @@ public class EscolaDAO {
     /**
      * Insere um novo registro de Escola no banco de dados (RF014).
      *
-     * @param escola O objeto Escola a ser persistido.
-     * @return true se a inserção for bem-sucedida.
-     * @throws DBException Se ocorrer um erro durante a inserção no DB.
      */
     public boolean inserir(Escola escola) {
         Connection conn = null;
@@ -68,10 +65,7 @@ public class EscolaDAO {
     }
 
     /**
-     * Atualiza um registro de Escola existente no banco de dados (RF014).
-     *
-     * @param escola O objeto Escola com os dados atualizados.
-     * @return true se a atualização foi bem-sucedida.
+     * Atualiza um registro de Escola existente no banco de dados
      */
     public boolean atualizar(Escola escola) {
         Connection conn = null;
@@ -95,11 +89,7 @@ public class EscolaDAO {
     }
 
     /**
-     * Exclui permanentemente um registro de Escola do banco de dados (RF014).
-     * ATENÇÃO: Se houver alunos ligados a esta escola (FK), a operação falhará.
-     *
-     * @param id O ID da escola a ser excluída.
-     * @return true se a exclusão foi bem-sucedida.
+     * Exclui permanentemente um registro de Escola do banco de dados
      */
     public boolean excluir(int id) {
         Connection conn = null;
@@ -114,7 +104,7 @@ public class EscolaDAO {
             return st.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            // Erro comum: foreign key constraint (se houver alunos cadastrados nela)
+            
             throw new DBException("Erro ao excluir escola. Certifique-se de que não há alunos associados. Detalhe: " + e.getMessage(), e);
         } finally {
             ConnectionFactory.closeConnection(conn, st);
@@ -123,8 +113,6 @@ public class EscolaDAO {
 
     /**
      * Lista todas as Escolas no banco de dados.
-     *
-     * @return Uma lista de objetos Escola.
      */
     public List<Escola> listarTodos() {
         Connection conn = null;
@@ -156,9 +144,6 @@ public class EscolaDAO {
 
     /**
      * Busca uma Escola pelo ID.
-     *
-     * @param id O ID da escola.
-     * @return O objeto Escola ou null.
      */
     public Escola buscarPorId(int id) {
         Connection conn = null;

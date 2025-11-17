@@ -14,8 +14,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * Classe responsável pelo acesso e manipulação de dados da entidade Administrador no banco de dados.
- * Inclui o método de autenticação (login).
+ * acesso e manipulação de dados da entidade Administrador no banco de dados.
  */
 public class AdministradorDAO {
 
@@ -38,10 +37,7 @@ public class AdministradorDAO {
     private static final String SQL_DELETE =
         "DELETE FROM administrador WHERE pk_cod_admin = ?";
     /**
-     * Tenta autenticar um usuário usando o CPF (como nome de usuário) e a senha (hash).
-     * @param cpf O CPF do usuário para login.
-     * @return O objeto Administrador preenchido se a busca for bem-sucedida, ou null.
-     * @throws DBException Se ocorrer um erro durante a consulta.
+     * Autentica um usuário usando o CPF e a senha.
      */
     public Administrador buscarPorCpf(String cpf) {
         Connection conn = null;
@@ -58,14 +54,12 @@ public class AdministradorDAO {
             if (rs.next()) {
                 Administrador admin = new Administrador();
                 
-                // Mapeamento
                 admin.setId(rs.getInt("pk_cod_admin"));
                 admin.setCpf(rs.getString("cpf"));
                 admin.setSenhaHash(rs.getString("senha"));
                 admin.setNome(rs.getString("nome"));
                 admin.setTelefone(rs.getString("telefone"));
                 
-                // Definindo o nomeUsuario como o nome (para simplificar)
                 admin.setNomeUsuario(rs.getString("nome")); 
 
                 return admin;
@@ -93,14 +87,12 @@ public class AdministradorDAO {
             if (rs.next()) {
                 Administrador admin = new Administrador();
                 
-                // Mapeamento
                 admin.setId(rs.getInt("pk_cod_admin"));
                 admin.setCpf(rs.getString("cpf"));
                 admin.setSenhaHash(rs.getString("senha"));
                 admin.setNome(rs.getString("nome"));
                 admin.setTelefone(rs.getString("telefone"));
                 
-                // Definindo o nomeUsuario como o nome (para simplificar)
                 admin.setNomeUsuario(rs.getString("nome")); 
                 
                 return admin;
@@ -113,6 +105,32 @@ public class AdministradorDAO {
         }
     }
 
+    public boolean inserir(Administrador administrador){
+        Connection conn = null;
+        PreparedStatement st = null;
+        
+        try{
+            conn = ConnectionFactory.getConnection();
+            st = conn.prepareStatement(SQL_INSERT);
+            
+            st.setInt(1, administrador.getId());
+            st.setString(2, administrador.getCpf());
+            st.setString(3, administrador.getSenhaHash());
+            st.setString(4, administrador.getNome());
+            st.setString(5, administrador.getTelefone());
+                
+            st.setString(6, administrador.getNome());
+            
+            return st.executeUpdate() > 0;
+            
+        }catch(SQLException e){
+            throw new DBException("Erro ao cadastrar administrador. Detalhe: " + e.getMessage(), e);
+        }finally{
+            ConnectionFactory.closeConnection(conn, st);
+        }
+    }
+    
+    
     
     // Próximos métodos incluem inserir(), atualizar(), etc. para gerenciar administradores,
     // mas o método de busca por CPF é o mais crítico para o LOGIN.
