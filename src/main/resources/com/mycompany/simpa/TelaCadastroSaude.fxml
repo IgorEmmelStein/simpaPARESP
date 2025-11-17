@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/11.0.2"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controller.CadastroSaudeController"
+            prefWidth="1000" prefHeight="500"
+            style="-fx-background-color: #F6FBEF;">
+
+    <!-- Top: Título -->
+    <top>
+        <HBox spacing="10">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+            <Label text="Cadastro"
+                   style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill:#2d4b31;"/>
+        </HBox>
+    </top>
+
+    <!-- Center -->
+    <center>
+        <VBox spacing="20">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+
+            <Label text="Dados de Saúde"
+                   style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill:#2d4b31;"/>
+
+            <HBox spacing="20">
+
+                <!-- Medicamentos -->
+                <VBox spacing="5">
+                    <Label text="Medicações em Uso"/>
+                    <TextArea fx:id="txtMedicamentos"
+                              prefWidth="300" prefHeight="120"
+                              style="-fx-background-color: #DDE8D1;"/>
+                </VBox>
+
+                <!-- Alergias -->
+                <VBox spacing="5">
+                    <Label text="Alergias"/>
+                    <TextArea fx:id="txtAlergias"
+                              prefWidth="300" prefHeight="120"
+                              style="-fx-background-color: #DDE8D1;"/>
+                </VBox>
+
+                <!-- Observações Médicas -->
+                <VBox spacing="5">
+                    <Label text="Observações Médicas"/>
+                    <TextArea fx:id="txtObsMedicas"
+                              prefWidth="300" prefHeight="120"
+                              style="-fx-background-color: #DDE8D1;"/>
+                </VBox>
+
+            </HBox>
+
+            <!-- Botão Salvar -->
+            <HBox alignment="CENTER_RIGHT">
+                <padding>
+                    <Insets top="10"/>
+                </padding>
+                <!-- Botão Salvar -->
+                <HBox alignment="CENTER_RIGHT">
+                    <Button fx:id="salvarButton" prefWidth="130" style="-fx-background-radius: 8px; -fx-font-size: 16px; -fx-background-color: #7ab35a; -fx-text-fill: white;" text="💾 Salvar" />
+                </HBox>
+            </HBox>
+
+        </VBox>
+    </center>
+
+</BorderPane>

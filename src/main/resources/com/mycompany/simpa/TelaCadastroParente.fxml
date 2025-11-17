@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controller.CadastroParenteController"
+            prefWidth="1000" prefHeight="550"
+            style="-fx-background-color: #F6FBEF;">
+
+    <VBox spacing="20" layoutX="20" layoutY="20" prefWidth="960">
+
+        <!-- Título -->
+        <HBox spacing="10">
+            <Label text="Cadastro"
+                   style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill:#1d3a25;"/>
+        </HBox>
+
+        <!-- Subtítulo -->
+        <Label text="Parente"
+               style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill:#1d3a25;"/>
+
+        <!-- Primeira linha -->
+        <HBox spacing="20">
+            <VBox>
+                <Label text="Nome"/>
+                <TextField fx:id="txtNome"
+                           prefWidth="250"
+                           style="-fx-background-color: #DDE8D1;"/>
+            </VBox>
+
+            <VBox>
+                <Label text="Tipo do Parente"/>
+                <ComboBox fx:id="comboTipoParente"
+                          prefWidth="200"
+                          style="-fx-background-color: #DDE8D1;"/>
+            </VBox>
+
+            <VBox>
+                <Label text="CPF"/>
+                <TextField fx:id="txtCpf"
+                           prefWidth="200"
+                           style="-fx-background-color: #DDE8D1;"/>
+            </VBox>
+        </HBox>
+
+        <!-- Segunda linha -->
+        <HBox spacing="20">
+
+            <VBox>
+                <Label text="Vínculo Afetivo"/>
+                <TextField fx:id="txtVinculoAfetivo"
+                           prefWidth="250"
+                           style="-fx-background-color: #DDE8D1;"/>
+            </VBox>
+
+            <VBox>
+                <Label text="Ocupação"/>
+                <TextField fx:id="txtOcupacao"
+                           prefWidth="250"
+                           style="-fx-background-color: #DDE8D1;"/>
+            </VBox>
+
+            <VBox>
+                <Label text="Endereço"/>
+                <TextField fx:id="txtEndereco"
+                           prefWidth="250"
+                           style="-fx-background-color: #DDE8D1;"/>
+            </VBox>
+
+        </HBox>
+
+        <!-- Terceira linha -->
+        <HBox spacing="20">
+
+            <VBox>
+                <Label text="Telefone"/>
+                <TextField fx:id="txtTelefone"
+                           prefWidth="250"
+                           style="-fx-background-color: #DDE8D1;"/>
+            </VBox>
+
+            <VBox>
+                <Label text="Responsável Legal"/>
+                <TextField fx:id="txtResponsavelLegal"
+                           prefWidth="250"
+                           style="-fx-background-color: #DDE8D1;"/>
+            </VBox>
+
+            <VBox>
+                <Label text="Pessoa Autorizada"/>
+                <TextField fx:id="txtPessoaAutorizada"
+                           prefWidth="250"
+                           style="-fx-background-color: #DDE8D1;"/>
+            </VBox>
+
+        </HBox>
+
+        <!-- Anotações -->
+        <VBox spacing="5">
+            <Label text="Anotações Sobre"/>
+            <TextArea fx:id="txtAnotacoes"
+                      prefWidth="920" prefHeight="150"
+                      style="-fx-background-color: #DDE8D1;"/>
+        </VBox>
+
+        <!-- Botão salvar -->
+        <HBox alignment="CENTER_RIGHT">
+            <Button fx:id="btnSalvar"
+                    text="💾 Salvar"
+                    prefWidth="130"
+                    style="-fx-background-radius: 8px; -fx-font-size: 16px;
+                           -fx-background-color: #7ab35a; -fx-text-fill: white;"/>
+        </HBox>
+
+    </VBox>
+
+</AnchorPane>

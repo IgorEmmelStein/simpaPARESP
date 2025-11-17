@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.shape.Rectangle?>
+
+<AnchorPane id="AnchorPane" 
+            prefHeight="400.0" prefWidth="340.0" 
+            style="-fx-background-color: #2D2D2D;" 
+            xmlns:fx="http://javafx.com/fxml/1" 
+            fx:controller="controller.CadastroEscolaController">
+    
+    <StackPane AnchorPane.topAnchor="0.0" 
+               AnchorPane.bottomAnchor="0.0" 
+               AnchorPane.leftAnchor="0.0" 
+               AnchorPane.rightAnchor="0.0">
+        
+        <VBox alignment="TOP_LEFT"
+              style="-fx-background-color: F8FFF3; -fx-padding: 30; -fx-background-radius: 10;"
+              maxWidth="350" spacing="10">
+            
+            <HBox alignment="CENTER_LEFT" spacing="15">
+                
+                <Rectangle arcHeight="8.0" arcWidth="8.0" 
+                           fill="#38C172" height="40.0" width="40.0" />
+                
+                <Label text="Cadastrar Escola"
+                       style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #333;" />
+            </HBox>
+            
+            <Label text="Nome"
+                   style="-fx-font-size: 13px; -fx-font-weight: 500; -fx-text-fill: #555;">
+                <VBox.margin>
+                    <Insets top="25.0" bottom="5.0" left="0.0" right="0.0" />
+                </VBox.margin>
+            </Label>
+            
+            <TextField fx:id="nomeTextField"
+                       style="-fx-background-color: #E6EEDD; -fx-background-radius: 6; -fx-border-color: transparent;"
+                       prefHeight="40.0" />
+            
+            <Button fx:id="criarButton"
+                    text="Criar"
+                    style="-fx-background-color: #A3D98A; -fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #3E3E3E; -fx-background-radius: 6;"
+                    maxWidth="Infinity"
+                    prefHeight="40.0">
+                <VBox.margin>
+                    <Insets top="20.0" bottom="0.0" left="0.0" right="0.0" />
+                </VBox.margin>
+            </Button>
+                
+        </VBox>
+    </StackPane>
+</AnchorPane>
