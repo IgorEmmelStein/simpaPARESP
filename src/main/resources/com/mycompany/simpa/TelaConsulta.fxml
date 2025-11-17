@@ -55,21 +55,21 @@
                         <TextField fx:id="txtPesquisar" prefHeight="40.0" promptText="🔍 Pesquisar" style="-fx-background-color: D6E3CC; -fx-background-radius: 8;" />
                         <HBox prefWidth="130.0" spacing="8.0">
                             <children>
-                                <Button fx:id="btnExcluirAluno" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" minWidth="100.0" mnemonicParsing="false" onAction="#handleLogin" prefHeight="40.0" style="-fx-background-color: cc6464; -fx-background-radius: 8; -fx-font-weight: bold;" text="X Excluir" />
+                                <Button fx:id="btnExcluirAluno" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" minWidth="100.0" mnemonicParsing="false" onAction="#handleExcluir" prefHeight="40.0" style="-fx-background-color: cc6464; -fx-background-radius: 8; -fx-font-weight: bold;" text="X Excluir" />
                         
-                                <Button fx:id="btnInserirAluno" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" minWidth="100.0" mnemonicParsing="false" onAction="#handleLogin" prefHeight="40.0" style="-fx-background-color: #9FD575; -fx-background-radius: 8; -fx-font-weight: bold;" text="+ Incluir" textFill="#24282e" />
+                                <Button fx:id="btnInserirAluno" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" minWidth="100.0" mnemonicParsing="false" onAction="#handleIncluir" prefHeight="40.0" style="-fx-background-color: #9FD575; -fx-background-radius: 8; -fx-font-weight: bold;" text="+ Incluir" textFill="#24282e" />
                             </children>
                         </HBox>
-                  <Button fx:id="btnFiltrar" alignment="CENTER" maxWidth="1.7976931348623157E308" minWidth="100.0" mnemonicParsing="false" onAction="#handleLogin" prefHeight="40.0" style="-fx-background-color: D6E3CC; -fx-background-radius: 8; -fx-font-weight: bold;" text="Filtrar" />
+                  <Button fx:id="btnFiltrar" alignment="CENTER" maxWidth="1.7976931348623157E308" minWidth="100.0" mnemonicParsing="false" onAction="#handleFiltrar" prefHeight="40.0" style="-fx-background-color: D6E3CC; -fx-background-radius: 8; -fx-font-weight: bold;" text="Filtrar" />
                         
-                        <Button fx:id="btnExportar" alignment="CENTER" maxWidth="1.7976931348623157E308" minWidth="100.0" mnemonicParsing="false" onAction="#handleLogin" prefHeight="40.0" style="-fx-background-color: D6E3CC; -fx-background-radius: 8; -fx-font-weight: bold;" text="⬇ Exportar" />
-                        <Button fx:id="btnAddEscola" alignment="CENTER" maxWidth="1.7976931348623157E308" minWidth="100.0" mnemonicParsing="false" onAction="#handleLogin" prefHeight="40.0" style="-fx-background-color: D6E3CC; -fx-background-radius: 8; -fx-font-weight: bold;" text="🏠 Adicionar Escola" />
-                        <Button fx:id="btnAddUser" alignment="CENTER" maxWidth="1.7976931348623157E308" minWidth="100.0" mnemonicParsing="false" onAction="#handleLogin" prefHeight="40.0" style="-fx-background-color: D6E3CC; -fx-background-radius: 8; -fx-font-weight: bold;" text="+ Adicionar Usuário" />
+                        <Button fx:id="btnExportar" alignment="CENTER" maxWidth="1.7976931348623157E308" minWidth="100.0" mnemonicParsing="false" onAction="#handleExportar" prefHeight="40.0" style="-fx-background-color: D6E3CC; -fx-background-radius: 8; -fx-font-weight: bold;" text="⬇ Exportar" />
+                        <Button fx:id="btnAddEscola" alignment="CENTER" maxWidth="1.7976931348623157E308" minWidth="100.0" mnemonicParsing="false" onAction="#handleAddEscola" prefHeight="40.0" style="-fx-background-color: D6E3CC; -fx-background-radius: 8; -fx-font-weight: bold;" text="🏠 Adicionar Escola" />
+                        <Button fx:id="btnAddUser" alignment="CENTER" maxWidth="1.7976931348623157E308" minWidth="100.0" mnemonicParsing="false" onAction="#handleAddUser" prefHeight="40.0" style="-fx-background-color: D6E3CC; -fx-background-radius: 8; -fx-font-weight: bold;" text="+ Adicionar Usuário" />
                     </children>
                 </VBox>
                 <TableView fx:id="tabelaAlunos" prefHeight="442.0" prefWidth="716.0">
                     <columns>
-                        <TableColumn prefWidth="75.0" text="C1" />
+                        <TableColumn prefWidth="75.0" text="C1" fx:id="colID"/>
                     </columns>
                 </TableView>
             </children>

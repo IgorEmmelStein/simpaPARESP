@@ -1,12 +1,13 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
+ * Click nbfs:
+ * Click nbfs:
  */
 package controller;
 
 import classes.Usuario;
+import com.mycompany.simpa.App;
 import java.io.IOException;
-import javafx.scene.control.Label; 
+import javafx.scene.control.Label;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -26,10 +27,9 @@ import util.BusinessException;
 import util.DBException;
 
 public class LoginController {
-    
-    
+
     private static Scene scene;
-    
+
     @FXML
     private TextField txtNomeUsuario;
     @FXML
@@ -40,63 +40,52 @@ public class LoginController {
     private Label lblErro;
 
     private AdministradorService administradorService;
-    // O usuário logado será armazenado aqui após o sucesso
-    private static Usuario usuarioLogado; 
+
+    private static Usuario usuarioLogado;
 
     public LoginController() {
-        // Instancia o serviço na inicialização do Controller
+
         this.administradorService = new AdministradorService();
     }
-    
-    /**
-     * Ação disparada ao clicar no botão 'Entrar'.
-     */
+
     @FXML
     private void handleLogin() throws IOException {
-        String nome = txtNomeUsuario.getText(); // Usamos o nome como login
+        String nome = txtNomeUsuario.getText();
         String senha = txtSenha.getText();
-        
-        lblErro.setVisible(false); // <--- O código correto
+
+        lblErro.setVisible(false);
 
         try {
-            // Chama a lógica de negócio na camada Service
+            System.out.println("DEBUG: 1. Tentativa de autenticação para: " + nome); // DEBUG 1
             usuarioLogado = administradorService.login(nome, senha);
+            System.out.println("DEBUG: 2. Login BEM-SUCEDIDO."); // DEBUG 2
+
+            // O CRASH ACONTECE AQUI! O App.setRoot chama o initialize() da ConsultaController.
+            System.out.println("DEBUG: 3. Chamando App.setRoot('TelaConsulta')..."); // DEBUG 3
+            App.setRoot("TelaConsulta");
             
-            lblErro.setText("Login bem-sucedido!");
-            lblErro.setTextFill(Color.GREEN);
-            lblErro.setVisible(true);
+            // Estas linhas só serão executadas se o carregamento do FXML acima for 100% OK.
+            System.out.println("DEBUG: 4. Stage de Consulta carregado. Fechando Login."); // DEBUG 4
             
-            // Se o login for bem-sucedido:
-            Parent parent = FXMLLoader.load(getClass().getResource("TelaConsulta.fxml"));
-            Scene scene = new Scene(parent);
-            Stage stage = new Stage();
-            stage.setTitle("Consulta de Clientes");
-            stage.setScene(scene);
-            stage.show();
-                
-            // 1. Mensagem de Sucesso (Opcional)
-           
-            
-            // 2. Lógica de Navegação:
-            // Troca de tela para a área de consulta/gestão (Tela 4)
-            // ex: carregarTelaConsulta();
-            
+            // Obtém o Stage e o fecha.
+            Stage stageAtual = (Stage) txtNomeUsuario.getScene().getWindow();
+            stageAtual.close();
+
         } catch (BusinessException e) {
-            // Erro de Regra de Negócio (ex: Usuário ou Senha inválida)
+            System.out.println("DEBUG: Falha na autenticação (BusinessException).");
             lblErro.setText(e.getMessage());
             lblErro.setTextFill(Color.RED);
             lblErro.setVisible(true);
             
         } catch (DBException e) {
-            // Erro de Banco de Dados
+            System.out.println("DEBUG: Falha de DB.");
             lblErro.setText("Erro de sistema: Falha na comunicação com o banco de dados.");
             lblErro.setTextFill(Color.RED);
             lblErro.setVisible(true);
             e.printStackTrace();
-        }
+        } 
     }
-    
-    // Método estático para outros Controllers acessarem o usuário logado
+
     public static Usuario getUsuarioLogado() {
         return usuarioLogado;
     }
