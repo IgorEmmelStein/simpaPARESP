@@ -60,7 +60,7 @@
                                 <Button fx:id="btnInserirAluno" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" minWidth="100.0" mnemonicParsing="false" onAction="#handleIncluir" prefHeight="40.0" style="-fx-background-color: #9FD575; -fx-background-radius: 8; -fx-font-weight: bold;" text="+ Incluir" textFill="#24282e" />
                             </children>
                         </HBox>
-                  <Button fx:id="btnFiltrar" alignment="CENTER" maxWidth="1.7976931348623157E308" minWidth="100.0" mnemonicParsing="false" onAction="#handleFiltrar" prefHeight="40.0" style="-fx-background-color: D6E3CC; -fx-background-radius: 8; -fx-font-weight: bold;" text="Filtrar" />
+                        <Button fx:id="btnFiltrar" alignment="CENTER" maxWidth="1.7976931348623157E308" minWidth="100.0" mnemonicParsing="false" onAction="#handleFiltrar" prefHeight="40.0" style="-fx-background-color: D6E3CC; -fx-background-radius: 8; -fx-font-weight: bold;" text="Filtrar" />
                         
                         <Button fx:id="btnExportar" alignment="CENTER" maxWidth="1.7976931348623157E308" minWidth="100.0" mnemonicParsing="false" onAction="#handleExportar" prefHeight="40.0" style="-fx-background-color: D6E3CC; -fx-background-radius: 8; -fx-font-weight: bold;" text="⬇ Exportar" />
                         <Button fx:id="btnAddEscola" alignment="CENTER" maxWidth="1.7976931348623157E308" minWidth="100.0" mnemonicParsing="false" onAction="#handleAddEscola" prefHeight="40.0" style="-fx-background-color: D6E3CC; -fx-background-radius: 8; -fx-font-weight: bold;" text="🏠 Adicionar Escola" />
@@ -69,7 +69,13 @@
                 </VBox>
                 <TableView fx:id="tabelaAlunos" prefHeight="442.0" prefWidth="716.0">
                     <columns>
-                        <TableColumn prefWidth="75.0" text="C1" fx:id="colID"/>
+                        <TableColumn prefWidth="50.0" text="ID" fx:id="colID"/>
+                        <TableColumn prefWidth="180.0" text="Nome" fx:id="colNome"/>
+                        <TableColumn prefWidth="100.0" text="CPF" fx:id="colCPF"/>
+                        <TableColumn prefWidth="120.0" text="Acolhimento" fx:id="colDtAcolhimento"/>
+                        <TableColumn prefWidth="80.0" text="Turno" fx:id="colTurno"/>
+                        <TableColumn prefWidth="80.0" text="Vacinação" fx:id="colVacinacao"/>
+                        <TableColumn prefWidth="80.0" text="Turma" fx:id="colTurma"/>
                     </columns>
                 </TableView>
             </children>

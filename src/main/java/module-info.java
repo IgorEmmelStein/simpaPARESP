@@ -7,6 +7,7 @@ module com.mycompany.simpa {
     requires javafx.graphics; 
 
     opens com.mycompany.simpa to javafx.fxml;
+    opens classes to javafx.base;
     exports com.mycompany.simpa;
 
     opens controller to javafx.fxml;

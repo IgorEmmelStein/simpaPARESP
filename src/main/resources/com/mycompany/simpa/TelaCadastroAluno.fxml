@@ -16,9 +16,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
 
-<AnchorPane id="AnchorPane" prefHeight="921.0" prefWidth="1000.0" style="-fx-background-color: #2D2D2D;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CadastroAlunoController">
+<AnchorPane id="AnchorPane" prefHeight="669.0" prefWidth="801.0" style="-fx-background-color: #2D2D2D;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CadastroAlunoController">
 
-    <ScrollPane fitToWidth="true" layoutX="20.0" layoutY="20.0" prefHeight="893.0" prefWidth="960.0" style="-fx-background-color: transparent; -fx-background-insets: 0;" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+    <ScrollPane fitToWidth="true" layoutX="20.0" layoutY="20.0" prefHeight="893.0" prefWidth="960.0" style="-fx-background-color: transparent; -fx-background-insets: 0;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         
         <VBox alignment="TOP_CENTER" prefHeight="766.0" prefWidth="945.0" spacing="20" style="-fx-background-color: #F8F9F7; -fx-padding: 30; -fx-background-radius: 10;">
             

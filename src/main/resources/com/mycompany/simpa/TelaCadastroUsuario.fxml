@@ -12,98 +12,100 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #222222;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginController">
-   <children>
+<AnchorPane prefHeight="406.0" prefWidth="472.0" style="-fx-background-color: #222222;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CadastroUsuarioController">
+    <children>
       
-      <VBox layoutX="233.0" layoutY="86.0" prefHeight="485.0" prefWidth="434.0" spacing="15.0" style="-fx-background-color: F8FFF3; -fx-background-radius: 15;" AnchorPane.bottomAnchor="86.79999999999995" AnchorPane.leftAnchor="233.0" AnchorPane.rightAnchor="233.4000000000001" AnchorPane.topAnchor="86.0">
-         <padding>
-            <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
-         </padding>
-         <children>
-            <HBox prefHeight="71.0" prefWidth="374.0">
-               <children>
+        <VBox layoutX="233.0" layoutY="86.0" prefHeight="485.0" prefWidth="434.0" spacing="15.0" style="-fx-background-color: F8FFF3; -fx-background-radius: 15;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <padding>
+                <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+            </padding>
+            <children>
+                <HBox prefHeight="71.0" prefWidth="374.0">
+                    <children>
                
-                  <ImageView fitHeight="72.0" fitWidth="68.0" pickOnBounds="true" preserveRatio="true" smooth="false">
-                     <image>
-                        <Image url="@fxml/logo_paresp.png" />
-                     </image>
-                  </ImageView>
-                  <VBox prefHeight="38.0" prefWidth="318.0">
-                     <children>
+                        <ImageView fitHeight="72.0" fitWidth="68.0" pickOnBounds="true" preserveRatio="true" smooth="false">
+                            <image>
+                                <Image url="@fxml/logo_paresp.png" />
+                            </image>
+                        </ImageView>
+                        <VBox prefHeight="38.0" prefWidth="318.0">
+                            <children>
                         
-                        <Label alignment="CENTER" prefHeight="129.0" prefWidth="135.0" text="Cadastrar">
-                           <font>
-                              <Font name="System Bold" size="30.0" />
-                           </font>
-                           <opaqueInsets>
-                              <Insets />
-                           </opaqueInsets>
-                           <VBox.margin>
-                              <Insets left="10.0" />
-                           </VBox.margin>
-                        </Label>
-                        <Label alignment="CENTER" prefHeight="24.0" prefWidth="108.0" text="Usuário">
-                           <font>
-                              <Font name="System Bold" size="30.0" />
-                           </font>
-                           <opaqueInsets>
-                              <Insets />
-                           </opaqueInsets>
-                           <VBox.margin>
-                              <Insets left="10.0" />
-                           </VBox.margin>
-                        </Label>
-                     </children>
-                  </VBox>
-               </children>
-            </HBox>
+                                <Label alignment="CENTER" prefHeight="129.0" prefWidth="135.0" text="Cadastrar">
+                                    <font>
+                                        <Font name="System Bold" size="30.0" />
+                                    </font>
+                                    <opaqueInsets>
+                                        <Insets />
+                                    </opaqueInsets>
+                                    <VBox.margin>
+                                        <Insets left="10.0" />
+                                    </VBox.margin>
+                                </Label>
+                                <Label alignment="CENTER" prefHeight="24.0" prefWidth="108.0" text="Usuário">
+                                    <font>
+                                        <Font name="System Bold" size="30.0" />
+                                    </font>
+                                    <opaqueInsets>
+                                        <Insets />
+                                    </opaqueInsets>
+                                    <VBox.margin>
+                                        <Insets left="10.0" />
+                                    </VBox.margin>
+                                </Label>
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
             
-            <Label text="Nome" VBox.vgrow="NEVER">
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
+                <Label text="Nome" VBox.vgrow="NEVER">
+                    <VBox.margin>
+                        <Insets />
+                    </VBox.margin>
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Label>
             
-            <TextField fx:id="txtNomeUsuario" prefHeight="40.0" style="-fx-background-color: D6E3CC; -fx-background-radius: 8;">
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin></TextField>
+                <TextField fx:id="txtNomeUsuario" prefHeight="40.0" style="-fx-background-color: D6E3CC; -fx-background-radius: 8;">
+                    <VBox.margin>
+                        <Insets />
+                    </VBox.margin>
+                </TextField>
             
-            <Label text="Senha">
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
+                <Label text="Senha">
+                    <VBox.margin>
+                        <Insets />
+                    </VBox.margin>
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Label>
             
-            <PasswordField fx:id="txtSenha" prefHeight="40.0" style="-fx-background-color: D6E3CC; -fx-background-radius: 8;">
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin></PasswordField>
-            <Label text="Confirmar Senha">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
-            <PasswordField fx:id="txtSenha1" prefHeight="40.0" style="-fx-background-color: D6E3CC; -fx-background-radius: 8;" />
+                <PasswordField fx:id="txtSenha" prefHeight="40.0" style="-fx-background-color: D6E3CC; -fx-background-radius: 8;">
+                    <VBox.margin>
+                        <Insets />
+                    </VBox.margin>
+                </PasswordField>
+                <Label text="Confirmar Senha">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Label>
+                <PasswordField fx:id="txtSenha1" prefHeight="40.0" style="-fx-background-color: D6E3CC; -fx-background-radius: 8;" />
             
-            <Button fx:id="btnEntrar" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleLogin" prefHeight="40.0" style="-fx-background-color: #9FD575; -fx-background-radius: 8; -fx-font-weight: bold;" text="Criar" textFill="#24282e">
-               <VBox.margin>
-                  <Insets top="10.0" />
-               </VBox.margin>
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Button>
+                <Button fx:id="btnCadastrar" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleCadastrar" prefHeight="40.0" style="-fx-background-color: #9FD575; -fx-background-radius: 8; -fx-font-weight: bold;" text="Criar" textFill="#24282e">
+                    <VBox.margin>
+                        <Insets top="10.0" />
+                    </VBox.margin>
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Button>
             
-            <Label fx:id="lblErro" style="-fx-text-fill: red;" text="Mensagem de Erro" visible="false" />
+                <Label fx:id="lblErro" style="-fx-text-fill: red;" text="Mensagem de Erro" visible="false" />
             
-         </children>
-      </VBox>
-   </children>
+            </children>
+        </VBox>
+    </children>
 </AnchorPane>

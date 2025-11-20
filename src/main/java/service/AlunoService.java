@@ -6,14 +6,17 @@ package service;
 
 import DAO.AlunoDAO;
 
-/**
- *
- * @author igore
- */
+import classes.Aluno; 
+import java.util.List;
+
 public class AlunoService {
     private AlunoDAO alunoDao;
     
     public AlunoService(){
         this.alunoDao = new AlunoDAO();
+    }
+    
+    public List<Aluno> listarTodosAlunos() {
+        return alunoDao.listarTodos();
     }
 }
