@@ -1,18 +1,29 @@
--- sql rodrigo
+-- -----------------------------------------------------
+-- 1. LIMPEZA E CRIAÇÃO DO SCHEMA
+-- -----------------------------------------------------
 DROP SCHEMA IF EXISTS `paresp`;
 CREATE SCHEMA IF NOT EXISTS `paresp` DEFAULT CHARACTER SET utf8;
 USE `paresp`;
 
-CREATE TABLE IF NOT EXISTS `administrador` (
+-- -----------------------------------------------------
+-- 2. TABELA USUARIO (ANTIGA ADMINISTRADOR)
+--    Adiciona o campo de permissão 'e_administrador'
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `usuario` (
   `pk_cod_admin` INT(4) NOT NULL AUTO_INCREMENT,
   `cpf` CHAR(11) NOT NULL,
   `senha` VARCHAR(20) NOT NULL,
   `telefone` CHAR(11) NULL,
   `nome` VARCHAR(45) NOT NULL,
+  `e_administrador` TINYINT(1) NOT NULL DEFAULT 0, -- NOVO CAMPO PARA PERMISSÃO
   PRIMARY KEY (`pk_cod_admin`),
   UNIQUE INDEX `cpf_UNIQUE` (`cpf` ASC)
 ) ENGINE = InnoDB;
 
+-- -----------------------------------------------------
+-- 3. TABELAS DE DADOS (SEM ALTERAÇÕES ESTRUTURAIS)
+--    A tabela 'aluno' agora referencia a tabela 'usuario'
+-- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `escola` (
   `pk_cod_escola` INT(6) NOT NULL,
   `nome` VARCHAR(45) NOT NULL,
@@ -22,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `escola` (
 
 CREATE TABLE IF NOT EXISTS `aluno` (
   `pk_cod_pessoa` INT(6) NOT NULL AUTO_INCREMENT,
-  `fk_cod_admin` INT(4) NOT NULL,
+  `fk_cod_admin` INT(4) NOT NULL, -- fk_cod_admin ainda aponta para o ID na tabela usuário
   `fk_cod_escola` INT(6) NOT NULL,
   `cpf` CHAR(11) NOT NULL,
   `data_acolhimento` DATE NOT NULL,
@@ -47,9 +58,9 @@ CREATE TABLE IF NOT EXISTS `aluno` (
   `status` INT(1) NOT NULL,
   PRIMARY KEY (`pk_cod_pessoa`),
   UNIQUE INDEX `cpf_UNIQUE` (`cpf` ASC),
-  CONSTRAINT `fk_aluno_administrador`
+  CONSTRAINT `fk_aluno_usuario` -- CHAVE ESTRANGEIRA ATUALIZADA
     FOREIGN KEY (`fk_cod_admin`)
-    REFERENCES `administrador` (`pk_cod_admin`)
+    REFERENCES `usuario` (`pk_cod_admin`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_aluno_escola`
@@ -99,37 +110,36 @@ CREATE TABLE IF NOT EXISTS `integrante_familia` (
 ) ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- 4. INSERÇÃO DE DADOS DE TESTE (USUÁRIOS E ALUNOS)
+-- -----------------------------------------------------
 
-INSERT INTO administrador (cpf, senha, telefone, nome)
-VALUES ('12345678901', '12345678', '51999999999', 'Admin Principal');
+-- Usuário 1: Admin Principal (login: Admin Principal / senha: 12345678)
+INSERT INTO usuario (cpf, senha, telefone, nome, e_administrador)
+VALUES ('12345678901', '12345678', '51999999999', 'Admin Principal', 1);
 
+-- Usuário 2: Admin Secundário (login: adm / senha: 123)
+INSERT INTO usuario (cpf, senha, telefone, nome, e_administrador)
+VALUES ('11122233344', '123', '51999999998', 'adm', 1);
+
+-- Usuário 3: Usuário Comum (login: user / senha: 123)
+INSERT INTO usuario (cpf, senha, telefone, nome, e_administrador)
+VALUES ('99988877766', '123', '51999999997', 'user', 0);
+
+
+-- Escola de Teste
 INSERT INTO escola (pk_cod_escola, nome, serie)
 VALUES (1, 'Escola Municipal Modelo', '5A');
 
-INSERT INTO aluno (
-  fk_cod_admin, fk_cod_escola, cpf, data_acolhimento, form_acesso, vacinacao,
-  termo_imagem, turno, transporte, data_nasc, proj_ferias, nome, sexo,
-  tamanho_vest, tamanho_calc, turma, num_nis, med_paresp, alergias, observacoes,
-  intervencoes, evolucoes, status
-) VALUES (
-  1, 1, '98765432100', '2025-09-05', 'Cadastro', 1, 1, 'Manhã',
-  'Ônibus Escolar', '2010-05-15', 1, 'Gustavo', 'M', 'M', 40, '5A',
-  '12345678910', NULL, NULL, NULL, NULL, NULL, 1
-);
 
--- Garante que o ID da escola e do admin de teste existam (baseado no teu script)
--- O ID do Admin Principal é 1.
--- O ID da Escola Municipal Modelo é 1.
-
-select * from aluno;
-
+-- Alunos de Teste (21 alunos, todos ligados ao pk_cod_admin=1)
 INSERT INTO aluno (
     fk_cod_admin, fk_cod_escola, cpf, data_acolhimento, form_acesso, vacinacao,
     termo_imagem, turno, transporte, data_nasc, proj_ferias, nome, sexo,
     tamanho_vest, tamanho_calc, turma, num_nis, med_paresp, alergias, observacoes,
     intervencoes, evolucoes, status
 ) VALUES 
--- ALUNOS FEMININOS (F)
+(1, 1, '98765432100', '2025-09-05', 'Cadastro', 1, 1, 'Manhã', 'Ônibus Escolar', '2010-05-15', 1, 'Gustavo', 'M', 'M', 40, '5A', '12345678910', NULL, NULL, NULL, NULL, NULL, 1),
 (1, 1, '10000000001', '2025-01-10', 'Encaminhamento', 1, 1, 'Manhã', 'Pé', '2015-08-20', 0, 'Alice Costa', 'F', 'P', 32, '3A', '10000000001', NULL, 'Pólen', NULL, NULL, NULL, 1),
 (1, 1, '10000000002', '2025-02-15', 'Busca Ativa', 0, 1, 'Tarde', 'Van Escolar', '2016-03-05', 1, 'Beatriz Silva', 'F', 'M', 34, '2B', '10000000002', 'Ritalina', NULL, NULL, NULL, NULL, 1),
 (1, 1, '10000000003', '2025-03-20', 'Cadastro', 1, 0, 'Manhã', 'Ônibus Escolar', '2017-11-12', 0, 'Carolina Ferreira', 'F', 'G', 36, '4A', '10000000003', NULL, NULL, NULL, NULL, NULL, 1),
@@ -140,8 +150,6 @@ INSERT INTO aluno (
 (1, 1, '10000000008', '2025-08-15', 'Busca Ativa', 1, 0, 'Tarde', 'Van Escolar', '2016-12-25', 1, 'Helena Rodrigues', 'F', 'G', 35, '2C', '10000000008', 'Sertralina', NULL, NULL, NULL, NULL, 1),
 (1, 1, '10000000009', '2025-09-20', 'Cadastro', 1, 1, 'Manhã', 'Pé', '2017-09-09', 0, 'Isabela Santos', 'F', 'PP', 29, '4B', '10000000009', NULL, NULL, NULL, NULL, NULL, 1),
 (1, 1, '10000000010', '2025-10-25', 'Encaminhamento', 0, 0, 'Tarde', 'Ônibus Escolar', '2014-01-30', 1, 'Júlia Oliveira', 'F', 'M', 36, '5A', '10000000010', NULL, 'Látex', NULL, NULL, NULL, 1),
-
--- ALUNOS MASCULINOS (M)
 (1, 1, '20000000001', '2025-01-10', 'Cadastro', 1, 1, 'Manhã', 'Pé', '2015-05-15', 1, 'Marcos Junior', 'M', 'M', 38, '3C', '20000000001', NULL, NULL, NULL, NULL, NULL, 1),
 (1, 1, '20000000002', '2025-02-15', 'Busca Ativa', 0, 1, 'Tarde', 'Van Escolar', '2016-09-01', 0, 'Pedro Henrique', 'M', 'G', 40, '2A', '20000000002', NULL, 'Picada de inseto', NULL, NULL, NULL, 1),
 (1, 1, '20000000003', '2025-03-20', 'Encaminhamento', 1, 0, 'Manhã', 'Ônibus Escolar', '2017-07-07', 1, 'Rafael Nogueira', 'M', 'P', 35, '4C', '20000000003', 'Paracetamol', NULL, NULL, NULL, NULL, 1),
@@ -152,6 +160,3 @@ INSERT INTO aluno (
 (1, 1, '20000000008', '2025-08-15', 'Busca Ativa', 1, 0, 'Tarde', 'Van Escolar', '2016-06-06', 0, 'Yuri Mendes', 'M', 'G', 38, '2B', '20000000008', 'Dipirona', NULL, NULL, NULL, NULL, 1),
 (1, 1, '20000000009', '2025-09-20', 'Encaminhamento', 0, 1, 'Manhã', 'Ônibus Escolar', '2017-03-17', 1, 'Zeca Fonseca', 'M', 'M', 37, '4A', '20000000009', NULL, 'Glúten', NULL, NULL, NULL, 1),
 (1, 1, '20000000010', '2025-10-25', 'Cadastro', 1, 1, 'Tarde', 'Pé', '2014-08-08', 0, 'Leonardo Paz', 'M', 'GG', 41, '5B', '20000000010', NULL, NULL, NULL, NULL, NULL, 1);
-
-INSERT INTO administrador (cpf, senha, telefone, nome)
-VALUES ('11122233344', '123', '51999999999', 'adm');

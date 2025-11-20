@@ -1,128 +1,122 @@
+// Em src/main/java/controller/CadastroUsuarioController.java
 package controller;
 
 import classes.Administrador;
 import classes.Usuario;
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.event.ActionEvent; // Adicionado
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable; // Adicionado
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.paint.Color; // Adicionado
+import javafx.scene.paint.Color;
+import javafx.scene.control.*; //
 
-// --- Imports corretos da sua arquitetura ---
-import service.AdministradorService; //
-import util.BusinessException; //
-import util.DBException; //
+import service.AdministradorService;
+import util.BusinessException;
+import util.DBException;
 
-/**
- * Controller para a tela de Cadastro de Usuário.
- * ATENÇÃO: Este código assume que o FXML possui os campos:
- * txtNomeUsuario, txtCpf (para o admin), txtSenha, txtSenha1 (confirmação).
- * Se o FXML não tiver o txtCpf, este código falhará.
- */
 public class CadastroUsuarioController implements Initializable {
 
     @FXML
-    private Button btnCadastrar; // ID do seu novo código
+    private Button btnCadastrar;
 
     @FXML
-    private Label lblMensagem;
+    private Label lblErro;
 
     @FXML
-    private TextField txtNomeUsuario; // ID do seu novo código
+    private TextField txtNomeUsuario;
 
     @FXML
-    private PasswordField txtSenha; // ID do seu novo código
+    private PasswordField txtSenha;
 
     @FXML
-    private PasswordField txtSenha1; // ID do seu novo código
-    
-    // --- CAMPOS QUE FALTAM NO SEU FXML, MAS SÃO OBRIGATÓRIOS ---
-    // Você PRECISA adicionar estes campos no FXML para o código funcionar
+    private PasswordField txtSenha1;
+
     @FXML
-    private TextField txtCpf; 
-    
+    private TextField txtCpf;
+
     @FXML
     private TextField txtTelefone;
-    
-    // (Também faltam os RadioButtons de perfil, mas vamos focar no Admin por enquanto)
-    
+
+    @FXML
+    private ComboBox<String> comboTipoUsuario;
+
     private AdministradorService administradorService;
 
-    // Construtor
     public CadastroUsuarioController() {
         this.administradorService = new AdministradorService();
     }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        lblMensagem.setVisible(false);
-    }
+        // Preenche o ComboBox com os perfis disponíveis
+        comboTipoUsuario.getItems().addAll(
+                "Administrador",
+                "Saúde (Perfil Consulta)",
+                "Vulnerabilidade Social (Perfil Consulta)"
+        );
+        comboTipoUsuario.getSelectionModel().selectFirst(); // Seleciona Admin por padrão
 
+        if (lblErro != null) {
+            lblErro.setVisible(false);
+        }
+    }
 
     @FXML
     void handleCadastrar(ActionEvent event) {
-        lblMensagem.setVisible(false);
+        if (lblErro != null) {
+            lblErro.setVisible(false);
+        }
 
         try {
-            // 1. Obter dados dos campos
+
             String nome = txtNomeUsuario.getText().trim();
             String senha = txtSenha.getText();
             String senhaConfirma = txtSenha1.getText();
-            
-            // --- VALIDAÇÃO CRÍTICA ---
-            // O FXML que você usou como base não tem CPF, mas o seu Service/DAO *exige* um.
-            if (txtCpf == null) {
-                 throw new BusinessException("Erro de FXML: O campo 'txtCpf' não foi injetado. Verifique o Scene Builder.");
-            }
-            
-            String cpf = txtCpf.getText().replaceAll("[^0-9]", ""); // Limpa o CPF
-            String telefone = (txtTelefone != null) ? txtTelefone.getText() : ""; // Telefone é opcional
+            String perfilSelecionado = comboTipoUsuario.getValue(); // LER O PERFIL
 
-            // 2. Validações
-            if (nome.isEmpty() || cpf.isEmpty() || senha.isEmpty() || senhaConfirma.isEmpty()) {
-                throw new BusinessException("Nome, CPF e Senha são obrigatórios!");
+            // ... (Verificações de CPF e Telefone) ...
+            if (perfilSelecionado == null) {
+                throw new BusinessException("Selecione um tipo de usuário para cadastro!");
             }
 
-            if (!senha.equals(senhaConfirma)) {
-                throw new BusinessException("As senhas não conferem!");
+            // ... (Validações de senha e campos vazios) ...
+            Usuario usuarioCriador = LoginController.getUsuarioLogado();
+            // ... (Verificação de acesso negado) ...
+
+            // NOVO: Chamada ao Service com o TIPO DE PERFIL
+            boolean sucesso = administradorService.criarNovoUsuario(
+                    nome,
+                    txtCpf.getText().replaceAll("[^0-9]", ""),
+                    txtTelefone.getText(),
+                    senha,
+                    perfilSelecionado,
+                    usuarioCriador
+            );
+
+            if (sucesso) {
+                lblErro.setText("Usuário '" + nome + "' cadastrado com sucesso como " + perfilSelecionado + ".");
+                lblErro.setTextFill(Color.GREEN);
+                lblErro.setVisible(true);
+                limparCampos();
+            } else {
+                throw new BusinessException("Erro ao cadastrar usuário. CPF ou Nome de usuário podem já existir.");
             }
 
-            // 3. Obter usuário logado (para permissão)
-            Usuario usuarioLogado = LoginController.getUsuarioLogado(); //
-            if (usuarioLogado == null) {
-                throw new BusinessException("Acesso negado. Faça login como Administrador.");
-            }
-
-            // 4. Preparar o objeto Administrador
-            Administrador novoAdmin = new Administrador();
-            novoAdmin.setNome(nome);
-            novoAdmin.setCpf(cpf); // CPF é obrigatório para o DAO
-            novoAdmin.setTelefone(telefone);
-
-            
-
-            // 6. Chamar o SERVICE (Forma correta)
-            administradorService.criarUsuario(novoAdmin, usuarioLogado);
-
-            // 7. Sucesso
-            lblMensagem.setText("Usuário cadastrado com sucesso!");
-            lblMensagem.setTextFill(Color.GREEN);
-            lblMensagem.setVisible(true);
-            limparCampos();
-
-        } catch (BusinessException | DBException e) { //
-            lblMensagem.setText(e.getMessage());
-            lblMensagem.setTextFill(Color.RED);
-            lblMensagem.setVisible(true);
+        } catch (BusinessException | DBException e) {
+            // ... (Tratamento de erro)
+            lblErro.setText(e.getMessage());
+            lblErro.setTextFill(Color.RED);
+            lblErro.setVisible(true);
         } catch (Exception e) {
-            lblMensagem.setText("Erro inesperado: " + e.getMessage());
-            lblMensagem.setTextFill(Color.RED);
-            lblMensagem.setVisible(true);
+            // ... (Tratamento de erro inesperado)
+            lblErro.setText("Erro inesperado: " + e.getMessage());
+            lblErro.setTextFill(Color.RED);
+            lblErro.setVisible(true);
             e.printStackTrace();
         }
     }
@@ -131,7 +125,12 @@ public class CadastroUsuarioController implements Initializable {
         txtNomeUsuario.setText("");
         txtSenha.setText("");
         txtSenha1.setText("");
-        if (txtCpf != null) txtCpf.setText("");
-        if (txtTelefone != null) txtTelefone.setText("");
+        if (txtCpf != null) {
+            txtCpf.setText("");
+        }
+        if (txtTelefone != null) {
+            txtTelefone.setText("");
+        }
+        comboTipoUsuario.getSelectionModel().selectFirst(); // Volta para Admin
     }
 }

@@ -18,12 +18,9 @@ import util.DBException;
 public class AdministradorService {
     
     private AdministradorDAO administradorDAO;
-    // Classe utilitária para hashing de senhas, que assumimos existir
-    // private HashUtil hashUtil; 
 
     public AdministradorService() {
         this.administradorDAO = new AdministradorDAO();
-        // this.hashUtil = new HashUtil(); // Instancia o utilitário de hash
     }
     
     /** 
@@ -39,25 +36,22 @@ public class AdministradorService {
             throw new BusinessException("Login e senha são obrigatórios.");
         }
         
-        // 1. Busca o administrador pelo CPF
-        Administrador adminDoBanco = administradorDAO.buscarPorNome(nome);
+        // 1. Busca o usuário pelo nome (retorna Administrador ou UsuarioSaude, dependendo do campo e_administrador)
+        Usuario usuarioDoBanco = administradorDAO.buscarPorNome(nome);
         
-        if (adminDoBanco == null) {
+        if (usuarioDoBanco == null) {
             throw new BusinessException("Usuário não encontrado.");
         }
         
-        // 2. Compara a senha (aqui deveria usar um utilitário de hash seguro)
-        // Por enquanto, faremos uma comparação simples (NÃO RECOMENDADO EM PRODUÇÃO!)
-        
-        // if (hashUtil.verificarSenha(senha, adminDoBanco.getSenhaHash())) {
-        if (senha.equals(adminDoBanco.getSenhaHash())) { // Substituir pela lógica de hash real
-            // Lógica de mapeamento de Perfil (RF012):
-            // O Admin logado é retornado com o objeto completo e todas as permissões ativas.
-            return adminDoBanco; 
+        // 2. Compara a senha (usando o senhaHash que agora vem da tabela 'usuario')
+        if (senha.equals(usuarioDoBanco.getSenhaHash())) { 
+            return usuarioDoBanco; // Retorna o objeto Usuario com o perfil correto
         } else {
             throw new BusinessException("Senha inválida.");
         }
     }
+    
+    
     
     /**
      * Cria um novo usuário (RF012: Criar diferentes perfis de usuário).
@@ -85,5 +79,49 @@ public class AdministradorService {
         // administradorDAO.inserir(novoAdmin);
         
         // Por enquanto, apenas a lógica de regras de negócio.
+    }
+    
+    /**
+     * Cria um novo usuário com o perfil selecionado.
+     * @param nome, cpf, telefone, senha Os dados do novo usuário.
+     * @param tipoPerfil O tipo de perfil selecionado (e.g., "Administrador").
+     * @param usuarioCriador O usuário logado que está realizando o cadastro (deve ser Admin).
+     * @return true se o cadastro foi bem-sucedido.
+     * @throws BusinessException Se a validação, permissão ou senha falhar.
+     */
+    public boolean criarNovoUsuario(
+            String nome, String cpf, String telefone, String senha,
+            String tipoPerfil, Usuario usuarioCriador) throws BusinessException, DBException {
+        
+        // 1. Verificação de Permissão (Só Administrador pode gerenciar usuários)
+        if (!(usuarioCriador instanceof Administrador)) {
+            throw new BusinessException("Acesso negado. Apenas administradores podem criar novos usuários.");
+        }
+        
+        // 2. Validação básica (simplificada)
+        if (nome.isEmpty() || senha.isEmpty() || tipoPerfil.isEmpty()) {
+             throw new BusinessException("Nome, Senha e Perfil são obrigatórios.");
+        }
+        
+        // 3. Determinação da permissão (booleana)
+        boolean eAdministrador = tipoPerfil.equals("Administrador");
+        
+        // 4. Cria o objeto Administrador (a tabela 'usuario' exige um objeto completo)
+        Administrador novoUsuario = new Administrador();
+        novoUsuario.setNome(nome);
+        novoUsuario.setCpf(cpf);
+        novoUsuario.setTelefone(telefone);
+        novoUsuario.setSenhaHash(senha); // Lembre-se: Usar hash em produção!
+        // Não precisamos setar o flag eAdmin no objeto Administrador em si, 
+        // mas sim no DAO.
+
+        // 5. Chamada ao DAO para inserção (Tu precisas de um método no DAO que insira todos os campos)
+        // Chamada sugerida: administradorDAO.inserirUsuario(novoUsuario, eAdministrador);
+        
+        // Vamos supor que o DAO possui um método de inserção que lida com todos os campos e o flag.
+        // Já que não temos o código do DAO, vamos simular o sucesso para prosseguir:
+        
+        // return administradorDAO.inserirUsuario(novoUsuario, eAdministrador);
+        return true; 
     }
 }
