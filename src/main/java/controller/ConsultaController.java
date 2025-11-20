@@ -1,6 +1,8 @@
 package controller;
 
 import classes.Aluno;
+import classes.Usuario;
+import classes.Administrador;
 import java.io.IOException;
 import service.AlunoService;
 import service.RelatorioService;
@@ -9,7 +11,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import javafx.scene.control.TableCell;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -38,7 +43,7 @@ public class ConsultaController implements Initializable {
     @FXML
     private TableColumn<Aluno, String> colCPF;
     @FXML
-    private TableColumn<Aluno, String> colDtAcolhimento;
+    private TableColumn<Aluno, java.util.Date> colDtAcolhimento;
     @FXML
     private TableColumn<Aluno, String> colTurno;
     @FXML
@@ -58,6 +63,8 @@ public class ConsultaController implements Initializable {
     private Button btnAddEscola;
     @FXML
     private Button btnAddUser;
+    
+    private Usuario usuarioLogado;
 
     private AlunoService alunoService;
     private RelatorioService relatorioService;
@@ -70,32 +77,95 @@ public class ConsultaController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
+        configurarColunas();
+
+        carregarAlunos(null);
+
+        txtPesquisar.textProperty().addListener((obs, oldValue, newValue) -> {
+            carregarAlunos(newValue);
+        });
+
+        // 1. Ocultar Botão Filtrar
+        btnFiltrar.setVisible(false);
+        btnFiltrar.setManaged(false);
+        
+        // 2. Ocultar o botão de usuário por padrão (será exibido no setter se for Admin)
+        btnAddUser.setVisible(false);
+        btnAddUser.setManaged(false);
+    }
+    
+    public void setUsuarioLogado(Usuario usuario) {
+        this.usuarioLogado = usuario;
+        verificarPermissoes(); // Chama a lógica de permissão imediatamente
+    }
+    
+    private void verificarPermissoes() {
+        // Se o usuário logado for uma instância de Administrador
+        if (this.usuarioLogado instanceof Administrador) {
+            btnAddUser.setVisible(true);
+            btnAddUser.setManaged(true);
+        } else {
+            // Já está oculto por padrão, mas reforçamos
+            btnAddUser.setVisible(false);
+            btnAddUser.setManaged(false);
+        }
+    }
+
+    private void configurarColunas() {
+
         colID.setCellValueFactory(new PropertyValueFactory<>("id"));
         colNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
         colCPF.setCellValueFactory(new PropertyValueFactory<>("cpf"));
 
         colDtAcolhimento.setCellValueFactory(new PropertyValueFactory<>("dataAcolhimento"));
-        colTurno.setCellValueFactory(new PropertyValueFactory<>("turno"));
+        configurarFormatoData(colDtAcolhimento);
 
+        colTurno.setCellValueFactory(new PropertyValueFactory<>("turno"));
         colVacinacao.setCellValueFactory(new PropertyValueFactory<>("vacinacaoEmDia"));
         colTurma.setCellValueFactory(new PropertyValueFactory<>("turma"));
-
-        carregarAlunos();
     }
 
-    private void carregarAlunos() {
-        try {
+    private void configurarFormatoData(TableColumn<Aluno, java.util.Date> coluna) {
 
-            List<Aluno> listaAlunos = alunoService.listarTodosAlunos();
+        SimpleDateFormat formatoBrasileiro = new SimpleDateFormat("dd/MM/yyyy");
+
+        coluna.setCellFactory(column -> {
+            return new TableCell<Aluno, Date>() {
+                @Override
+                protected void updateItem(Date data, boolean empty) {
+                    super.updateItem(data, empty);
+
+                    if (empty || data == null) {
+                        setText(null);
+                    } else {
+
+                        setText(formatoBrasileiro.format(data));
+                    }
+                }
+            };
+        });
+    }
+
+    private void carregarAlunos(String criterio) {
+        try {
+            List<Aluno> listaAlunos;
+
+            if (criterio == null || criterio.trim().isEmpty()) {
+
+                listaAlunos = alunoService.listarTodosAlunos();
+            } else {
+
+                listaAlunos = alunoService.buscarAlunosPorCriterio(criterio);
+            }
 
             ObservableList<Aluno> observableList = FXCollections.observableArrayList(listaAlunos);
-
             tabelaAlunos.setItems(observableList);
 
+            System.out.println("DEBUG: Carregados " + listaAlunos.size() + " alunos com o critério: " + criterio);
+
         } catch (Exception e) {
-
-            System.err.println("ERRO ao carregar alunos para a tabela: " + e.getMessage());
-
+            System.err.println("ERRO FATAL ao carregar alunos. Verifique a conexão com o DB e o mapeamento no DAO.");
+            e.printStackTrace();
         }
     }
 
@@ -130,7 +200,7 @@ public class ConsultaController implements Initializable {
 
     @FXML
     private void handleBuscar() {
-        System.out.println("Buscar (Vazio)");
+
     }
 
     @FXML
@@ -140,7 +210,7 @@ public class ConsultaController implements Initializable {
 
     @FXML
     private void handleFiltrar() {
-        System.out.println("Filtrar (Vazio)");
+        carregarAlunos(txtPesquisar.getText());
     }
 
     @FXML
@@ -150,6 +220,6 @@ public class ConsultaController implements Initializable {
 
     @FXML
     private void handleAddEscola() {
-        System.out.println("Add Escola (Vazio)");
+        abrirNovaTela("TelaCadastroEscola", "Cadastrar Nova Escola");
     }
 }

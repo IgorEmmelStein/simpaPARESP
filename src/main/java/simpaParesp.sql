@@ -152,3 +152,6 @@ INSERT INTO aluno (
 (1, 1, '20000000008', '2025-08-15', 'Busca Ativa', 1, 0, 'Tarde', 'Van Escolar', '2016-06-06', 0, 'Yuri Mendes', 'M', 'G', 38, '2B', '20000000008', 'Dipirona', NULL, NULL, NULL, NULL, 1),
 (1, 1, '20000000009', '2025-09-20', 'Encaminhamento', 0, 1, 'Manhã', 'Ônibus Escolar', '2017-03-17', 1, 'Zeca Fonseca', 'M', 'M', 37, '4A', '20000000009', NULL, 'Glúten', NULL, NULL, NULL, 1),
 (1, 1, '20000000010', '2025-10-25', 'Cadastro', 1, 1, 'Tarde', 'Pé', '2014-08-08', 0, 'Leonardo Paz', 'M', 'GG', 41, '5B', '20000000010', NULL, NULL, NULL, NULL, NULL, 1);
+
+INSERT INTO administrador (cpf, senha, telefone, nome)
+VALUES ('11122233344', '123', '51999999999', 'adm');

@@ -56,18 +56,22 @@ public class LoginController {
         lblErro.setVisible(false);
 
         try {
-            System.out.println("DEBUG: 1. Tentativa de autenticação para: " + nome); // DEBUG 1
+            System.out.println("DEBUG: 1. Tentativa de autenticação para: " + nome);
             usuarioLogado = administradorService.login(nome, senha);
-            System.out.println("DEBUG: 2. Login BEM-SUCEDIDO."); // DEBUG 2
+            System.out.println("DEBUG: 2. Login BEM-SUCEDIDO.");
 
-            // O CRASH ACONTECE AQUI! O App.setRoot chama o initialize() da ConsultaController.
-            System.out.println("DEBUG: 3. Chamando App.setRoot('TelaConsulta')..."); // DEBUG 3
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/mycompany/simpa/TelaConsulta.fxml"));
+            Parent root = loader.load();
+
+            ConsultaController consultaController = loader.getController();
+
+            consultaController.setUsuarioLogado(usuarioLogado);
+
+            System.out.println("DEBUG: 3. Chamando App.setRoot('TelaConsulta')...");
             App.setRoot("TelaConsulta");
-            
-            // Estas linhas só serão executadas se o carregamento do FXML acima for 100% OK.
-            System.out.println("DEBUG: 4. Stage de Consulta carregado. Fechando Login."); // DEBUG 4
-            
-            // Obtém o Stage e o fecha.
+
+            System.out.println("DEBUG: 4. Stage de Consulta carregado. Fechando Login.");
+
             Stage stageAtual = (Stage) txtNomeUsuario.getScene().getWindow();
             stageAtual.close();
 
@@ -76,14 +80,14 @@ public class LoginController {
             lblErro.setText(e.getMessage());
             lblErro.setTextFill(Color.RED);
             lblErro.setVisible(true);
-            
+
         } catch (DBException e) {
             System.out.println("DEBUG: Falha de DB.");
             lblErro.setText("Erro de sistema: Falha na comunicação com o banco de dados.");
             lblErro.setTextFill(Color.RED);
             lblErro.setVisible(true);
             e.printStackTrace();
-        } 
+        }
     }
 
     public static Usuario getUsuarioLogado() {

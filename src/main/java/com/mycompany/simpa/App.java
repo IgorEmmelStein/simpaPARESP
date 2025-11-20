@@ -18,7 +18,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("TelaConsulta"), 900, 600);
+        scene = new Scene(loadFXML("TelaLogin"), 900, 600);
         stage.setTitle("SIMPA - Gestão de Alunos");
         stage.setScene(scene);
         stage.show();
