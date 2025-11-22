@@ -14,6 +14,7 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import javafx.scene.control.TableCell;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -24,6 +25,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import util.BusinessException;
 
 /**
  * Controller responsável pela lógica da tela de Consulta/Listagem de Alunos
@@ -63,7 +65,7 @@ public class ConsultaController implements Initializable {
     private Button btnAddEscola;
     @FXML
     private Button btnAddUser;
-    
+
     private Usuario usuarioLogado;
 
     private AlunoService alunoService;
@@ -85,27 +87,25 @@ public class ConsultaController implements Initializable {
             carregarAlunos(newValue);
         });
 
-        // 1. Ocultar Botão Filtrar
         btnFiltrar.setVisible(false);
         btnFiltrar.setManaged(false);
-        
-        // 2. Ocultar o botão de usuário por padrão (será exibido no setter se for Admin)
+
         btnAddUser.setVisible(false);
         btnAddUser.setManaged(false);
     }
-    
+
     public void setUsuarioLogado(Usuario usuario) {
         this.usuarioLogado = usuario;
-        verificarPermissoes(); // Chama a lógica de permissão imediatamente
+        verificarPermissoes();
     }
-    
+
     private void verificarPermissoes() {
-        // Se o usuário logado for uma instância de Administrador
+
         if (this.usuarioLogado instanceof Administrador) {
             btnAddUser.setVisible(true);
             btnAddUser.setManaged(true);
         } else {
-            // Já está oculto por padrão, mas reforçamos
+
             btnAddUser.setVisible(false);
             btnAddUser.setManaged(false);
         }
@@ -199,7 +199,59 @@ public class ConsultaController implements Initializable {
     }
 
     @FXML
-    private void handleBuscar() {
+    private void handleInativar() {
+
+        Aluno alunoSelecionado = tabelaAlunos.getSelectionModel().getSelectedItem();
+
+        if (alunoSelecionado == null) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Atenção");
+            alert.setHeaderText("Nenhum Aluno Selecionado");
+            alert.setContentText("Por favor, selecione um aluno na tabela para inativar.");
+            alert.showAndWait();
+            return;
+        }
+
+        Alert confirmacao = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmacao.setTitle("Confirmar Inativação");
+        confirmacao.setHeaderText("Inativar Aluno: " + alunoSelecionado.getNome());
+        confirmacao.setContentText("Tens certeza que desejas inativar este aluno? Esta ação não pode ser desfeita facilmente.");
+
+        Optional<ButtonType> resultado = confirmacao.showAndWait();
+
+        if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
+            try {
+                Usuario usuarioLogado = LoginController.getUsuarioLogado();
+
+                if (usuarioLogado == null) {
+                    throw new BusinessException("Usuário não autenticado.");
+                }
+
+                alunoService.inativarAluno(alunoSelecionado.getId(), usuarioLogado);
+
+                Alert sucesso = new Alert(Alert.AlertType.INFORMATION);
+                sucesso.setTitle("Sucesso");
+                sucesso.setHeaderText(null);
+                sucesso.setContentText("Aluno '" + alunoSelecionado.getNome() + "' inativado com sucesso.");
+                sucesso.showAndWait();
+
+                carregarAlunos(txtPesquisar.getText());
+
+            } catch (BusinessException e) {
+                Alert erro = new Alert(Alert.AlertType.ERROR);
+                erro.setTitle("Erro de Permissão/Negócio");
+                erro.setHeaderText("Falha na Inativação");
+                erro.setContentText(e.getMessage());
+                erro.showAndWait();
+            } catch (Exception e) {
+                System.err.println("Erro inesperado ao inativar aluno: " + e.getMessage());
+                Alert erro = new Alert(Alert.AlertType.ERROR);
+                erro.setTitle("Erro de Sistema");
+                erro.setHeaderText("Erro Inesperado");
+                erro.setContentText("Ocorreu um erro ao comunicar com o sistema.");
+                erro.showAndWait();
+            }
+        }
 
     }
 

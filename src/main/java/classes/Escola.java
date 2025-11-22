@@ -1,21 +1,18 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * Click nbfs:
+ * Click nbfs:
  */
 package classes;
 
 /**
- * Representa uma Escola que os alunos frequentam.
- * Mapeia a tabela 'escola' no banco de dados (RF014).
+ * Representa uma Escola que os alunos frequentam. Mapeia a tabela 'escola' no
+ * banco de dados (RF014).
  */
 public class Escola {
-    
-    // --- Atributos (do Diagrama ER) ---
-    private int id;     // pk_cod_escola [cite: 192]
-    private String nome; // nome VARCHAR(45) [cite: 193]
-    private String serie; // serie VARCHAR(3) [cite: 194]
 
-    // --- Construtores ---
+    private int id;
+    private String nome;
+    private String serie;
 
     public Escola() {
     }
@@ -25,8 +22,6 @@ public class Escola {
         this.nome = nome;
         this.serie = serie;
     }
-
-    // --- Getters e Setters ---
 
     public int getId() {
         return id;
@@ -52,16 +47,8 @@ public class Escola {
         this.serie = serie;
     }
 
-    // --- Métodos de Negócio (Lógica de Modelagem) ---
-    // Estes métodos (cadastrar, editar, buscar) serão implementados na camada Service, 
-    // usando o DAO internamente, conforme o plano de arquitetura.
-    // Estão aqui apenas como referência do Diagrama de Classes.
-
-    /**
-     * Retorna uma representação amigável do objeto.
-     */
     @Override
     public String toString() {
-        return nome + " - " + serie;
+        return nome; 
     }
 }

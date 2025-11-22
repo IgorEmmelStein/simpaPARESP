@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS `aluno` (
   `fk_cod_escola` INT(6) NOT NULL,
   `cpf` CHAR(11) NOT NULL,
   `data_acolhimento` DATE NOT NULL,
-  `form_acesso` VARCHAR(15) NOT NULL,
+  `form_acesso` VARCHAR(25) NOT NULL,
   `vacinacao` TINYINT(1) NOT NULL,
   `termo_imagem` TINYINT(1) NOT NULL,
   `turno` VARCHAR(6) NOT NULL,
@@ -131,9 +131,13 @@ VALUES ('99988877766', '123', '51999999997', 'user', 0);
 INSERT INTO escola (pk_cod_escola, nome, serie)
 VALUES (1, 'Escola Municipal Modelo', '5A');
 
+-- SQL para corrigir o tamanho da coluna 'form_acesso'
+ALTER TABLE aluno 
+MODIFY COLUMN form_acesso VARCHAR(25) NOT NULL;
+
 
 -- Alunos de Teste (21 alunos, todos ligados ao pk_cod_admin=1)
-INSERT INTO aluno (
+INSERT INTO aluno ( 
     fk_cod_admin, fk_cod_escola, cpf, data_acolhimento, form_acesso, vacinacao,
     termo_imagem, turno, transporte, data_nasc, proj_ferias, nome, sexo,
     tamanho_vest, tamanho_calc, turma, num_nis, med_paresp, alergias, observacoes,

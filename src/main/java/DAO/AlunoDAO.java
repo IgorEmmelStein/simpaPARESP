@@ -1,6 +1,6 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * Click nbfs:
+ * Click nbfs:
  */
 package DAO;
 
@@ -43,17 +43,15 @@ public class AlunoDAO {
             + "num_nis=?, med_paresp=?, alergias=?, observacoes=?, intervencoes=?, evolucoes=?, status=? "
             + "WHERE pk_cod_pessoa=?";
 
-    private static final String SQL_DELETE
+    private static final String SQL_INATIVAR
             = "UPDATE aluno SET status = 0 WHERE pk_cod_pessoa = ?";
 
-    // Consulta para RF004: Busca flexível por nome, cpf, nis, etc.
     private static final String SQL_SEARCH
             = "SELECT * FROM aluno WHERE status = 1 AND ("
             + "nome LIKE ? OR num_nis LIKE ? OR form_acesso LIKE ? OR cpf LIKE ? "
             + "OR alergias LIKE ? OR med_paresp LIKE ?) "
             + "ORDER BY nome";
 
-    // --- Métodos CRUD (CREATE) ---
     public int inserir(Aluno aluno) {
         Connection conn = null;
         PreparedStatement st = null;
@@ -104,7 +102,6 @@ public class AlunoDAO {
         }
     }
 
-    // CRUD
     public Aluno buscarPorId(int id) {
         Connection conn = null;
         PreparedStatement st = null;
@@ -136,22 +133,21 @@ public class AlunoDAO {
 
         try {
             conn = ConnectionFactory.getConnection();
-            // SQL_SELECT_ALL = "SELECT * FROM aluno WHERE status = 1 ORDER BY nome"
+
             st = conn.prepareStatement(SQL_SELECT_ALL);
             rs = st.executeQuery();
 
             while (rs.next()) {
-                // Aqui o erro poderia estar quebrando a leitura.
-                // Agora, mapeamos com o novo método robusto.
+
                 Aluno aluno = mapearAluno(rs);
                 listaAlunos.add(aluno);
             }
             return listaAlunos;
         } catch (SQLException e) {
-            // Se falhar, o erro será exibido
+
             throw new DBException("Erro ao listar todos os alunos. Detalhe: " + e.getMessage(), e);
         } finally {
-            // Certifique-se de usar o ConnectionFactory correto para fechar
+
             ConnectionFactory.closeConnection(conn, st, rs);
         }
     }
@@ -194,7 +190,6 @@ public class AlunoDAO {
         }
     }
 
-    // CRUD
     public boolean atualizar(Aluno aluno) {
         Connection conn = null;
         PreparedStatement st = null;
@@ -203,7 +198,6 @@ public class AlunoDAO {
             conn = ConnectionFactory.getConnection();
             st = conn.prepareStatement(SQL_UPDATE);
 
-            // Mapeamento dos campos (23 parâmetros)
             st.setInt(1, aluno.getFkCodAdmin());
             st.setInt(2, aluno.getFkCodEscola());
             st.setString(3, aluno.getCpf());
@@ -228,7 +222,6 @@ public class AlunoDAO {
             st.setString(22, aluno.getEvolucoes());
             st.setInt(23, aluno.getStatus());
 
-            // A cláusula WHERE (24º parâmetro)
             st.setInt(24, aluno.getId());
 
             int linhasAfetadas = st.executeUpdate();
@@ -240,14 +233,13 @@ public class AlunoDAO {
         }
     }
 
-    // --- CRUD (DELETE - Soft Delete) ---
-    public boolean excluir(int id) {
+    public boolean inativar(int id) {
         Connection conn = null;
         PreparedStatement st = null;
 
         try {
             conn = ConnectionFactory.getConnection();
-            st = conn.prepareStatement(SQL_DELETE);
+            st = conn.prepareStatement(SQL_INATIVAR);
             st.setInt(1, id);
 
             int linhasAfetadas = st.executeUpdate();
@@ -260,22 +252,16 @@ public class AlunoDAO {
         }
     }
 
-    // --- Método Auxiliar de Mapeamento (Reuso) ---
     private Aluno mapearAluno(ResultSet rs) throws SQLException {
         Aluno aluno = new Aluno();
 
-        // Atributos de Pessoa (Herdados)
         aluno.setId(rs.getInt("pk_cod_pessoa"));
         aluno.setNome(rs.getString("nome"));
         aluno.setCpf(rs.getString("cpf"));
-        // Não mapeamos telefone na tabela 'aluno', mas está na classe 'Pessoa'
 
-        // Chaves Estrangeiras
         aluno.setFkCodAdmin(rs.getInt("fk_cod_admin"));
         aluno.setFkCodEscola(rs.getInt("fk_cod_escola"));
 
-        // Atributos de Cadastro e Logística (datas e booleanos)
-        // Usamos rs.getDate().getTime() para converter para java.util.Date
         aluno.setDataAcolhimento(new java.util.Date(rs.getDate("data_acolhimento").getTime()));
         aluno.setDataNascimento(new java.util.Date(rs.getDate("data_nasc").getTime()));
         aluno.setVacinacaoEmDia(rs.getInt("vacinacao") == 1);
@@ -292,7 +278,6 @@ public class AlunoDAO {
         aluno.setTurma(rs.getString("turma"));
         aluno.setNumNIS(rs.getString("num_nis"));
 
-        // Atributos de Saúde e Acompanhamento
         aluno.setMedicamentosUso(rs.getString("med_paresp"));
         aluno.setAlergias(rs.getString("alergias"));
         aluno.setObservacoesMedicas(rs.getString("observacoes"));

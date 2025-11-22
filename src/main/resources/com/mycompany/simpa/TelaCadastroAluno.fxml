@@ -76,7 +76,7 @@
                 </VBox>
                 <VBox spacing="5.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
                     <Label style="-fx-font-weight: 500;" text="Forma de Transporte" />
-                    <TextField fx:id="transporteTextField" prefHeight="35.0" style="-fx-background-color: #E6EEDD; -fx-background-radius: 6;" />
+                    <ComboBox fx:id="transporteComboBox" prefHeight="35.0" style="-fx-background-color: #E6EEDD; -fx-background-radius: 6;" />
                 </VBox>
 
                 <VBox spacing="5.0" GridPane.columnIndex="0" GridPane.rowIndex="3">
@@ -111,7 +111,7 @@
                 </VBox>
                 <VBox spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
                     <Label style="-fx-font-weight: 500;" text="Série" />
-                    <TextField fx:id="serieTextField" prefHeight="35.0" style="-fx-background-color: #E6EEDD; -fx-background-radius: 6;" />
+                    <ComboBox fx:id="serieComboBox" prefHeight="35.0" style="-fx-background-color: #E6EEDD; -fx-background-radius: 6;" />
                 </VBox>
                 <VBox spacing="5.0" GridPane.columnIndex="2" GridPane.rowIndex="5">
                     <Label style="-fx-font-weight: 500;" text="Turma" />

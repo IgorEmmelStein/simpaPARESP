@@ -1,10 +1,13 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
+ * Click nbfs:
+ * Click nbfs:
  */
 package controller;
 
+import classes.Escola;
 import java.net.URL;
+import util.DBException; 
+import java.util.Random;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,7 +16,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-// ----------------------------
+import service.EscolaService;
+import util.BusinessException;
 
 /**
  * FXML Controller class
@@ -22,64 +26,61 @@ import javafx.scene.control.Alert.AlertType;
  */
 public class CadastroEscolaController implements Initializable {
 
-    // --- Componentes Injetados pelo FXML ---
-    
     @FXML
     private Button criarButton;
 
     @FXML
     private TextField nomeTextField;
 
-    // --- Métodos ---
-    
-    /**
-     * Initializes the controller class.
-     */
+    private EscolaService escolaService = new EscolaService();
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // Define a ação do botão "Criar"
         criarButton.setOnAction(event -> {
             handleCriarButtonAction(event);
         });
-    }    
-    
-    /**
-     * Método chamado quando o botão 'criarButton' é pressionado.
-     */
+    }
+
     private void handleCriarButtonAction(ActionEvent event) {
         String nomeEscola = nomeTextField.getText();
 
-        // Verifica se o campo está vazio (após remover espaços em branco)
-        if (nomeEscola == null || nomeEscola.trim().isEmpty()) {
-            
-            // --- ALERTA DE CAMPO VAZIO ---
-            Alert alert = new Alert(AlertType.WARNING);
-            alert.setTitle("Atenção");
-            alert.setHeaderText("Campo Obrigatório");
-            alert.setContentText("Por favor, preencha o nome da escola.");
-            
-            // Exibe o alerta e espera o usuário fechá-lo
-            alert.showAndWait();
-            // --------------------------------
-            
-        } else {
-            
-            // Se o campo estiver preenchido, prossiga com a lógica
-            System.out.println("Tentando criar escola com o nome: " + nomeEscola);
-            
-            // TODO: Adicione sua lógica para salvar a nova escola no banco de dados
-            // Ex: EscolaDAO.salvar(new Escola(nomeEscola));
-            
-            // --- ALERTA DE SUCESSO (Opcional, mas recomendado) ---
+        try {
+
+            if (nomeEscola == null || nomeEscola.trim().isEmpty()) {
+                throw new BusinessException("O nome da escola não pode ser vazio.");
+            }
+
+            Escola novaEscola = new Escola();
+
+            novaEscola.setId(new Random().nextInt(1000) + 2);
+
+            novaEscola.setNome(nomeEscola);
+
+            novaEscola.setSerie("");
+
+            escolaService.salvar(novaEscola);
+
             Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("Cadastro Realizado");
             alert.setHeaderText("Sucesso!");
             alert.setContentText("A escola '" + nomeEscola + "' foi cadastrada.");
             alert.showAndWait();
-            
-            // Opcional: Limpar o campo após o sucesso
+
             nomeTextField.clear();
-            // ----------------------------------------------------
+
+        } catch (BusinessException e) {
+            Alert alert = new Alert(AlertType.WARNING);
+            alert.setTitle("Atenção");
+            alert.setHeaderText("Erro de Validação");
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+
+        } catch (DBException e) {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Erro de Banco de Dados");
+            alert.setHeaderText("Falha ao Inserir Escola");
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
         }
     }
 }
