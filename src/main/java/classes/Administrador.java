@@ -11,7 +11,6 @@ package classes;
 public class Administrador extends Usuario {
 
     // --- Atributos específicos do Administrador (do ER) ---
-    private String cpf; 
     private String telefone;
     private String nome;
     // O atributo 'senha' do ER será mapeado para 'senhaHash' na classe Usuario.
@@ -25,10 +24,9 @@ public class Administrador extends Usuario {
     
     // Construtor completo
     public Administrador(int id, String nomeUsuario, String senhaHash, 
-                         String cpf, String telefone, String nome) {
+                         String telefone, String nome) {
         
         super(id, nomeUsuario, senhaHash);
-        this.cpf = cpf;
         this.telefone = telefone;
         this.nome = nome;
     }
@@ -66,14 +64,6 @@ public class Administrador extends Usuario {
     }
     
     // --- Getters e Setters dos atributos específicos ---
-
-    public String getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
 
     public String getTelefone() {
         return telefone;

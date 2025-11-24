@@ -10,10 +10,7 @@ import util.DBException;
 import java.util.List;
 import util.BusinessException;
 
-/**
- *
- * @author igore
- */
+
 public class EscolaService {
 
     private EscolaDAO escolaDAO;
@@ -22,13 +19,7 @@ public class EscolaService {
         this.escolaDAO = new EscolaDAO();
     }
 
-    /**
-     * Valida e salva uma nova Escola (RF014).
-     *
-     * @param escola O objeto Escola a ser salvo.
-     * @return true se a inserção for bem-sucedida.
-     */
-    public boolean salvar(Escola escola) throws BusinessException, DBException {
+    public void salvar(Escola escola) throws BusinessException, DBException {
 
         if (escola.getNome() == null || escola.getNome().trim().isEmpty()) {
             throw new BusinessException("O nome da escola é obrigatório.");
@@ -39,10 +30,11 @@ public class EscolaService {
         }
 
         try {
-
-            return escolaDAO.inserir(escola);
+            if (!escolaDAO.inserir(escola)) {
+                throw new DBException("Nenhuma linha afetada ao inserir a escola. Verifique se o ID já existe.");
+            }
         } catch (DBException e) {
-            throw new DBException("Falha ao salvar a escola no sistema. Detalhe: " + e.getMessage(), e);
+            throw new DBException("Falha ao salvar a escola no DB. Detalhes: " + e.getMessage(), e);
         }
     }
 

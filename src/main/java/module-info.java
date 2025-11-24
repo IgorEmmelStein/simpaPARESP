@@ -6,6 +6,8 @@ module com.mycompany.simpa {
     requires java.base;
     requires javafx.graphics; 
 
+    requires jbcrypt;
+    
     opens com.mycompany.simpa to javafx.fxml;
     opens classes to javafx.base;
     exports com.mycompany.simpa;

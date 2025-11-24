@@ -11,11 +11,8 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.control.*?>
 
-<AnchorPane prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #222222;"
-            xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" 
-            fx:controller="controller.CadastroUsuarioController">
+<AnchorPane prefHeight="406.0" prefWidth="472.0" style="-fx-background-color: #222222;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CadastroUsuarioController">
     <children>
       
         <VBox layoutX="233.0" layoutY="86.0" prefHeight="485.0" prefWidth="434.0" spacing="15.0" style="-fx-background-color: F8FFF3; -fx-background-radius: 15;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -97,33 +94,17 @@
                 </Label>
                 <PasswordField fx:id="txtSenha1" prefHeight="40.0" style="-fx-background-color: D6E3CC; -fx-background-radius: 8;" />
             
-                <Label text="Tipo de Usuário">
-                    <font>
-                        <Font size="14.0" />
-                    </font>
-                </Label>
-    
-                <ComboBox fx:id="comboTipoUsuario" 
-                          prefHeight="40.0" 
-                          prefWidth="1.7976931348623157E308" 
-                          style="-fx-background-color: D6E3CC; -fx-background-radius: 8;" >
-                </ComboBox>
-                <Button fx:id="btnCadastrar" 
-                        alignment="CENTER" 
-                        contentDisplay="CENTER" 
-                        maxWidth="1.7976931348623157E308" 
-                        mnemonicParsing="false" 
-                        onAction="#handleCadastrar" 
-                        prefHeight="40.0" 
-                        style="-fx-background-color: #9FD575; -fx-background-radius: 8; -fx-font-weight: bold;" 
-                        text="Criar" 
-                        textFill="#24282e">
+                <Button fx:id="btnCadastrar" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleCadastrar" prefHeight="40.0" style="-fx-background-color: #9FD575; -fx-background-radius: 8; -fx-font-weight: bold;" text="Criar" textFill="#24282e">
                     <VBox.margin>
                         <Insets top="10.0" />
                     </VBox.margin>
+                    <font>
+                        <Font size="14.0" />
+                    </font>
                 </Button>
             
-                <Label fx:id="lblErro" style="-fx-text-fill: red;" text="Mensagem de Erro" visible="false" />
+                <Label fx:id="lblMensagem" style="-fx-text-fill: red;" text="Mensagem de Erro" visible="false" />
+            
             </children>
         </VBox>
     </children>

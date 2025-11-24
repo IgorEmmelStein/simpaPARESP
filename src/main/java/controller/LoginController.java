@@ -57,21 +57,23 @@ public class LoginController {
 
         try {
             System.out.println("DEBUG: 1. Tentativa de autenticação para: " + nome);
-
             usuarioLogado = administradorService.login(nome, senha);
-            System.out.println("DEBUG: 2. Login BEM-SUCEDIDO. Perfil: " + usuarioLogado.getClass().getSimpleName());
+            System.out.println("DEBUG: 2. Login BEM-SUCEDIDO.");
 
-            FXMLLoader loader = new FXMLLoader(App.class.getResource("/com/mycompany/simpa/TelaConsulta.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/mycompany/simpa/TelaConsulta.fxml"));
             Parent root = loader.load();
 
             ConsultaController consultaController = loader.getController();
 
             consultaController.setUsuarioLogado(usuarioLogado);
 
-            Scene currentScene = txtNomeUsuario.getScene();
-            currentScene.setRoot(root);
+            System.out.println("DEBUG: 3. Chamando App.setRoot('TelaConsulta')...");
+            App.setRoot("TelaConsulta");
 
-            System.out.println("DEBUG: 4. Stage de Consulta carregado.");
+            System.out.println("DEBUG: 4. Stage de Consulta carregado. Fechando Login.");
+
+            Stage stageAtual = (Stage) txtNomeUsuario.getScene().getWindow();
+            stageAtual.close();
 
         } catch (BusinessException e) {
             System.out.println("DEBUG: Falha na autenticação (BusinessException).");
