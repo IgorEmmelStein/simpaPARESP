@@ -20,7 +20,8 @@ public class Aluno extends Pessoa {
     private int fkCodEscola;   
 
     // --- Atributos de Cadastro e Logística (RF001) ---
-    private Date dataAcolhimento; 
+    private Date dataAcolhimento;
+    private String descricaoVulnerabilidade;
     private String formaAcesso;     
     private boolean vacinacaoEmDia; 
     private boolean termoImagemAssinado; 
@@ -77,6 +78,14 @@ public class Aluno extends Pessoa {
 
     public void setDataAcolhimento(Date dataAcolhimento) {
         this.dataAcolhimento = dataAcolhimento;
+    }
+    
+    public String getDescricaoVulnerabilidade() {
+        return descricaoVulnerabilidade;
+    }
+
+    public void setDescricaoVulnerabilidade(String descricaoVulnerabilidade) {
+        this.descricaoVulnerabilidade = descricaoVulnerabilidade;
     }
 
     public String getFormaAcesso() {

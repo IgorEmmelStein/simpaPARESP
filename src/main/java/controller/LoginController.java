@@ -49,7 +49,7 @@ public class LoginController {
     }
 
     @FXML
-    private void handleLogin() throws IOException {
+    private void handleLogin() {
         String nome = txtNomeUsuario.getText();
         String senha = txtSenha.getText();
 
@@ -57,37 +57,33 @@ public class LoginController {
 
         try {
             System.out.println("DEBUG: 1. Tentativa de autenticação para: " + nome);
+            
+            // 1. Autentica
             usuarioLogado = administradorService.login(nome, senha);
+            
             System.out.println("DEBUG: 2. Login BEM-SUCEDIDO.");
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/mycompany/simpa/TelaConsulta.fxml"));
-            Parent root = loader.load();
-
-            ConsultaController consultaController = loader.getController();
-
-            consultaController.setUsuarioLogado(usuarioLogado);
-
+            // 2. Troca a tela (A janela mantém-se aberta, apenas o conteúdo muda)
             System.out.println("DEBUG: 3. Chamando App.setRoot('TelaConsulta')...");
             App.setRoot("TelaConsulta");
-
-            System.out.println("DEBUG: 4. Stage de Consulta carregado. Fechando Login.");
-
-            Stage stageAtual = (Stage) txtNomeUsuario.getScene().getWindow();
-            stageAtual.close();
+            
+            // --- APAGUE ESTAS LINHAS ABAIXO NO SEU CÓDIGO ---
+            // Stage stageAtual = (Stage) txtNomeUsuario.getScene().getWindow();
+            // stageAtual.close();
+            // ------------------------------------------------
 
         } catch (BusinessException e) {
-            System.out.println("DEBUG: Falha na autenticação (BusinessException).");
             lblErro.setText(e.getMessage());
             lblErro.setTextFill(Color.RED);
             lblErro.setVisible(true);
-
-        } catch (DBException e) {
-            System.out.println("DEBUG: Falha de DB.");
-            lblErro.setText("Erro de sistema: Falha na comunicação com o banco de dados.");
+            
+        } catch (Exception e) { // Captura DBException e IOException
+            System.out.println("DEBUG: Erro técnico.");
+            e.printStackTrace();
+            lblErro.setText("Erro: " + e.getMessage());
             lblErro.setTextFill(Color.RED);
             lblErro.setVisible(true);
-            e.printStackTrace();
-        }
+        } 
     }
 
     public static Usuario getUsuarioLogado() {
