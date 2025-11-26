@@ -1,33 +1,32 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * Click nbfs:
+ * Click nbfs:
  */
 package classes;
 
 public class IntegranteFamilia extends Pessoa {
-    
-    // --- Atributos específicos (do Diagrama ER) ---
-    private int fkCodFamilia;       // fk_cod_familia (Chave estrangeira para a Família)
-    private String parentesco;
-    private boolean vinculoAfetivo;  // vinculo_afetivo (TINYINT)
-    private String ocupacao;
-    private String endereco;        // Endereço específico, se diferente do da família
-    private boolean eResponsavelLegal; // resp_legal (TINYINT)
-    private boolean ePessoaAutorizada; // pessoa_autorizada (TINYINT - RF007)
 
-    // --- Construtores ---
-    
+    private int fkCodFamilia;
+    private String parentesco;
+    private boolean vinculoAfetivo;
+    private String ocupacao;
+    private String endereco;
+    private boolean eResponsavelLegal;
+    private boolean ePessoaAutorizada;
+    private String anotacoes;
+
     public IntegranteFamilia() {
         super();
     }
-    
-    // Construtor completo (omitido por brevidade)
-    // ...
 
-    // --- Getters e Setters (Obrigatórios) ---
+    public String getAnotacoes() {
+        return anotacoes;
+    }
 
-    // Getters/Setters de nome, cpf, telefone herdados de Pessoa
-    
+    public void setAnotacoes(String anotacoes) {
+        this.anotacoes = anotacoes;
+    }
+
     public int getFkCodFamilia() {
         return fkCodFamilia;
     }

@@ -51,10 +51,10 @@ public class AlunoDAO {
             + "nome LIKE ? OR num_nis LIKE ? OR form_acesso LIKE ? OR cpf LIKE ? "
             + "OR alergias LIKE ? OR med_paresp LIKE ?) "
             + "ORDER BY nome";
-    
-    private static final String SQL_DELETE = 
-        "UPDATE aluno SET status = 0 WHERE pk_cod_pessoa = ?";
-    
+
+    private static final String SQL_DELETE
+            = "UPDATE aluno SET status = 0 WHERE pk_cod_pessoa = ?";
+
     public int inserir(Aluno aluno) {
         Connection conn = null;
         PreparedStatement st = null;
@@ -104,26 +104,26 @@ public class AlunoDAO {
             ConnectionFactory.closeConnection(conn, st, rs);
         }
     }
-    
+
     public boolean excluir(int id) {
         Connection conn = null;
         PreparedStatement st = null;
-        
+
         try {
             conn = ConnectionFactory.getConnection();
             st = conn.prepareStatement(SQL_DELETE);
             st.setInt(1, id);
-            
-            int linhasAfetadas = st.executeUpdate(); 
+
+            int linhasAfetadas = st.executeUpdate();
             return linhasAfetadas > 0;
-            
+
         } catch (SQLException e) {
             throw new DBException("Erro ao inativar aluno no DB. Detalhe: " + e.getMessage(), e);
         } finally {
-            ConnectionFactory.closeConnection(conn, st); 
+            ConnectionFactory.closeConnection(conn, st);
         }
     }
-    
+
     public Aluno buscarPorId(int id) {
         Connection conn = null;
         PreparedStatement st = null;
@@ -307,5 +307,29 @@ public class AlunoDAO {
         aluno.setEvolucoes(rs.getString("evolucoes"));
 
         return aluno;
+    }
+
+    private static final String SQL_UPDATE_SAUDE
+            = "UPDATE aluno SET med_paresp=?, alergias=?, observacoes=? WHERE pk_cod_pessoa=?";
+
+    public boolean atualizarSaude(Aluno aluno) {
+        Connection conn = null;
+        PreparedStatement st = null;
+
+        try {
+            conn = ConnectionFactory.getConnection();
+            st = conn.prepareStatement(SQL_UPDATE_SAUDE);
+
+            st.setString(1, aluno.getMedicamentosUso());
+            st.setString(2, aluno.getAlergias());
+            st.setString(3, aluno.getObservacoesMedicas());
+            st.setInt(4, aluno.getId()); // WHERE pk_cod_pessoa
+
+            return st.executeUpdate() > 0;
+        } catch (SQLException e) {
+            throw new DBException("Erro ao atualizar dados de saúde no DB. Detalhe: " + e.getMessage(), e);
+        } finally {
+            ConnectionFactory.closeConnection(conn, st);
+        }
     }
 }

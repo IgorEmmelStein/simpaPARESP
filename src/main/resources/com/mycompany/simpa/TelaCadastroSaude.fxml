@@ -8,6 +8,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.DatePicker?>
+
 <BorderPane xmlns="http://javafx.com/javafx/11.0.2"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="controller.CadastroSaudeController"
@@ -60,21 +63,30 @@
                               prefWidth="300" prefHeight="120"
                               style="-fx-background-color: #DDE8D1;"/>
                 </VBox>
-
-            </HBox>
-
-            <!-- Botão Salvar -->
-            <HBox alignment="CENTER_RIGHT">
-                <padding>
-                    <Insets top="10"/>
-                </padding>
-                <!-- Botão Salvar -->
-                <HBox alignment="CENTER_RIGHT">
-                    <Button fx:id="salvarButton" prefWidth="130" style="-fx-background-radius: 8px; -fx-font-size: 16px; -fx-background-color: #7ab35a; -fx-text-fill: white;" text="💾 Salvar" />
-                </HBox>
-            </HBox>
-
+                
+                <VBox spacing="5">
+                    <Label text="Data da Última Vacinação"/>
+                    <DatePicker fx:id="vacinacaoDatePicker" 
+                                    prefWidth="300"
+                                    style="-fx-background-color: #DDE8D1;"/>
+                </VBox>
+            
         </VBox>
+
+    </HBox>
+
+    <!-- Botão Salvar -->
+    <HBox alignment="CENTER_RIGHT">
+        <padding>
+            <Insets top="10"/>
+        </padding>
+        <!-- Botão Salvar -->
+        <HBox alignment="CENTER_RIGHT">
+            <Button fx:id="salvarButton" prefWidth="130" style="-fx-background-radius: 8px; -fx-font-size: 16px; -fx-background-color: #7ab35a; -fx-text-fill: white;" text="💾 Salvar" />
+        </HBox>
+    </HBox>
+
+</VBox>
     </center>
 
 </BorderPane>

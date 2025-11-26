@@ -3,6 +3,8 @@ package service;
 import DAO.AlunoDAO;
 import classes.Aluno;
 import classes.Usuario;
+import classes.UsuarioSaude;
+import java.util.Date;
 import java.util.List;
 import util.BusinessException;
 import util.DBException;
@@ -21,7 +23,6 @@ public class AlunoService {
 
     public void salvar(Aluno aluno) throws BusinessException, DBException {
 
-        // Validações
         if (aluno.getNome() == null || aluno.getNome().trim().isEmpty()) {
             throw new BusinessException("O Nome Completo é obrigatório.");
         }
@@ -41,59 +42,68 @@ public class AlunoService {
         try {
 
             if (aluno.getId() == 0) {
-                // 🔵 NOVO → INSERT
-                alunoDao.inserir(aluno);
+                int novoId = alunoDao.inserir(aluno);
+
+                if (novoId > 0) {
+                    aluno.setId(novoId);
+                }
             } else {
-                // 🟢 EXISTENTE → UPDATE
                 alunoDao.atualizar(aluno);
             }
 
         } catch (DBException e) {
 
-            if (e.getMessage() != null &&
-                e.getMessage().toLowerCase().contains("duplicate")) {
+            if (e.getMessage() != null
+                    && e.getMessage().toLowerCase().contains("duplicate")) {
 
                 throw new BusinessException(
-                    "Falha: O CPF " + aluno.getCpf() + " já está cadastrado.",
-                    e
+                        "Falha: O CPF " + aluno.getCpf() + " já está cadastrado.",
+                        e
                 );
             }
 
             throw new DBException(
-                "Falha ao salvar o aluno. Detalhes: " + e.getMessage(),
-                e
+                    "Falha ao salvar o aluno. Detalhes: " + e.getMessage(),
+                    e
             );
         }
-        
     }
-    
+
+    public boolean verificarVacinacaoEmDia(Date dataVacinacao) {
+        if (dataVacinacao == null) {
+            return false;
+        }
+
+        long umAnoEmMillis = 365L * 24 * 60 * 60 * 1000;
+
+        long dataLimite = System.currentTimeMillis() - umAnoEmMillis;
+
+        return dataVacinacao.getTime() > dataLimite;
+    }
+
     public void excluir(int id, Usuario usuarioLogado) throws BusinessException, DBException {
-        
-        // 1. Verificação de Permissão (RF003)
-        // Apenas usuários com permissão "podeExcluirGeral" (como Administradores) podem realizar esta ação.
+
         if (usuarioLogado == null || !usuarioLogado.podeExcluirGeral()) {
             throw new BusinessException("Acesso negado. O teu perfil não tem permissão para excluir alunos.");
         }
-        
-        // 2. Validação básica
+
         if (id <= 0) {
             throw new BusinessException("ID de aluno inválido.");
         }
-        
-        // 3. Chamada ao DAO
+
         try {
-            // O método excluir do DAO faz um "Soft Delete" (status = 0)
+
             boolean sucesso = alunoDao.excluir(id);
-            
+
             if (!sucesso) {
                 throw new BusinessException("Erro: Aluno não encontrado ou já excluído.");
             }
-            
+
         } catch (DBException e) {
             throw new DBException("Erro ao excluir aluno no sistema.", e);
         }
     }
-    
+
     public List<Aluno> buscarAlunosPorCriterio(String criterio) throws DBException {
         return alunoDao.buscarPorCriterio(criterio);
     }
@@ -112,5 +122,20 @@ public class AlunoService {
         }
 
         return true;
+    }
+
+    public void atualizarSaude(Aluno aluno, Usuario usuarioLogado) throws BusinessException, DBException {
+
+        if (!(usuarioLogado instanceof UsuarioSaude) && !usuarioLogado.podeAlterarIncluirGeral()) {
+            throw new BusinessException("Acesso negado. O teu perfil não tem permissão para gerenciar dados de saúde.");
+        }
+
+        if (aluno.getId() <= 0) {
+            throw new BusinessException("É necessário um aluno válido para atualizar os dados de saúde.");
+        }
+
+        if (!alunoDao.atualizarSaude(aluno)) {
+            throw new BusinessException("Falha ao atualizar a saúde do aluno: Aluno não encontrado.");
+        }
     }
 }

@@ -40,6 +40,7 @@ public class Aluno extends Pessoa {
     private String medicamentosUso;  // med_paresp
     private String alergias;         
     private String observacoesMedicas; 
+    private Date dataVacinacao; 
 
     // --- Atributos de Acompanhamento (RF008) ---
     private String intervencoes;     
@@ -55,6 +56,14 @@ public class Aluno extends Pessoa {
     // --- Getters e Setters ---
     
     // Setters e Getters de ID, Nome, CPF, Telefone são herdados de Pessoa
+    
+    public Date getDataVacinacao() {
+        return dataVacinacao;
+    }
+
+    public void setDataVacinacao(Date dataVacinacao) {
+        this.dataVacinacao = dataVacinacao;
+    }
     
     public int getFkCodAdmin() {
         return fkCodAdmin;

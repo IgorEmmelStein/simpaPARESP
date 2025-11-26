@@ -1,45 +1,33 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * Click nbfs:
+ * Click nbfs:
  */
 package classes;
 
 /**
- * Representa o núcleo familiar do aluno, com foco em dados de vulnerabilidade social.
- * Mapeia a tabela 'familia' no banco de dados (RF006).
+ * Representa o núcleo familiar do aluno, com foco em dados de vulnerabilidade
+ * social. Mapeia a tabela 'familia' no banco de dados (RF006).
  */
 public class Familia {
-    
-    // --- Atributos (do Diagrama ER) ---
-    private int id;                 // pk_cod_familia
-    private int fkCodPessoa;        // fk_cod_pessoa (Chave estrangeira do Aluno)
-    private int qtdIntegrantes;     // qnt_integrantes_fam
-    private double rendaFamiliarTotal; // renda_familiar_total
-    private double valorBolsaFamilia;  // bolsa_familia (DECIMAL(8,2))
-    
-    // Endereço e Moradia
-    private String endereco;        // endereco_familia
-    private String bairro;          // bairro_familia
-    private String tipoResidencia;  // residencia
-    private double valorAluguel;    // valor_aluguel
-    private String telefoneContato; // telefone_familia
 
-    // --- Relacionamentos de Objetos ---
-    // Representa o aluno ao qual esta família está associada
-    private Aluno aluno; 
-    
-    // A lista de integrantes da família é mantida na classe IntegranteFamilia
+    private int id;
+    private int fkCodPessoa;
+    private int qtdIntegrantes;
+    private double rendaFamiliarTotal;
+    private double valorBolsaFamilia;
+    private String anotacoes;
 
-    // --- Construtores ---
-    
+    private String endereco;
+    private String bairro;
+    private String tipoResidencia;
+    private double valorAluguel;
+    private String telefoneContato;
+
+    private Aluno aluno;
+
     public Familia() {
     }
-    
-    // Construtor completo (omitido por brevidade)
-    // ...
 
-    // --- Getters e Setters (Obrigatórios) ---
-    
     public int getId() {
         return id;
     }
@@ -55,7 +43,7 @@ public class Familia {
     public void setFkCodPessoa(int fkCodPessoa) {
         this.fkCodPessoa = fkCodPessoa;
     }
-    
+
     public int getQtdIntegrantes() {
         return qtdIntegrantes;
     }
@@ -71,7 +59,7 @@ public class Familia {
     public void setRendaFamiliarTotal(double rendaFamiliarTotal) {
         this.rendaFamiliarTotal = rendaFamiliarTotal;
     }
-    
+
     public double getValorBolsaFamilia() {
         return valorBolsaFamilia;
     }
@@ -103,7 +91,7 @@ public class Familia {
     public void setTipoResidencia(String tipoResidencia) {
         this.tipoResidencia = tipoResidencia;
     }
-    
+
     public double getValorAluguel() {
         return valorAluguel;
     }
@@ -126,5 +114,13 @@ public class Familia {
 
     public void setAluno(Aluno aluno) {
         this.aluno = aluno;
+    }
+
+    public String getAnotacoes() {
+        return anotacoes;
+    }
+
+    public void setAnotacoes(String anotacoes) {
+        this.anotacoes = anotacoes;
     }
 }

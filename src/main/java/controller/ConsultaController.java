@@ -86,10 +86,11 @@ public class ConsultaController implements Initializable {
         carregarAlunos(null);
 
         tabelaAlunos.setOnMouseClicked(event -> {
-            if (event.getClickCount() == 2 && !tabelaAlunos.getSelectionModel().isEmpty()) {
-
-                Aluno aluno = tabelaAlunos.getSelectionModel().getSelectedItem();
-                abrirTelaCadastroAluno(aluno);
+            if (event.getClickCount() == 2) {
+                Aluno alunoSelecionado = tabelaAlunos.getSelectionModel().getSelectedItem();
+                if (alunoSelecionado != null) {
+                    abrirTelaCadastroAluno(alunoSelecionado);
+                }
             }
         });
 
@@ -182,7 +183,10 @@ public class ConsultaController implements Initializable {
 
     @FXML
     private void handleIncluir() {
+
         abrirNovaTela("TelaCadastroAluno", "Cadastro de Novo Aluno");
+
+        carregarAlunos(txtPesquisar.getText());
     }
 
     @FXML
@@ -291,19 +295,21 @@ public class ConsultaController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/mycompany/simpa/TelaCadastroAluno.fxml"));
             Parent root = loader.load();
 
+            // ESSENCIAL: Passar o objeto Aluno para o Controller da tela de cadastro
             CadastroAlunoController controller = loader.getController();
-            controller.carregarAluno(aluno); // envia o aluno
+            controller.setAlunoEmEdicao(aluno); // Vamos criar este método no Controller
 
             Stage stage = new Stage();
-            stage.setTitle("Editar Aluno");
+            stage.setTitle("Edição de Aluno: " + aluno.getNome());
             stage.setScene(new Scene(root));
-            stage.initModality(Modality.APPLICATION_MODAL); // bloqueia a tela anterior
+            stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
 
-            // Após fechar o cadastro, recarrega a lista
+            // Recarrega a tabela após a edição/fechamento
             carregarAlunos(txtPesquisar.getText());
 
-        } catch (Exception e) {
+        } catch (IOException e) {
+            System.err.println("Erro ao carregar a tela de Edição de Aluno.");
             e.printStackTrace();
         }
     }
