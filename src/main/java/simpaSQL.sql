@@ -1,16 +1,25 @@
 -- sql rodrigo
--- DROP SCHEMA IF EXISTS `paresp`;
+DROP SCHEMA IF EXISTS `paresp`;
 CREATE SCHEMA IF NOT EXISTS `paresp` DEFAULT CHARACTER SET utf8;
 USE `paresp`;
 
-CREATE TABLE IF NOT EXISTS `administrador` ( -- foi tirado o cpf pois vimos que não era necessário.
+-- Necessário para que o comando UPDATE (se usado) funcione sem restrições
+SET SQL_SAFE_UPDATES = 0;
+
+-- -----------------------------------------------------
+-- Tabela `administrador`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `administrador` (
   `pk_cod_admin` INT(4) NOT NULL AUTO_INCREMENT,
-  `senha` VARCHAR(60) NOT NULL, -- troquei para 60 por conta da encriptação, que necessita que seja 60 caracteres.
+  `senha` VARCHAR(60) NOT NULL, -- Tamanho para hash BCrypt
   `telefone` CHAR(11) NULL,
   `nome` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`pk_cod_admin`)
 ) ENGINE = InnoDB;
 
+-- -----------------------------------------------------
+-- Tabela `escola`
+-- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `escola` (
   `pk_cod_escola` INT(6) NOT NULL,
   `nome` VARCHAR(45) NOT NULL,
@@ -18,6 +27,9 @@ CREATE TABLE IF NOT EXISTS `escola` (
   PRIMARY KEY (`pk_cod_escola`)
 ) ENGINE = InnoDB;
 
+-- -----------------------------------------------------
+-- Tabela `aluno` (INCLUI data_vacinacao)
+-- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `aluno` (
   `pk_cod_pessoa` INT(6) NOT NULL AUTO_INCREMENT,
   `fk_cod_admin` INT(4) NOT NULL,
@@ -26,6 +38,7 @@ CREATE TABLE IF NOT EXISTS `aluno` (
   `data_acolhimento` DATE NOT NULL,
   `form_acesso` VARCHAR(15) NOT NULL,
   `vacinacao` TINYINT(1) NOT NULL,
+  `data_vacinacao` DATE NULL, -- NOVA COLUNA: Data específica da última vacina
   `termo_imagem` TINYINT(1) NOT NULL,
   `turno` VARCHAR(6) NOT NULL,
   `transporte` VARCHAR(45) NULL,
@@ -57,6 +70,9 @@ CREATE TABLE IF NOT EXISTS `aluno` (
     ON UPDATE NO ACTION
 ) ENGINE = InnoDB;
 
+-- -----------------------------------------------------
+-- Tabela `familia` (INCLUI anotacoes)
+-- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `familia` (
   `pk_cod_familia` INT(6) NOT NULL AUTO_INCREMENT,
   `fk_cod_pessoa` INT(6) NOT NULL,
@@ -68,6 +84,7 @@ CREATE TABLE IF NOT EXISTS `familia` (
   `residencia` VARCHAR(12) NOT NULL,
   `valor_aluguel` DECIMAL(8,2) NULL,
   `telefone_familia` CHAR(11) NOT NULL,
+  `anotacoes` VARCHAR(255) NULL, -- NOVA COLUNA: Anotações sobre a família
   PRIMARY KEY (`pk_cod_familia`),
   CONSTRAINT `fk_familia_aluno`
     FOREIGN KEY (`fk_cod_pessoa`)
@@ -76,6 +93,9 @@ CREATE TABLE IF NOT EXISTS `familia` (
     ON UPDATE NO ACTION
 ) ENGINE = InnoDB;
 
+-- -----------------------------------------------------
+-- Tabela `integrante_familia` (INCLUI anotacoes)
+-- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `integrante_familia` (
   `pk_cod_integrante` INT(4) NOT NULL AUTO_INCREMENT,
   `fk_cod_familia` INT(6) NOT NULL,
@@ -88,6 +108,7 @@ CREATE TABLE IF NOT EXISTS `integrante_familia` (
   `telefone` CHAR(11) NULL,
   `resp_legal` TINYINT(1) NOT NULL,
   `pessoa_autorizada` TINYINT(1) NOT NULL,
+  `anotacoes` VARCHAR(255) NULL, -- NOVA COLUNA: Anotações sobre o integrante
   PRIMARY KEY (`pk_cod_integrante`),
   CONSTRAINT `fk_integrante_familia_familia`
     FOREIGN KEY (`fk_cod_familia`)
@@ -96,27 +117,68 @@ CREATE TABLE IF NOT EXISTS `integrante_familia` (
     ON UPDATE NO ACTION
 ) ENGINE = InnoDB;
 
-select nome from escola;
-
-INSERT INTO administrador (senha, telefone, nome)
-VALUES ('$2a$10$8upSGyqoGbOXkRdgIX2QoOxmyK/u56Dq66OdGfmmYcQ0H9uODrw6e', '51999999999', 'Admin Principal');-- agora a senha está criptografada. significa 12345678
-
-UPDATE administrador 
-SET senha = '$2a$10$8upSGyqoGbOXkRdgIX2QoOxmyK/u56Dq66OdGfmmYcQ0H9uODrw6e' 
-WHERE nome = 'Admin Principal';
-
-SET SQL_SAFE_UPDATES = 0;
+-- -----------------------------------------------------
+-- DADOS INICIAIS (Administrador e Escolas)
+-- -----------------------------------------------------
+INSERT INTO administrador (pk_cod_admin, senha, telefone, nome)
+VALUES (1, '$2a$10$8upSGyqoGbOXkRdgIX2QoOxmyK/u56Dq66OdGfmmYcQ0H9uODrw6e', '51999999999', 'Admin Principal'); -- Senha: 12345678
 
 INSERT INTO escola (pk_cod_escola, nome, serie)
-VALUES (1, 'Escola Municipal Modelo', '5A');
+VALUES 
+(1, 'Escola Municipal Modelo', '5A'),
+(2, 'Escola Estadual Progresso', '3C');
 
+-- -----------------------------------------------------
+-- DADOS DE TESTE (Aluno 1: Gustavo - Cadastro Básico)
+-- -----------------------------------------------------
 INSERT INTO aluno (
-  fk_cod_admin, fk_cod_escola, cpf, data_acolhimento, form_acesso, vacinacao,
+  fk_cod_admin, fk_cod_escola, cpf, data_acolhimento, form_acesso, vacinacao, data_vacinacao,
   termo_imagem, turno, transporte, data_nasc, proj_ferias, nome, sexo,
   tamanho_vest, tamanho_calc, turma, num_nis, med_paresp, alergias, observacoes,
   intervencoes, evolucoes, status
 ) VALUES (
-  1, 1, '98765432100', '2025-09-05', 'Cadastro', 1, 1, 'Manhã',
-  'Ônibus Escolar', '2010-05-15', 1, 'Gustavo', 'M', 'M', 40, '5A',
-  '12345678910', NULL, NULL, NULL, NULL, NULL, 1
+  1, 1, '98765432100', '2025-09-05', 'Cadastro', 1, '2025-03-15', -- vacinacao 1 e data
+  1, 'Manhã', 'Ônibus Escolar', '2010-05-15', 1, 'Gustavo Silva', 'M',
+  'M', 40, '5A', '12345678910', NULL, 'Nenhuma', 'Filho único.',
+  'Encaminhado para psicólogo.', 'Começou a interagir mais.', 1
 );
+
+-- -----------------------------------------------------
+-- DADOS DE TESTE COMPLETOS (Aluno 2: Isabella - Para teste de Família/Saúde)
+-- -----------------------------------------------------
+INSERT INTO aluno (
+  fk_cod_admin, fk_cod_escola, cpf, data_acolhimento, form_acesso, vacinacao, data_vacinacao,
+  termo_imagem, turno, transporte, data_nasc, proj_ferias, nome, sexo,
+  tamanho_vest, tamanho_calc, turma, num_nis, med_paresp, alergias, observacoes,
+  intervencoes, evolucoes, status
+) VALUES (
+  1, 2, '50000000000', '2025-01-20', 'Busca Ativa', 1, '2025-10-01',
+  1, 'Tarde', 'Van', '2012-11-10', 1, 'Isabella Teste', 'F',
+  'G', 36, '6A', '50000000000', 'Ibuprofeno', 'Leite', 'Aluna muito tímida.',
+  'Inclusão em grupo de leitura.', 'Melhorou comunicação.', 1
+);
+
+-- -----------------------------------------------------
+-- DADOS DE TESTE COMPLETOS (Família 1 - Vinculada a Isabella, pk_cod_pessoa=2)
+-- -----------------------------------------------------
+INSERT INTO familia (
+    fk_cod_pessoa, qnt_integrantes_fam, renda_familiar_total, bolsa_familia, 
+    endereco_familia, bairro_familia, residencia, valor_aluguel, telefone_familia, anotacoes
+) VALUES (
+    2, 4, 2500.50, 300.00, 
+    'Rua Teste, 100', 'Centro', 'Alugada', 800.00, '51988887777', 'Família enfrenta dificuldades financeiras devido à pandemia.'
+);
+
+-- -----------------------------------------------------
+-- DADOS DE TESTE COMPLETOS (Integrante 1 - Mãe de Isabella, vinculada a família pk_cod_familia=1)
+-- -----------------------------------------------------
+INSERT INTO integrante_familia (
+  fk_cod_familia, nome, cpf, parentesco, vinculo_afetivo, 
+  ocupacao, endereco, telefone, resp_legal, pessoa_autorizada, anotacoes
+) VALUES (
+  1, 'Maria Mãe', '55555555555', 'Mãe', 1, 
+  'Doméstica', 'Mesmo da Familia', '51988887777', 1, 1, 'Responsável principal pela aluna.'
+);
+
+ALTER TABLE aluno 
+MODIFY COLUMN form_acesso VARCHAR(25) NOT NULL;
