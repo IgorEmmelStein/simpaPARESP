@@ -60,12 +60,12 @@ public class IntegranteFamiliaDAO {
             st.setString(2, integrante.getNome());
             st.setString(3, integrante.getCpf());
             st.setString(4, integrante.getParentesco());
-            st.setInt(5, integrante.iseVinculoAfetivo() ? 1 : 0);
+            st.setInt(5, integrante.isVinculoAfetivo() ? 1 : 0);
             st.setString(6, integrante.getOcupacao());
             st.setString(7, integrante.getEndereco());
             st.setString(8, integrante.getTelefone());
-            st.setInt(9, integrante.iseResponsavelLegal() ? 1 : 0);
-            st.setInt(10, integrante.isePessoaAutorizada() ? 1 : 0);
+            st.setInt(9, integrante.isResponsavelLegal() ? 1 : 0);
+            st.setInt(10, integrante.isPessoaAutorizada() ? 1 : 0);
             
             st.executeUpdate();
             
@@ -99,12 +99,12 @@ public class IntegranteFamiliaDAO {
             st.setString(2, integrante.getNome());
             st.setString(3, integrante.getCpf());
             st.setString(4, integrante.getParentesco());
-            st.setInt(5, integrante.iseVinculoAfetivo() ? 1 : 0);
+            st.setInt(5, integrante.isVinculoAfetivo() ? 1 : 0);
             st.setString(6, integrante.getOcupacao());
             st.setString(7, integrante.getEndereco());
             st.setString(8, integrante.getTelefone());
-            st.setInt(9, integrante.iseResponsavelLegal() ? 1 : 0);
-            st.setInt(10, integrante.isePessoaAutorizada() ? 1 : 0);
+            st.setInt(9, integrante.isResponsavelLegal() ? 1 : 0);
+            st.setInt(10, integrante.isPessoaAutorizada() ? 1 : 0);
             st.setInt(11, integrante.getId()); // WHERE pk_cod_integrante
             
             return st.executeUpdate() > 0;
@@ -187,8 +187,8 @@ public class IntegranteFamiliaDAO {
         integrante.setVinculoAfetivo(rs.getInt("vinculo_afetivo") == 1);
         integrante.setOcupacao(rs.getString("ocupacao"));
         integrante.setEndereco(rs.getString("endereco"));
-        integrante.seteResponsavelLegal(rs.getInt("resp_legal") == 1);
-        integrante.setePessoaAutorizada(rs.getInt("pessoa_autorizada") == 1);
+        integrante.setResponsavelLegal(rs.getInt("resp_legal") == 1);
+        integrante.setPessoaAutorizada(rs.getInt("pessoa_autorizada") == 1);
         
         return integrante;
     }

@@ -1,7 +1,3 @@
-/*
- * Click nbfs:
- * Click nbfs:
- */
 package classes;
 
 public class IntegranteFamilia extends Pessoa {
@@ -11,14 +7,18 @@ public class IntegranteFamilia extends Pessoa {
     private boolean vinculoAfetivo;
     private String ocupacao;
     private String endereco;
-    private boolean eResponsavelLegal;
-    private boolean ePessoaAutorizada;
+
+    // CORRIGIDO: Atributos padronizados
+    private boolean responsavelLegal;
+    private boolean pessoaAutorizada;
+
     private String anotacoes;
 
     public IntegranteFamilia() {
         super();
     }
 
+    // --- Getters e Setters de Atributos Específicos ---
     public String getAnotacoes() {
         return anotacoes;
     }
@@ -43,7 +43,8 @@ public class IntegranteFamilia extends Pessoa {
         this.parentesco = parentesco;
     }
 
-    public boolean iseVinculoAfetivo() {
+    // CORRIGIDO: isVinculoAfetivo()
+    public boolean isVinculoAfetivo() {
         return vinculoAfetivo;
     }
 
@@ -67,19 +68,21 @@ public class IntegranteFamilia extends Pessoa {
         this.endereco = endereco;
     }
 
-    public boolean iseResponsavelLegal() {
-        return eResponsavelLegal;
+    // CORRIGIDO: isResponsavelLegal() e setResponsavelLegal()
+    public boolean isResponsavelLegal() {
+        return responsavelLegal;
     }
 
-    public void seteResponsavelLegal(boolean eResponsavelLegal) {
-        this.eResponsavelLegal = eResponsavelLegal;
+    public void setResponsavelLegal(boolean responsavelLegal) {
+        this.responsavelLegal = responsavelLegal;
     }
 
-    public boolean isePessoaAutorizada() {
-        return ePessoaAutorizada;
+    // CORRIGIDO: isPessoaAutorizada() e setPessoaAutorizada()
+    public boolean isPessoaAutorizada() {
+        return pessoaAutorizada;
     }
 
-    public void setePessoaAutorizada(boolean ePessoaAutorizada) {
-        this.ePessoaAutorizada = ePessoaAutorizada;
+    public void setPessoaAutorizada(boolean pessoaAutorizada) {
+        this.pessoaAutorizada = pessoaAutorizada;
     }
 }
