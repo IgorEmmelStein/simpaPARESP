@@ -182,3 +182,71 @@ INSERT INTO integrante_familia (
 
 ALTER TABLE aluno 
 MODIFY COLUMN form_acesso VARCHAR(25) NOT NULL;
+
+-- --- ADMIN TESTE (Senha em Texto Puro para Ambientes Sem BCrypt Estável) ---
+-- IMPORTANTE: No teu AdministradorService atual, a lógica espera o HASH.
+-- Se o teu login ainda estiver usando a comparação de String para "123", use o nome "Usuario Teste".
+INSERT INTO administrador (pk_cod_admin, senha, telefone, nome)
+VALUES (2, '123', '51987654321', 'Usuario Teste'); 
+
+-- --- DADOS DE TESTE ADICIONAIS (20 ALUNOS) ---
+-- Usaremos fk_cod_admin=1 e fk_cod_escola=1 para a maioria.
+
+INSERT INTO aluno (
+    fk_cod_admin, fk_cod_escola, cpf, data_acolhimento, form_acesso, vacinacao, data_vacinacao,
+    termo_imagem, turno, transporte, data_nasc, proj_ferias, nome, sexo,
+    tamanho_vest, tamanho_calc, turma, num_nis, med_paresp, alergias, observacoes,
+    intervencoes, evolucoes, status
+) VALUES 
+-- 1. Aluno com dados incompletos (para filtro)
+(1, 1, '40000000001', '2025-01-01', 'Demanda Espontânea', 0, NULL,
+ 1, 'Manhã', 'A pé', '2014-05-01', 0, 'Ana Paula Gomes', 'F',
+ 'M', 35, '2B', '40000000001', NULL, 'Pólen', NULL, NULL, NULL, 1),
+-- 2. Aluno com atraso vacinal
+(1, 2, '40000000002', '2025-03-01', 'Encaminhamento', 0, '2022-01-01',
+ 1, 'Tarde', 'Van', '2016-08-10', 1, 'Bruno Mendes', 'M',
+ 'P', 32, '3C', '40000000002', 'Dipirona', NULL, 'Aluno reservado.', NULL, NULL, 1),
+-- 3. Aluno com alergia
+(1, 1, '40000000003', '2025-02-15', 'Busca Ativa', 1, '2025-06-20',
+ 0, 'Manhã', 'Ônibus Escolar', '2013-03-22', 0, 'Carla de Souza', 'F',
+ 'G', 38, '5A', '40000000003', NULL, 'Lactose', NULL, NULL, NULL, 1),
+-- 4. Aluno com NIS
+(1, 2, '40000000004', '2025-04-10', 'Cadastro', 1, '2024-11-20',
+ 1, 'Tarde', 'Carona', '2015-12-05', 1, 'Daniela Ferreira', 'F',
+ 'P', 34, '2B', '40000000004', 'Ritalina', NULL, 'Observar interação.', 'Plano pedagógico.', 'Boas notas.', 1),
+-- 5. Aluno inativado (status=0)
+(1, 1, '40000000005', '2025-05-20', 'Demanda Espontânea', 1, '2025-01-15',
+ 0, 'Manhã', 'A pé', '2017-09-19', 0, 'Eduardo Henrique', 'M',
+ 'M', 36, '1A', '40000000005', NULL, NULL, NULL, NULL, NULL, 0),
+-- 6. Aluno - Projeto Férias
+(1, 1, '40000000006', '2025-06-05', 'Encaminhamento', 1, '2024-05-10',
+ 1, 'Tarde', 'Van', '2016-01-28', 1, 'Fabiana Lima', 'F',
+ 'M', 35, '3C', '40000000006', NULL, NULL, NULL, NULL, NULL, 1),
+-- 7. Aluno - Grande
+(1, 2, '40000000007', '2025-07-10', 'Busca Ativa', 1, '2025-03-11',
+ 1, 'Manhã', 'Ônibus Escolar', '2012-07-07', 1, 'Gabriel Souza', 'M',
+ 'GG', 42, '4B', '40000000007', NULL, NULL, 'Ótimo aluno.', NULL, NULL, 1),
+-- 8. Aluno - Pequeno
+(1, 1, '40000000008', '2025-08-01', 'Cadastro', 0, NULL,
+ 0, 'Tarde', 'Carona', '2018-11-14', 0, 'Heloisa Rocha', 'F',
+ 'P', 30, '1C', '40000000008', NULL, NULL, NULL, NULL, NULL, 1),
+-- 9. Aluno com intervenção
+(1, 1, '40000000009', '2025-09-15', 'Demanda Espontânea', 1, '2024-08-25',
+ 1, 'Manhã', 'A pé', '2014-02-09', 1, 'Igor Castro', 'M',
+ 'G', 38, '5A', '40000000009', NULL, NULL, NULL, 'Acompanhamento social.', 'Positiva.', 1),
+-- 10. Aluno com evolução
+(1, 2, '40000000010', '2025-10-25', 'Encaminhamento', 1, '2025-04-16',
+ 1, 'Tarde', 'Van', '2016-05-29', 0, 'Jéssica Lima', 'F',
+ 'M', 34, '2B', '40000000010', NULL, NULL, NULL, NULL, 'Necessita apoio.', 1),
+ 
+-- 11-20 (Dados Variados)
+(1, 1, '40000000011', '2025-01-01', 'Busca Ativa', 1, '2025-09-01', 1, 'Manhã', 'Van', '2013-09-01', 1, 'Kauã Henrique', 'M', 'P', 32, '4A', '40000000011', NULL, NULL, NULL, NULL, NULL, 1),
+(1, 2, '40000000012', '2025-03-01', 'Cadastro', 0, '2023-01-01', 0, 'Tarde', 'A pé', '2017-02-01', 0, 'Lara Beatriz', 'F', 'G', 36, '1C', '40000000012', NULL, 'Gatos', NULL, NULL, NULL, 1),
+(1, 1, '40000000013', '2025-02-15', 'Demanda Espontânea', 1, '2024-10-20', 1, 'Manhã', 'Carro', '2015-08-15', 1, 'Marcelo Rocha', 'M', 'M', 38, '3C', '40000000013', NULL, NULL, 'Aluno alegre.', NULL, NULL, 1),
+(1, 2, '40000000014', '2025-04-10', 'Encaminhamento', 1, '2025-07-01', 0, 'Tarde', 'Van', '2016-12-12', 0, 'Natália Costa', 'F', 'P', 34, '2B', '40000000014', 'Fluoxetina', NULL, NULL, 'Sessões de reforço.', NULL, 1),
+(1, 1, '40000000015', '2025-05-20', 'Busca Ativa', 0, NULL, 1, 'Manhã', 'Ônibus Escolar', '2018-04-04', 1, 'Otávio Martins', 'M', 'G', 40, '5B', '40000000015', NULL, NULL, NULL, NULL, NULL, 1),
+(1, 1, '40000000016', '2025-06-05', 'Cadastro', 1, '2024-03-10', 1, 'Tarde', 'Carona', '2013-11-25', 0, 'Priscila Alves', 'F', 'M', 35, '3A', '40000000016', NULL, NULL, NULL, NULL, NULL, 1),
+(1, 2, '40000000017', '2025-07-10', 'Demanda Espontânea', 1, '2025-01-05', 0, 'Manhã', 'A pé', '2017-01-01', 1, 'Quésia Miranda', 'F', 'P', 32, '1A', '40000000017', NULL, NULL, NULL, NULL, NULL, 1),
+(1, 1, '40000000018', '2025-08-01', 'Encaminhamento', 0, NULL, 1, 'Tarde', 'Van', '2014-06-18', 0, 'Renan Santos', 'M', 'M', 37, '4C', '40000000018', NULL, NULL, NULL, 'Reunião familiar.', NULL, 1),
+(1, 1, '40000000019', '2025-09-15', 'Busca Ativa', 1, '2025-04-04', 0, 'Manhã', 'Carro', '2015-03-10', 1, 'Sofia Teixeira', 'F', 'G', 39, '5A', '40000000019', NULL, NULL, NULL, NULL, NULL, 1),
+(1, 2, '40000000020', '2025-10-25', 'Cadastro', 1, '2024-09-09', 1, 'Tarde', 'Ônibus Escolar', '2016-10-10', 0, 'Thiago Cruz', 'M', 'M', 35, '2C', '40000000020', NULL, NULL, NULL, NULL, NULL, 1);

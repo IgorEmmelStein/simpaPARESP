@@ -7,8 +7,6 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-
-<?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.DatePicker?>
 
 <BorderPane xmlns="http://javafx.com/javafx/11.0.2"
@@ -38,55 +36,42 @@
             <Label text="Dados de Saúde"
                    style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill:#2d4b31;"/>
 
-            <HBox spacing="20">
+            <HBox spacing="20"> 
 
-                <!-- Medicamentos -->
                 <VBox spacing="5">
                     <Label text="Medicações em Uso"/>
-                    <TextArea fx:id="txtMedicamentos"
-                              prefWidth="300" prefHeight="120"
+                    <TextArea fx:id="txtMedicamentos" prefWidth="230" prefHeight="120"
                               style="-fx-background-color: #DDE8D1;"/>
                 </VBox>
 
-                <!-- Alergias -->
                 <VBox spacing="5">
                     <Label text="Alergias"/>
-                    <TextArea fx:id="txtAlergias"
-                              prefWidth="300" prefHeight="120"
+                    <TextArea fx:id="txtAlergias" prefWidth="230" prefHeight="120"
                               style="-fx-background-color: #DDE8D1;"/>
                 </VBox>
 
-                <!-- Observações Médicas -->
                 <VBox spacing="5">
                     <Label text="Observações Médicas"/>
-                    <TextArea fx:id="txtObsMedicas"
-                              prefWidth="300" prefHeight="120"
+                    <TextArea fx:id="txtObsMedicas" prefWidth="230" prefHeight="120"
                               style="-fx-background-color: #DDE8D1;"/>
                 </VBox>
                 
                 <VBox spacing="5">
                     <Label text="Data da Última Vacinação"/>
-                    <DatePicker fx:id="vacinacaoDatePicker" 
-                                    prefWidth="300"
-                                    style="-fx-background-color: #DDE8D1;"/>
+                    <DatePicker fx:id="vacinacaoDatePicker" prefWidth="230"
+                                style="-fx-background-color: #DDE8D1;"/>
                 </VBox>
             
+            </HBox> 
+            <HBox alignment="CENTER_RIGHT" prefHeight="60.0">
+                <padding>
+                    <Insets top="10"/>
+                </padding>
+                <Button fx:id="salvarButton" prefWidth="130" 
+                        style="-fx-background-radius: 8px; -fx-font-size: 16px; -fx-background-color: #7ab35a; -fx-text-fill: white;" 
+                        text="💾 Salvar" />
+            </HBox>
+
         </VBox>
-
-    </HBox>
-
-    <!-- Botão Salvar -->
-    <HBox alignment="CENTER_RIGHT">
-        <padding>
-            <Insets top="10"/>
-        </padding>
-        <!-- Botão Salvar -->
-        <HBox alignment="CENTER_RIGHT">
-            <Button fx:id="salvarButton" prefWidth="130" style="-fx-background-radius: 8px; -fx-font-size: 16px; -fx-background-color: #7ab35a; -fx-text-fill: white;" text="💾 Salvar" />
-        </HBox>
-    </HBox>
-
-</VBox>
     </center>
-
 </BorderPane>

@@ -41,9 +41,9 @@ public class CadastroAlunoController implements Initializable {
     @FXML
     private Button acessarAnexosButton;
     @FXML
-    private Button adicionarDetalhesButton;
+    private Button adicionarDetalhesButton; // Este será o botão principal de Detalhes/Família
     @FXML
-    private Button adicionarSaudeButton1;
+    private Button adicionarSaudeButton; // CORRIGIDO: Este é o ID correto do FXML
     @FXML
     private Button adicionarParenteButon;
     @FXML
@@ -208,21 +208,25 @@ public class CadastroAlunoController implements Initializable {
 
     private void configurarEventos() {
         salvarButton.setOnAction(event -> salvarAluno());
-
         dataNascimentoPicker.valueProperty().addListener((obs, oldValue, newValue) -> {
             calcularIdade(newValue);
         });
 
-        adicionarDetalhesButton.setOnAction(event -> {
-            abrirTelaDetalhes("TelaCadastroFamilia", "Cadastro de Detalhes Familiares");
-        });
+        // 1. AÇÃO FAMÍLIA (Adicionar Detalhes)
+        if (adicionarDetalhesButton != null) {
+            adicionarDetalhesButton.setOnAction(event -> {
+                abrirTelaDetalhes("TelaCadastroFamilia", "Cadastro de Detalhes Familiares");
+            });
+        }
 
-        if (adicionarSaudeButton1 != null) {
-            adicionarSaudeButton1.setOnAction(event -> {
+        // 2. AÇÃO SAÚDE (AGORA DEVE FUNCIONAR)
+        if (adicionarSaudeButton != null) {
+            adicionarSaudeButton.setOnAction(event -> {
                 abrirTelaDetalhes("TelaCadastroSaude", "Cadastro de Detalhes de Saúde");
             });
         }
 
+        // 3. AÇÃO PARENTE
         if (adicionarParenteButon != null) {
             adicionarParenteButon.setOnAction(event -> {
                 abrirTelaDetalhes("TelaCadastroParente", "Cadastro de Parente");
@@ -238,6 +242,7 @@ public class CadastroAlunoController implements Initializable {
 
     private void abrirTelaDetalhes(String fxmlFileName, String title) {
 
+        // 1. Verifica se o aluno principal já foi salvo
         if (alunoEmEdicao == null || alunoEmEdicao.getId() == 0) {
             Alert alert = new Alert(AlertType.WARNING);
             alert.setTitle("Atenção");
@@ -251,22 +256,21 @@ public class CadastroAlunoController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/mycompany/simpa/" + fxmlFileName + ".fxml"));
             Parent root = loader.load();
 
+            // 2. Lógica de Seleção e Mapeamento de Controller
             if ("TelaCadastroFamilia".equals(fxmlFileName)) {
+                // Mapeia para o Controller de Família (Detalhes)
                 controller.CadastroFamiliaController controller = loader.getController();
                 controller.setAlunoId(alunoEmEdicao.getId());
+
             } else if ("TelaCadastroSaude".equals(fxmlFileName)) {
+                // Mapeia para o Controller de Saúde
                 controller.CadastroSaudeController controller = loader.getController();
+                // Passa o objeto aluno que contém os dados de saúde (para carregar/atualizar)
                 controller.setAluno(alunoEmEdicao);
+
             } else if ("TelaCadastroParente".equals(fxmlFileName)) {
 
-                Alert alert = new Alert(AlertType.WARNING);
-                alert.setTitle("Atenção");
-                alert.setHeaderText("Funcionalidade Pendente");
-                alert.setContentText("Para cadastrar parentes, a família do aluno deve ser buscada primeiro.");
-                alert.showAndWait();
-                return;
-            } else if ("TelaCadastroParente".equals(fxmlFileName)) {
-
+                // LÓGICA DE PARENTE: Requer o ID da Família que acabamos de corrigir no DAO
                 int familiaId = familiaService.buscarIdPorAlunoId(alunoEmEdicao.getId());
 
                 if (familiaId == 0) {
@@ -278,10 +282,12 @@ public class CadastroAlunoController implements Initializable {
                     return;
                 }
 
+                // Mapeia para o Controller de Parente
                 controller.CadastroParenteController controller = loader.getController();
                 controller.setFamiliaId(familiaId);
             }
 
+            // 3. Abre o Modal
             Stage stage = new Stage();
             stage.setTitle(title);
             stage.setScene(new Scene(root));
@@ -295,6 +301,12 @@ public class CadastroAlunoController implements Initializable {
             alert.setTitle("Erro de Carregamento");
             alert.setHeaderText("Falha ao Abrir Tela");
             alert.setContentText("Ocorreu um erro ao tentar abrir o formulário de detalhes.");
+            alert.showAndWait();
+        } catch (Exception e) {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Erro de Execução");
+            alert.setHeaderText("Falha ao processar detalhes");
+            alert.setContentText("Erro inesperado: " + e.getMessage());
             alert.showAndWait();
         }
     }
