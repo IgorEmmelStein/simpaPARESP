@@ -138,4 +138,28 @@ public class AlunoService {
             throw new BusinessException("Falha ao atualizar a saúde do aluno: Aluno não encontrado.");
         }
     }
+
+    public void atualizar(Aluno aluno) throws BusinessException, DBException {
+
+        // ** Regras de Validação (Reaproveita as regras de NOT NULL/Formato) **
+        if (aluno.getId() <= 0) {
+            throw new BusinessException("Impossível atualizar: O ID do aluno não é válido.");
+        }
+        if (aluno.getNome() == null || aluno.getNome().trim().isEmpty()) {
+            throw new BusinessException("O Nome Completo é obrigatório.");
+        }
+
+        // Chamada ao DAO
+        try {
+            if (!alunoDao.atualizar(aluno)) { // Chama o método atualizar do DAO
+                throw new BusinessException("Falha ao atualizar o aluno. O registro pode ter sido inativado.");
+            }
+        } catch (DBException e) {
+            // Trata erro de chave duplicada (ex: CPF)
+            if (e.getMessage() != null && e.getMessage().toLowerCase().contains("duplicate")) {
+                throw new BusinessException("Falha: O CPF " + aluno.getCpf() + " já está cadastrado em outro registro.", e);
+            }
+            throw new DBException("Falha ao atualizar o aluno. Detalhes: " + e.getMessage(), e);
+        }
+    }
 }

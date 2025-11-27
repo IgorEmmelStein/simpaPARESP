@@ -51,6 +51,22 @@ public class CadastroFamiliaController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         carregarCombos();
         salvarButton.setOnAction(event -> salvarFamilia());
+        configurarPlaceholders();
+    }
+
+    private void configurarPlaceholders() {
+        // Assume que 'integrantesTextField' e 'rendaTextField' já existem
+        integrantesTextField.setPromptText("Ex: 4");
+        rendaTextField.setPromptText("Ex: 1500.50");
+        enderecoTextField.setPromptText("Ex: Rua das Flores, 123");
+        bairroTextField.setPromptText("Ex: Centro");
+
+        // CORREÇÃO DE NOME AQUI:
+        logradouroTextField.setPromptText("Ex: Apto 101");
+        aluguelTextField.setPromptText("Ex: 800.00 (Se aluguel)");
+
+        telefoneTextField.setPromptText("Ex: 51998765432");
+        anotacoesTextArea.setPromptText("Ex: Família reside em área de risco, avó é responsável legal.");
     }
 
     private void carregarCombos() {
@@ -59,16 +75,16 @@ public class CadastroFamiliaController implements Initializable {
 
     public void setAlunoId(int alunoId) {
         this.alunoId = alunoId;
-        
+
         // Tenta buscar se já existe uma família para este aluno
         if (alunoId > 0) {
             try {
                 // 1. Obtém o usuário logado para a verificação de permissão no Service
-                Usuario usuarioLogado = controller.LoginController.getUsuarioLogado(); 
-                
+                Usuario usuarioLogado = controller.LoginController.getUsuarioLogado();
+
                 // 2. CORREÇÃO: Passa o usuário logado como segundo argumento
                 Familia familiaExistente = familiaService.buscarPorAlunoId(alunoId, usuarioLogado);
-                
+
                 if (familiaExistente != null) {
                     this.familiaEmEdicao = familiaExistente;
                     carregarDadosFamilia(familiaEmEdicao);
@@ -82,7 +98,7 @@ public class CadastroFamiliaController implements Initializable {
             }
         }
     }
-    
+
     private void carregarDadosFamilia(Familia familia) {
 
         integrantesTextField.setText(String.valueOf(familia.getQtdIntegrantes()));
@@ -98,7 +114,7 @@ public class CadastroFamiliaController implements Initializable {
     }
 
     private void salvarFamilia() {
-        Usuario usuarioLogado = LoginController.getUsuarioLogado();
+        Usuario usuarioLogado = controller.LoginController.getUsuarioLogado();
 
         try {
             if (usuarioLogado == null) {
@@ -107,42 +123,60 @@ public class CadastroFamiliaController implements Initializable {
             if (alunoId <= 0) {
                 throw new BusinessException("A família deve ser associada a um aluno válido.");
             }
+            // Assumindo que validarCampos verifica os campos NOT NULL
             if (!validarCampos()) {
                 throw new BusinessException("Preencha todos os campos obrigatórios.");
             }
 
+            // 1. Mapeamento e Conversão de Tipos
             Familia familiaASalvar = familiaEmEdicao != null ? familiaEmEdicao : new Familia();
             familiaASalvar.setFkCodPessoa(alunoId);
 
+            // Conversão de Tipos (Usando o helper para aceitar vírgula/ponto)
             int integrantes = Integer.parseInt(integrantesTextField.getText());
-            double renda = Double.parseDouble(rendaTextField.getText());
-            double aluguel = aluguelTextField.getText().isEmpty() ? 0.00 : Double.parseDouble(aluguelTextField.getText());
+            double renda = parseMonetaryValue(rendaTextField.getText());
+            // Se vazio, assume 0.00 e usa o helper de parse
+            double aluguel = aluguelTextField.getText().isEmpty() ? 0.00 : parseMonetaryValue(aluguelTextField.getText());
 
+            // Mapeamento Bolsa Família
             boolean recebeBolsa = "Sim".equals(bolsaFamiliaComboBox.getValue());
             familiaASalvar.setValorBolsaFamilia(recebeBolsa ? 0.01 : 0.00);
 
+            // Mapeamento dos campos (Setters Corrigidos)
             familiaASalvar.setQtdIntegrantes(integrantes);
             familiaASalvar.setRendaFamiliarTotal(renda);
             familiaASalvar.setEndereco(enderecoTextField.getText());
             familiaASalvar.setBairro(bairroTextField.getText());
-            familiaASalvar.setTipoResidencia(logradouroTextField.getText());
+            familiaASalvar.setTipoResidencia(logradouroTextField.getText()); // Mapeado para RESIDENCIA
             familiaASalvar.setValorAluguel(aluguel);
             familiaASalvar.setTelefoneContato(telefoneTextField.getText());
-            familiaASalvar.setAnotacoes(anotacoesTextArea.getText());
+            familiaASalvar.setAnotacoes(anotacoesTextArea.getText()); // Mapeamento de ANOTAÇÕES
 
-            familiaService.salvar(familiaASalvar, usuarioLogado);
+            // 2. Lógica de Persistência
+            if (familiaASalvar.getId() != 0) {
+                // Atualização
+                familiaService.atualizar(familiaASalvar, usuarioLogado);
+            } else {
+                // Nova Inserção
+                familiaService.salvar(familiaASalvar, usuarioLogado);
+                // Atualiza o objeto de edição (necessário para Parentes)
+                this.familiaEmEdicao = familiaASalvar;
+            }
 
+            // 3. Sucesso
             exibirAlerta(AlertType.INFORMATION, "Sucesso", "Dados familiares salvos com sucesso!");
-
-            this.familiaEmEdicao = familiaASalvar;
 
             Stage stage = (Stage) salvarButton.getScene().getWindow();
             stage.close();
 
         } catch (NumberFormatException e) {
-            exibirAlerta(AlertType.WARNING, "Atenção", "Verifique se os campos numéricos (Integrantes, Renda, Aluguel) estão preenchidos corretamente.");
-        } catch (BusinessException | DBException e) {
-            exibirAlerta(AlertType.ERROR, "Falha ao Salvar", e.getMessage());
+            // Alerta específico para formato numérico
+            exibirAlerta(AlertType.WARNING, "Atenção", "Verifique se os campos numéricos (Integrantes, Renda, Aluguel) estão preenchidos corretamente. Tu podes usar vírgula para decimais.");
+        } catch (BusinessException e) {
+            exibirAlerta(AlertType.ERROR, "Falha ao Salvar (Negócio)", e.getMessage());
+        } catch (DBException e) {
+            // CORREÇÃO CRÍTICA PARA DEBUG: Exibe a mensagem exata de erro do DB
+            exibirAlerta(AlertType.ERROR, "Falha ao Salvar (DB)", "Ocorreu um erro no banco. Detalhe: " + e.getMessage());
         }
     }
 
@@ -153,6 +187,15 @@ public class CadastroFamiliaController implements Initializable {
                 || bairroTextField.getText().isEmpty()
                 || logradouroTextField.getText().isEmpty()
                 || telefoneTextField.getText().isEmpty());
+    }
+
+    private double parseMonetaryValue(String text) throws NumberFormatException {
+        if (text == null || text.trim().isEmpty()) {
+            return 0.00;
+        }
+        String cleaned = text.replace(".", "");
+        cleaned = cleaned.replace(",", ".");
+        return Double.parseDouble(cleaned);
     }
 
     private void exibirAlerta(AlertType type, String title, String message) {

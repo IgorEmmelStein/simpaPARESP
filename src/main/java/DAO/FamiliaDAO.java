@@ -1,6 +1,6 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * Click nbfs:
+ * Click nbfs:
  */
 package DAO;
 
@@ -18,12 +18,12 @@ public class FamiliaDAO {
 
     private static final String SQL_INSERT
             = "INSERT INTO familia (fk_cod_pessoa, qnt_integrantes_fam, renda_familiar_total, bolsa_familia, "
-            + "endereco_familia, bairro_familia, residencia, valor_aluguel, telefone_familia) "
-            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            + "endereco_familia, bairro_familia, residencia, valor_aluguel, telefone_familia, anotacoes) " // NOVO: anotacoes
+            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"; // 10 parâmetros
 
     private static final String SQL_UPDATE
             = "UPDATE familia SET qnt_integrantes_fam=?, renda_familiar_total=?, bolsa_familia=?, "
-            + "endereco_familia=?, bairro_familia=?, residencia=?, valor_aluguel=?, telefone_familia=? "
+            + "endereco_familia=?, bairro_familia=?, residencia=?, valor_aluguel=?, telefone_familia=?, anotacoes=? " // <<--- CAMPO 'anotacoes' ESTAVA FALTANDO AQUI
             + "WHERE pk_cod_familia=?";
 
     private static final String SQL_DELETE
@@ -32,14 +32,9 @@ public class FamiliaDAO {
     private static final String SQL_SELECT_BY_ALUNO_ID
             = "SELECT * FROM familia WHERE fk_cod_pessoa = ?";
 
-    // --- Métodos CRUD ---
-    /**
-     * Insere um novo registro de Família no banco de dados.
-     *
-     * @param familia O objeto Familia a ser persistido.
-     * @return O ID (pk_cod_familia) gerado.
-     * @throws DBException Se ocorrer um erro durante a inserção.
-     */
+    private static final String SQL_SELECT_ID_BY_ALUNO
+            = "SELECT pk_cod_familia FROM familia WHERE fk_cod_pessoa = ?";
+
     public int inserir(Familia familia) {
         Connection conn = null;
         PreparedStatement st = null;
@@ -59,6 +54,7 @@ public class FamiliaDAO {
             st.setString(7, familia.getTipoResidencia());
             st.setDouble(8, familia.getValorAluguel());
             st.setString(9, familia.getTelefoneContato());
+            st.setString(10, familia.getAnotacoes());
 
             st.executeUpdate();
 
@@ -75,12 +71,6 @@ public class FamiliaDAO {
         }
     }
 
-    /**
-     * Atualiza um registro de Família existente no banco de dados.
-     *
-     * @param familia O objeto Familia com os dados atualizados.
-     * @return true se a atualização foi bem-sucedida.
-     */
     public boolean atualizar(Familia familia) {
         Connection conn = null;
         PreparedStatement st = null;
@@ -97,7 +87,8 @@ public class FamiliaDAO {
             st.setString(6, familia.getTipoResidencia());
             st.setDouble(7, familia.getValorAluguel());
             st.setString(8, familia.getTelefoneContato());
-            st.setInt(9, familia.getId()); // WHERE pk_cod_familia
+            st.setString(9, familia.getAnotacoes());
+            st.setInt(10, familia.getId());
 
             return st.executeUpdate() > 0;
 
@@ -110,35 +101,57 @@ public class FamiliaDAO {
 
     /**
      * Busca os dados da Família associada a um Aluno específico.
-     *
-     * @param alunoId O ID (pk_cod_pessoa) do Aluno.
-     * @return O objeto Familia preenchido ou null.
      */
-    public Familia buscarPorAlunoId(int alunoId) {
+    public Familia buscarPorAlunoId(int alunoId) throws DBException {
         Connection conn = null;
         PreparedStatement st = null;
         ResultSet rs = null;
-        Familia familia = null;
 
         try {
             conn = ConnectionFactory.getConnection();
             st = conn.prepareStatement(SQL_SELECT_BY_ALUNO_ID);
             st.setInt(1, alunoId);
-
             rs = st.executeQuery();
 
             if (rs.next()) {
-                familia = mapearFamilia(rs);
+                return mapearFamilia(rs);
             }
-            return familia;
+            return null;
         } catch (SQLException e) {
-            throw new DBException("Erro ao buscar família por ID do aluno. Detalhe: " + e.getMessage(), e);
+            throw new DBException("Erro ao buscar família por ID de aluno. Detalhe: " + e.getMessage(), e);
         } finally {
             ConnectionFactory.closeConnection(conn, st, rs);
         }
     }
 
-    // --- Métodos Auxiliares ---
+    /**
+     * Busca apenas o ID da Família pelo ID do Aluno (fk_cod_pessoa).
+     *
+     * @param alunoId ID do aluno.
+     * @return O pk_cod_familia ou 0 se não for encontrado.
+     */
+    public int buscarIdPorAlunoId(int alunoId) throws DBException {
+        Connection conn = null;
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        try {
+            conn = ConnectionFactory.getConnection();
+            st = conn.prepareStatement(SQL_SELECT_ID_BY_ALUNO);
+            st.setInt(1, alunoId);
+            rs = st.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt("pk_cod_familia");
+            }
+            return 0;
+        } catch (SQLException e) {
+            throw new DBException("Erro ao buscar ID da família. Detalhe: " + e.getMessage(), e);
+        } finally {
+            ConnectionFactory.closeConnection(conn, st, rs);
+        }
+    }
+
     /**
      * Método auxiliar privado para mapear o ResultSet em um objeto Familia.
      */
@@ -155,8 +168,8 @@ public class FamiliaDAO {
         familia.setTipoResidencia(rs.getString("residencia"));
         familia.setValorAluguel(rs.getDouble("valor_aluguel"));
         familia.setTelefoneContato(rs.getString("telefone_familia"));
+        familia.setAnotacoes(rs.getString("anotacoes"));
 
         return familia;
     }
-
 }
