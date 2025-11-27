@@ -3,6 +3,9 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml/1"
@@ -13,9 +16,19 @@
     <VBox spacing="20" layoutX="20" layoutY="20" prefWidth="960">
 
         <!-- Título -->
-        <HBox spacing="10">
-            <Label text="Cadastro"
-                   style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill:#1d3a25;"/>
+        
+            
+        <HBox alignment="CENTER_LEFT" spacing="10" >
+   
+            <ImageView fitWidth="32" fitHeight="32" preserveRatio="true">
+                <image>
+                    <Image url="@fxml/logo_paresp.png"/>
+                </image>
+            </ImageView>
+               
+            <Label style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #2d4b31;" text="Cadastro" />
+    
+            
         </HBox>
 
         <!-- Subtítulo -->

@@ -15,6 +15,10 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+
+
 
 <AnchorPane id="AnchorPane" prefHeight="669.0" prefWidth="801.0" style="-fx-background-color: #2D2D2D;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CadastroAlunoController">
 
@@ -23,7 +27,11 @@
         <VBox alignment="TOP_CENTER" prefHeight="766.0" prefWidth="945.0" spacing="20" style="-fx-background-color: #F8F9F7; -fx-padding: 30; -fx-background-radius: 10;">
             
             <HBox alignment="CENTER_LEFT" spacing="15">
-                <Rectangle arcHeight="8.0" arcWidth="8.0" fill="#38C172" height="40.0" width="40.0" />
+                <ImageView fitWidth="40" fitHeight="40" preserveRatio="true">
+                    <image>
+                        <Image url="@fxml/logo_paresp.png" />
+                    </image>
+                </ImageView>
                 
                 <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #333;" text="Cadastro" />
             </HBox>

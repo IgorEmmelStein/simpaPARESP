@@ -8,6 +8,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+
 
 <BorderPane xmlns="http://javafx.com/javafx/11.0.2"
             xmlns:fx="http://javafx.com/fxml/1"
@@ -21,6 +24,11 @@
             <padding>
                 <Insets top="10" right="10" bottom="10" left="10"/>
             </padding>
+            <ImageView fitWidth="32" fitHeight="32" preserveRatio="true">
+                <image>
+                    <Image url="@fxml/logo_paresp.png"/>
+                </image>
+            </ImageView>
             <Label text="Cadastro"
                    style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill:#2d4b31;"/>
         </HBox>

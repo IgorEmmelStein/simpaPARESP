@@ -11,6 +11,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+
 
 <AnchorPane prefHeight="593.0" prefWidth="900.0" style="-fx-background-color: #eef7e5;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CadastroFamiliaController">
 
@@ -18,12 +21,16 @@
     <VBox layoutX="38.0" layoutY="14.0" prefHeight="556.0" prefWidth="792.0" spacing="20">
 
         <!-- Título -->
-        <HBox alignment="CENTER_LEFT" spacing="10" />
+        <HBox alignment="CENTER_LEFT" spacing="10" >
    
-         
+            <ImageView fitWidth="32" fitHeight="32" preserveRatio="true">
+                <image>
+                    <Image url="@fxml/logo_paresp.png"/>
+                </image>
+            </ImageView>
                
-         <Label style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #2d4b31;" text="Cadastro" />
-
+            <Label style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #2d4b31;" text="Cadastro" />
+        </HBox>
         <!-- Subtítulo -->
         <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2d4b31;" text="Detalhes" />
 
@@ -61,14 +68,14 @@
 
             <Label text="Telefone" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             <TextField fx:id="telefoneTextField" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-         <rowConstraints>
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-         </rowConstraints>
+            <rowConstraints>
+                <RowConstraints />
+                <RowConstraints />
+                <RowConstraints />
+                <RowConstraints />
+                <RowConstraints />
+                <RowConstraints />
+            </rowConstraints>
 
         </GridPane>
 

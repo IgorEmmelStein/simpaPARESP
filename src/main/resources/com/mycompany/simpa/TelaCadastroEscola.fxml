@@ -5,9 +5,11 @@
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+
 
 <AnchorPane id="AnchorPane" 
             prefHeight="400.0" prefWidth="340.0" 
@@ -26,8 +28,11 @@
             
             <HBox alignment="CENTER_LEFT" spacing="15">
                 
-                <Rectangle arcHeight="8.0" arcWidth="8.0" 
-                           fill="#38C172" height="40.0" width="40.0" />
+                <ImageView fitWidth="40" fitHeight="40" preserveRatio="true">
+                    <image>
+                        <Image url="@fxml/logo_paresp.png" />
+                    </image>
+                </ImageView>
                 
                 <Label text="Cadastrar Escola"
                        style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #333;" />
