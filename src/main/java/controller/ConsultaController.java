@@ -3,6 +3,7 @@ package controller;
 import classes.Aluno;
 import classes.Usuario;
 import classes.Administrador;
+import java.io.File;
 import java.io.IOException;
 import service.AlunoService;
 import service.RelatorioService;
@@ -64,6 +65,8 @@ public class ConsultaController implements Initializable {
     @FXML
     private Button btnExportar;
     @FXML
+    private Button btnExportarCompleto;
+    @FXML
     private Button btnAddEscola;
     @FXML
     private Button btnAddUser;
@@ -103,9 +106,9 @@ public class ConsultaController implements Initializable {
 
         btnAddUser.setVisible(false);
         btnAddUser.setManaged(false);
-        
+
         aplicarPermissoes();
-        
+
     }
 
     public void setUsuarioLogado(Usuario usuario) {
@@ -184,7 +187,7 @@ public class ConsultaController implements Initializable {
         }
     }
 
-    @FXML 
+    @FXML
     private void handleIncluir() {
 
         abrirNovaTela("TelaCadastroAluno", "Cadastro de Novo Aluno");
@@ -285,7 +288,63 @@ public class ConsultaController implements Initializable {
 
     @FXML
     private void handleExportar() {
-        System.out.println("Exportar (Vazio)");
+        try {
+            String filtro = txtPesquisar.getText();
+
+            Usuario usuario = LoginController.getUsuarioLogado();
+
+            List<Aluno> alunos = relatorioService.gerarRelatorioComFiltros(filtro, usuario);
+
+            File pdf = relatorioService.exportarDados(alunos, "PDF");
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("PDF Gerado");
+            alert.setHeaderText("Relatório gerado com sucesso!");
+            alert.setContentText("Arquivo salvo como: " + pdf.getAbsolutePath());
+            alert.showAndWait();
+
+            java.awt.Desktop.getDesktop().open(pdf);
+
+        } catch (BusinessException e) {
+
+            Alert erro = new Alert(Alert.AlertType.ERROR);
+            erro.setTitle("Erro");
+            erro.setHeaderText("Falha ao exportar");
+            erro.setContentText(e.getMessage());
+            erro.showAndWait();
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+            Alert erro = new Alert(Alert.AlertType.ERROR);
+            erro.setTitle("Erro");
+            erro.setHeaderText("Erro inesperado");
+            erro.setContentText("Erro ao gerar o relatório.");
+            erro.showAndWait();
+        }
+    }
+
+    @FXML
+    private void handleExportarCompleto() {
+
+        Aluno aluno = tabelaAlunos.getSelectionModel().getSelectedItem();
+
+        if (aluno == null) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Aviso");
+            alert.setHeaderText("Nenhum aluno selecionado");
+            alert.setContentText("Selecione um aluno na tabela para exportar.");
+            alert.show();
+            return;
+        }
+
+        try {
+            File pdf = relatorioService.exportarAlunoCompleto(aluno);
+            java.awt.Desktop.getDesktop().open(pdf);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -316,7 +375,7 @@ public class ConsultaController implements Initializable {
             e.printStackTrace();
         }
     }
-    
+
     private void aplicarPermissoes() {
         Usuario usuario = LoginController.getUsuarioLogado();
 
@@ -331,15 +390,15 @@ public class ConsultaController implements Initializable {
         if (usuario instanceof classes.Administrador) {
             classes.Administrador admin = (classes.Administrador) usuario;
 
-             // verifica se este usuário tem a flag isAdmin ativada
+            // verifica se este usuário tem a flag isAdmin ativada
             boolean permissao = admin.isAdmin();
-             
-            btnExcluirAluno.setDisable(!permissao); 
+
+            btnExcluirAluno.setDisable(!permissao);
             btnAddUser.setVisible(permissao);
             btnAddUser.setManaged(permissao);
             btnAddEscola.setVisible(permissao);
             btnAddEscola.setManaged(permissao);
-            
+
         }
     }
 }

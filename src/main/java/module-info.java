@@ -5,6 +5,9 @@ module com.mycompany.simpa {
     requires javafx.fxml;
     requires java.base;
     requires javafx.graphics; 
+    requires itextpdf;
+    requires java.desktop;
+
 
     requires jbcrypt;
     
@@ -13,4 +16,5 @@ module com.mycompany.simpa {
     exports com.mycompany.simpa;
 
     opens controller to javafx.fxml;
+    
 }
