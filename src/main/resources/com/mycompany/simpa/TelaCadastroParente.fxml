@@ -64,9 +64,7 @@
 
             <VBox>
                 <Label text="Vínculo Afetivo"/>
-                <TextField fx:id="txtVinculoAfetivo"
-                           prefWidth="250"
-                           style="-fx-background-color: #DDE8D1;"/>
+                <CheckBox fx:id="chkVinculoAfetivo" text="Sim" />
             </VBox>
 
             <VBox>
@@ -96,17 +94,13 @@
             </VBox>
 
             <VBox>
-                <Label text="Responsável Legal"/>
-                <TextField fx:id="txtResponsavelLegal"
-                           prefWidth="250"
-                           style="-fx-background-color: #DDE8D1;"/>
+                <Label text="Responsável Legal"/>               
+                <CheckBox fx:id="chkResponsavelLegal" text="Sim" />
             </VBox>
-
+            
             <VBox>
-                <Label text="Pessoa Autorizada"/>
-                <TextField fx:id="txtPessoaAutorizada"
-                           prefWidth="250"
-                           style="-fx-background-color: #DDE8D1;"/>
+                <Label text="Pessoa Autorizada"/>               
+                <CheckBox fx:id="chkPessoaAutorizada" text="Sim" />
             </VBox>
 
         </HBox>
@@ -139,9 +133,11 @@
         
                 <TableColumn fx:id="colCPF" prefWidth="120.0" text="CPF" /> 
         
-                <TableColumn fx:id="colTelefone" prefWidth="120.0" text="Telefone" /> 
+                <TableColumn fx:id="colTelefone" prefWidth="100.0" text="Telefone" /> 
         
-                <TableColumn fx:id="colRespLegal" prefWidth="120.0" text="Resp. Legal" />
+                <TableColumn fx:id="colRespLegal" prefWidth="100.0" text="Resp. Legal" />
+                
+                <TableColumn fx:id="colPessoaAutorizada" prefWidth="130" text="Pessoa Autorizada"/>
         
                 <TableColumn fx:id="colEndereco" prefWidth="250.0" text="Endereço" />
             </columns>
