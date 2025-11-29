@@ -40,6 +40,8 @@ public class CadastroSaudeController implements Initializable {
     @Override // A CORREÇÃO CRÍTICA PARA AS LINHAS 42-44
     public void initialize(URL url, ResourceBundle rb) {
         salvarButton.setOnAction(event -> salvar());
+        
+        aplicarPermissoes();
     }
 
     /**
@@ -118,6 +120,36 @@ public class CadastroSaudeController implements Initializable {
             erro.setHeaderText("Falha ao Salvar Saúde");
             erro.setContentText(e.getMessage());
             erro.showAndWait();
+        }
+    }
+    
+    private void aplicarPermissoes() {
+        Usuario usuario = LoginController.getUsuarioLogado();
+        
+        if (usuario == null) {
+            salvarButton.setDisable(true);
+            return;
+        }
+
+        if (usuario instanceof classes.Administrador) {
+            classes.Administrador admin = (classes.Administrador) usuario;
+
+            if(admin.isAdmin() == true || admin.isSaude() == true){
+                txtMedicamentos.setEditable(true);
+                txtAlergias.setEditable(true);
+                txtObsMedicas.setEditable(true);
+                vacinacaoDatePicker.setDisable(false); // DatePicker usa setDisable
+            
+                salvarButton.setDisable(false);
+            } else{
+                txtMedicamentos.setEditable(false);
+                txtAlergias.setEditable(false);
+                txtObsMedicas.setEditable(false);
+                vacinacaoDatePicker.setDisable(true); // DatePicker usa setDisable
+            
+                salvarButton.setDisable(true);
+            }
+            
         }
     }
 }

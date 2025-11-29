@@ -1,5 +1,6 @@
 package controller;
 
+import classes.Administrador;
 import classes.Aluno;
 import classes.Escola;
 import classes.Usuario;
@@ -41,9 +42,9 @@ public class CadastroAlunoController implements Initializable {
     @FXML
     private Button acessarAnexosButton;
     @FXML
-    private Button adicionarDetalhesButton; // Este será o botão principal de Detalhes/Família
+    private Button adicionarDetalhesButton; 
     @FXML
-    private Button adicionarSaudeButton; // CORRIGIDO: Este é o ID correto do FXML
+    private Button adicionarSaudeButton; 
     @FXML
     private Button adicionarParenteButon;
     @FXML
@@ -105,6 +106,7 @@ public class CadastroAlunoController implements Initializable {
         carregarCombos();
         carregarEscolas();
         configurarEventos();
+        aplicarPermissoes();
     }
 
     public void setAlunoEmEdicao(Aluno aluno) {
@@ -402,5 +404,22 @@ public class CadastroAlunoController implements Initializable {
                 || sexoComboBox.getValue() == null
                 || vestuarioTextField.getText().isEmpty()
                 || calcadoTextField.getText().isEmpty());
+    
+    }
+    
+    private void aplicarPermissoes() {
+        Usuario usuario = LoginController.getUsuarioLogado();
+        if (usuario == null) return;
+
+        if (usuario instanceof Administrador) {
+            Administrador admin = (Administrador) usuario;
+
+            
+            boolean acessoSaude = admin.isAdmin() || admin.isSaude();
+            adicionarSaudeButton.setDisable(!acessoSaude);
+
+            boolean acessoSocial = admin.isAdmin() || admin.isSocial();
+            adicionarDetalhesButton.setDisable(!acessoSocial);
+        }
     }
 }

@@ -184,7 +184,7 @@ public class ConsultaController implements Initializable {
         }
     }
 
-    @FXML
+    @FXML 
     private void handleIncluir() {
 
         abrirNovaTela("TelaCadastroAluno", "Cadastro de Novo Aluno");
@@ -317,24 +317,29 @@ public class ConsultaController implements Initializable {
         }
     }
     
-    private void aplicarPermissoes(){
+    private void aplicarPermissoes() {
         Usuario usuario = LoginController.getUsuarioLogado();
-        
-        if(usuario == null){
-            btnExcluirAluno.setDisable(true);// para dizer que tem a funcionalidade porém não está disponível para o usuário em questão
-            btnAddUser.setVisible(false);// a função de adicionar usuário não é relevante no momento para outros usuários a nao ser o adm.
-            return;
-        }
-        
-        if(!usuario.podeExcluirGeral()){
-             btnExcluirAluno.setDisable(true);
-        }
-        
-        if(usuario instanceof classes.Administrador){
-            btnAddUser.setVisible(true);
-        } else{
+
+        // se não tiver usuário logado, bloqueia tudo
+        if (usuario == null) {
+            btnExcluirAluno.setDisable(true);
             btnAddUser.setVisible(false);
             btnAddEscola.setVisible(false);
+            return;
+        }
+
+        if (usuario instanceof classes.Administrador) {
+            classes.Administrador admin = (classes.Administrador) usuario;
+
+             // verifica se este usuário tem a flag isAdmin ativada
+            boolean permissao = admin.isAdmin();
+             
+            btnExcluirAluno.setDisable(!permissao); 
+            btnAddUser.setVisible(permissao);
+            btnAddUser.setManaged(permissao);
+            btnAddEscola.setVisible(permissao);
+            btnAddEscola.setManaged(permissao);
+            
         }
     }
 }

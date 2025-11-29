@@ -52,6 +52,7 @@ public class CadastroFamiliaController implements Initializable {
         carregarCombos();
         salvarButton.setOnAction(event -> salvarFamilia());
         configurarPlaceholders();
+        aplicarPermissoes();
     }
 
     private void configurarPlaceholders() {
@@ -204,5 +205,26 @@ public class CadastroFamiliaController implements Initializable {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+    
+    private void aplicarPermissoes() {
+        Usuario usuario = LoginController.getUsuarioLogado();
+        if (usuario == null) return;
+
+        if (usuario instanceof classes.Administrador) {
+            classes.Administrador admin = (classes.Administrador) usuario;
+            //guarda o boolean pode editar então já seta automatico true ou fale pra todo mundo
+            boolean podeEditar = admin.isAdmin() || admin.isSocial();
+
+            // Desativa campos se não tiver permissão
+            integrantesTextField.setEditable(podeEditar);
+            rendaTextField.setEditable(podeEditar);
+            bolsaFamiliaComboBox.setDisable(!podeEditar); 
+            enderecoTextField.setEditable(podeEditar);
+            bairroTextField.setEditable(podeEditar);
+            anotacoesTextArea.setEditable(podeEditar);
+
+            salvarButton.setDisable(!podeEditar);
+        }
     }
 }
