@@ -20,12 +20,12 @@ import java.sql.Statement;
 public class AdministradorDAO {
     
     private static final String SQL_SELECT_BY_NOME = 
-        "SELECT pk_cod_admin, nome, senha, telefone FROM administrador WHERE nome = ?";
+        "SELECT pk_cod_admin, nome, senha, telefone, perm_saude, perm_social, perm_admin " +
+        "FROM administrador WHERE nome = ?";
     
     private static final String SQL_INSERT =
-        "INSERT INTO administrador (" +
-        "senha, telefone, nome)" +
-        "VALUES (?,?,?)";
+        "INSERT INTO administrador (senha, telefone, nome, perm_saude, perm_social, perm_admin) " +
+        "VALUES (?,?,?,?,?,?)";
     
     private static final String SQL_UPDATE = 
         "UPDATE administrador SET " +
@@ -56,6 +56,10 @@ public class AdministradorDAO {
                 admin.setNome(rs.getString("nome"));
                 admin.setTelefone(rs.getString("telefone"));
                 
+                admin.setPermSaude(rs.getBoolean("perm_saude"));
+                admin.setPermSocial(rs.getBoolean("perm_social"));
+                admin.setPermAdmin(rs.getBoolean("perm_admin"));
+                
                 admin.setNomeUsuario(rs.getString("nome")); 
                 
                 return admin;
@@ -80,7 +84,11 @@ public class AdministradorDAO {
             
             st.setString(2, administrador.getTelefone());  
             
-            st.setString(3, administrador.getNome());      
+            st.setString(3, administrador.getNome());
+            
+            st.setBoolean(4, administrador.isSaude());
+            
+            st.setBoolean(5, administrador.isSocial());
 
             st.executeUpdate();
             

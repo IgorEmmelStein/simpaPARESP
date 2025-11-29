@@ -13,9 +13,9 @@ public class Administrador extends Usuario {
     // --- Atributos específicos do Administrador (do ER) ---
     private String telefone;
     private String nome;
-    // O atributo 'senha' do ER será mapeado para 'senhaHash' na classe Usuario.
-    // O atributo 'nivelAcesso' do diagrama de classes pode ser inferido por esta classe.
-    
+    private boolean permSaude;
+    private boolean permSocial;
+    private boolean permAdmin;
     // --- Construtores ---
 
     public Administrador() {
@@ -64,7 +64,27 @@ public class Administrador extends Usuario {
     }
     
     // --- Getters e Setters dos atributos específicos ---
-
+    
+    public boolean isSaude() { 
+        return permSaude; 
+    }
+    public boolean isSocial() { 
+        return permSocial; 
+    }
+    public boolean isAdmin() { 
+        return permAdmin; 
+    }
+    
+    public void setPermSaude(boolean permSaude) { 
+        this.permSaude = permSaude; 
+    }
+    public void setPermSocial(boolean permSocial) {
+        this.permSocial = permSocial; 
+    }
+    public void setPermAdmin(boolean permAdmin) { 
+        this.permAdmin = permAdmin; 
+    }
+    
     public String getTelefone() {
         return telefone;
     }

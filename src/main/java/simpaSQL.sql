@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS `administrador` (
   `senha` VARCHAR(60) NOT NULL, -- Tamanho para hash BCrypt
   `telefone` CHAR(11) NULL,
   `nome` VARCHAR(45) NOT NULL,
+  
   PRIMARY KEY (`pk_cod_admin`)
 ) ENGINE = InnoDB;
 
@@ -250,3 +251,22 @@ INSERT INTO aluno (
 (1, 1, '40000000018', '2025-08-01', 'Encaminhamento', 0, NULL, 1, 'Tarde', 'Van', '2014-06-18', 0, 'Renan Santos', 'M', 'M', 37, '4C', '40000000018', NULL, NULL, NULL, 'Reunião familiar.', NULL, 1),
 (1, 1, '40000000019', '2025-09-15', 'Busca Ativa', 1, '2025-04-04', 0, 'Manhã', 'Carro', '2015-03-10', 1, 'Sofia Teixeira', 'F', 'G', 39, '5A', '40000000019', NULL, NULL, NULL, NULL, NULL, 1),
 (1, 2, '40000000020', '2025-10-25', 'Cadastro', 1, '2024-09-09', 1, 'Tarde', 'Ônibus Escolar', '2016-10-10', 0, 'Thiago Cruz', 'M', 'M', 35, '2C', '40000000020', NULL, NULL, NULL, NULL, NULL, 1);
+
+ALTER TABLE administrador -- agora com as permissoes dos usuários.
+ADD COLUMN perm_saude TINYINT(1) NOT NULL DEFAULT 0,
+ADD COLUMN perm_social TINYINT(1) NOT NULL DEFAULT 0,
+ADD COLUMN perm_admin TINYINT(1) NOT NULL DEFAULT 0;
+
+UPDATE administrador 
+SET perm_admin = 1, perm_saude = 1, perm_social = 1
+WHERE nome = 'Admin Principal';
+
+INSERT INTO administrador (nome, telefone, senha, perm_saude, perm_social, perm_admin) 
+VALUES (
+    'Enfermeira', 
+    '51999991111', 
+    '$2a$10$Q3uUCzp8pe5ttMF6HrXD.ey3UzCQHQnXQLbhrLxsGdlglvpeJY2c2', -- Hash de "123456"
+    1, -- perm_saude (TEM ACESSO)
+    0, -- perm_social (SEM ACESSO)
+    0  -- perm_admin (SEM ACESSO)
+);

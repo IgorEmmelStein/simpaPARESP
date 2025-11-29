@@ -35,8 +35,26 @@ public class App extends Application {
 
     public static void main(String[] args) {
         
+          // --- gerador de codigo hash) ---
+        // Altere "123456" para a senha que você quer testar
+        // String senhaParaHash = "123456"; 
+        
+        // Gera o hash usando a biblioteca BCrypt
+//         String hashGerado = org.mindrot.jbcrypt.BCrypt.hashpw(senhaParaHash, org.mindrot.jbcrypt.BCrypt.gensalt());
+//        
+//        System.out.println("=========================================");
+//        System.out.println("COPIE O CÓDIGO ABAIXO PARA O SEU SQL:");
+//        System.out.println(hashGerado);
+//        System.out.println("=========================================");
+//        // ------------------------------------
+//
+//        
         launch();
+//        
+        
     }
+    
+    
     
     
 }

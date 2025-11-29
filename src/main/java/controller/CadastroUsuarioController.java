@@ -23,7 +23,6 @@ public class CadastroUsuarioController implements Initializable {
     @FXML private PasswordField txtSenha1;
     @FXML private Label lblMensagem;
     
-    @FXML private TextField txtCpf; 
     @FXML private TextField txtTelefone;
 
     private AdministradorService service;
@@ -56,12 +55,11 @@ public class CadastroUsuarioController implements Initializable {
                 return;
             }
 
-            String cpf = txtCpf.getText().replaceAll("[^0-9]", ""); // Limpa o CPF
             String telefone = (txtTelefone != null) ? txtTelefone.getText() : ""; // Telefone é opcional
 
             // 2. Validações
-            if (nome.isEmpty() || cpf.isEmpty() || senha.isEmpty() || confirmacao.isEmpty()) {
-                throw new BusinessException("Nome, CPF e Senha são obrigatórios!");
+            if (nome.isEmpty() || senha.isEmpty() || confirmacao.isEmpty()) {
+                throw new BusinessException("Nome e Senha são obrigatórios!");
             }
 
             if (!senha.equals(confirmacao)) {

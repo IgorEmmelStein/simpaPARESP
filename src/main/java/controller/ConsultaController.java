@@ -103,6 +103,9 @@ public class ConsultaController implements Initializable {
 
         btnAddUser.setVisible(false);
         btnAddUser.setManaged(false);
+        
+        aplicarPermissoes();
+        
     }
 
     public void setUsuarioLogado(Usuario usuario) {
@@ -311,6 +314,27 @@ public class ConsultaController implements Initializable {
         } catch (IOException e) {
             System.err.println("Erro ao carregar a tela de Edição de Aluno.");
             e.printStackTrace();
+        }
+    }
+    
+    private void aplicarPermissoes(){
+        Usuario usuario = LoginController.getUsuarioLogado();
+        
+        if(usuario == null){
+            btnExcluirAluno.setDisable(true);// para dizer que tem a funcionalidade porém não está disponível para o usuário em questão
+            btnAddUser.setVisible(false);// a função de adicionar usuário não é relevante no momento para outros usuários a nao ser o adm.
+            return;
+        }
+        
+        if(!usuario.podeExcluirGeral()){
+             btnExcluirAluno.setDisable(true);
+        }
+        
+        if(usuario instanceof classes.Administrador){
+            btnAddUser.setVisible(true);
+        } else{
+            btnAddUser.setVisible(false);
+            btnAddEscola.setVisible(false);
         }
     }
 }
