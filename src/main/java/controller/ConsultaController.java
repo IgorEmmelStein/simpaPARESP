@@ -70,6 +70,9 @@ public class ConsultaController implements Initializable {
     private Button btnAddEscola;
     @FXML
     private Button btnAddUser;
+    
+    @FXML 
+    private Label lblBoasVindas;
 
     private Usuario usuarioLogado;
 
@@ -106,6 +109,12 @@ public class ConsultaController implements Initializable {
 
         btnAddUser.setVisible(false);
         btnAddUser.setManaged(false);
+        
+        Usuario usuario = LoginController.getUsuarioLogado();
+        if (usuario != null && lblBoasVindas != null) {
+            // Pega o nome e coloca na tela
+            lblBoasVindas.setText("Olá, " + usuario.getNomeUsuario() + "!");
+        }
 
         aplicarPermissoes();
 
@@ -387,18 +396,57 @@ public class ConsultaController implements Initializable {
             return;
         }
 
+//        if (usuario instanceof classes.Administrador) {
+//            classes.Administrador admin = (classes.Administrador) usuario;
+//
+//            // verifica se este usuário tem a flag isAdmin ativada
+//            boolean permissao = admin.isAdmin();
+//
+//            btnExcluirAluno.setDisable(!permissao);
+//            btnAddUser.setVisible(permissao);
+//            btnAddUser.setManaged(permissao);
+//            btnAddEscola.setVisible(permissao);
+//            btnAddEscola.setManaged(permissao);
+//
+//        }
         if (usuario instanceof classes.Administrador) {
             classes.Administrador admin = (classes.Administrador) usuario;
+            
+            boolean isAdmin = admin.isAdmin();
+            boolean isSaude = admin.isSaude();
+            boolean isSocial = admin.isSocial();
+            
+            if(isAdmin){
+                btnExcluirAluno.setDisable(false);
+                
+                btnAddUser.setVisible(true);
+                btnAddUser.setManaged(true);
+                
+                btnAddEscola.setVisible(true);
+                btnAddEscola.setManaged(true);
+            }else{
+                btnExcluirAluno.setDisable(true); 
+                
+                btnAddUser.setVisible(false);     
+                btnAddUser.setManaged(false);     
+                
+                btnAddEscola.setVisible(false);   
+                btnAddEscola.setManaged(false);
+            }
+            
+            boolean temAcessoOperacional = isAdmin || isSaude || isSocial;
 
-            // verifica se este usuário tem a flag isAdmin ativada
-            boolean permissao = admin.isAdmin();
+            if (temAcessoOperacional) {
+                btnInserirAluno.setDisable(false);
+                btnExportar.setDisable(false);
+                if (btnExportarCompleto != null) btnExportarCompleto.setDisable(false);
 
-            btnExcluirAluno.setDisable(!permissao);
-            btnAddUser.setVisible(permissao);
-            btnAddUser.setManaged(permissao);
-            btnAddEscola.setVisible(permissao);
-            btnAddEscola.setManaged(permissao);
+            } else {
 
+                btnInserirAluno.setDisable(true);
+                btnExportar.setDisable(true);
+                if (btnExportarCompleto != null) btnExportarCompleto.setDisable(true);
+            }
         }
     }
 }

@@ -26,7 +26,7 @@
                 <VBox prefHeight="71.0" prefWidth="585.0">
                     <children>
                   
-                        <Label alignment="CENTER" text="Olá, usuário!">
+                        <Label fx:id="lblBoasVindas" alignment="CENTER" text="Olá, usuário!">
                             <font>
                                 <Font name="System Bold" size="28.0" />
                             </font>
