@@ -102,12 +102,13 @@
                         <Font size="14.0" />
                     </font>
                 </Label>
-    
-                <ComboBox fx:id="comboTipoUsuario" 
-                          prefHeight="40.0" 
-                          prefWidth="1.7976931348623157E308" 
-                          style="-fx-background-color: D6E3CC; -fx-background-radius: 8;" >
-                </ComboBox>
+                <HBox spacing="15.0">
+                    <children>
+                        <CheckBox fx:id="cbAdmin" mnemonicParsing="false" text="Administrador" />
+                        <CheckBox fx:id="cbSaude" mnemonicParsing="false" text="Saúde" />
+                        <CheckBox fx:id="cbSocial" mnemonicParsing="false" text="Social" />
+                    </children>
+                </HBox>
                 <Button fx:id="btnCadastrar" 
                         alignment="CENTER" 
                         contentDisplay="CENTER" 
@@ -123,7 +124,7 @@
                     </VBox.margin>
                 </Button>
             
-                <Label fx:id="lblErro" style="-fx-text-fill: red;" text="Mensagem de Erro" visible="false" />
+                <Label fx:id="lblMensagem" style="-fx-text-fill: red;" text="Mensagem de Erro" visible="false" />
             </children>
         </VBox>
     </children>

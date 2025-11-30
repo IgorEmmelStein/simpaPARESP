@@ -89,7 +89,8 @@ public class AdministradorDAO {
             st.setBoolean(4, administrador.isSaude());
             
             st.setBoolean(5, administrador.isSocial());
-
+            
+            st.setBoolean(6, administrador.isAdmin());
             st.executeUpdate();
             
             

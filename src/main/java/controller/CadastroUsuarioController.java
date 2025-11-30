@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable; 
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -18,12 +19,23 @@ import util.DBException;
 
 public class CadastroUsuarioController implements Initializable {
 
-    @FXML private TextField txtNomeUsuario;
-    @FXML private PasswordField txtSenha;
-    @FXML private PasswordField txtSenha1;
-    @FXML private Label lblMensagem;
+    @FXML 
+    private TextField txtNomeUsuario;
+    @FXML 
+    private PasswordField txtSenha;
+    @FXML 
+    private PasswordField txtSenha1;
+    @FXML 
+    private Label lblMensagem;
     
     @FXML private TextField txtTelefone;
+    
+    @FXML 
+    private CheckBox cbAdmin;
+    @FXML 
+    private CheckBox cbSaude;
+    @FXML 
+    private CheckBox cbSocial;
 
     private AdministradorService service;
 
@@ -77,6 +89,14 @@ public class CadastroUsuarioController implements Initializable {
             novoAdmin.setNome(nome);
             novoAdmin.setSenhaHash(senha); 
             
+            novoAdmin.setPermAdmin(cbAdmin.isSelected());
+            novoAdmin.setPermSaude(cbSaude.isSelected());
+            novoAdmin.setPermSocial(cbSocial.isSelected());
+            
+            if (!novoAdmin.isAdmin() && !novoAdmin.isSaude() && !novoAdmin.isSocial()) {
+                 throw new BusinessException("Selecione pelo menos um perfil de acesso.");
+            }
+            
             if(txtTelefone != null) novoAdmin.setTelefone(txtTelefone.getText());
 
             Usuario logado = LoginController.getUsuarioLogado();
@@ -86,6 +106,9 @@ public class CadastroUsuarioController implements Initializable {
             lblMensagem.setText("Sucesso!");
             lblMensagem.setTextFill(Color.GREEN);
             lblMensagem.setVisible(true);
+            cbAdmin.setSelected(false);
+            cbSaude.setSelected(false);
+            cbSocial.setSelected(false);
             limparCampos();
 
         } catch (BusinessException | DBException e) {

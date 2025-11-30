@@ -16,6 +16,7 @@ public class Administrador extends Usuario {
     private boolean permSaude;
     private boolean permSocial;
     private boolean permAdmin;
+    
     // --- Construtores ---
 
     public Administrador() {
@@ -31,7 +32,7 @@ public class Administrador extends Usuario {
         this.nome = nome;
     }
 
-    // --- Sobrescrita dos Métodos de Permissão (RF012) ---
+    // --- Métodos de Permissão (RF012) ---
 
     // Administrador pode consultar (RF004, RF009)
     @Override
@@ -39,28 +40,27 @@ public class Administrador extends Usuario {
         return true; 
     }
 
-    // Administrador pode alterar e incluir (RF001, RF002, RF005-RF008)
+    // Apenas quem tem alguma permissão ativa pode alterar/incluir
     @Override
     public boolean podeAlterarIncluirGeral() {
-        return true;
+        return this.permAdmin || this.permSaude || this.permSocial;
     }
 
-    // Administrador pode excluir (RF003)
+    // CRÍTICO: Apenas o Admin pode excluir
     @Override
     public boolean podeExcluirGeral() {
-        return true;
+        return this.permAdmin; 
     }
     
     // --- Permissões Específicas (do Diagrama de Classes de Permissão) ---
-    
+    //apenas adm
     public boolean podeGerenciarUsuarios() {
-        // Corresponde a 'Criar diferentes perfis de usuário' (RF012)
-        return true;
+        return this.permAdmin;
     }
 
+    // Apenas Admin exclui tudo
     public boolean podeExcluirTudo() {
-        // Permissão de exclusão total (a mais sensível)
-        return true;
+        return this.permAdmin;
     }
     
     // --- Getters e Setters dos atributos específicos ---
