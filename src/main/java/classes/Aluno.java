@@ -9,7 +9,7 @@ import java.util.List;
 
 
 /**
- * Representa um Aluno atendido pela PARESP. inter maior teste
+ * Representa um Aluno atendido pela PARESP. 
  * Herda de Pessoa e contém todos os dados de cadastro e acompanhamento (RF001, RF005, RF008).
  * Mapeia a tabela 'aluno' no banco de dados.
  */

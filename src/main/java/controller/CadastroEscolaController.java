@@ -58,19 +58,18 @@ public class CadastroEscolaController implements Initializable {
         String nomeEscola = nomeTextField.getText();
 
         try {
-            // 1. Validação de campo (Controller)
+            // Validação de campo
             if (nomeEscola == null || nomeEscola.trim().isEmpty()) {
                 throw new BusinessException("Por favor, preencha o nome da escola.");
             }
             
-            // 2. Mapeamento e Geração de ID
+           
             Escola novaEscola = new Escola();
-            // CUIDADO: ID deve ser gerado manualmente e ser único!
-            // Usamos Random para gerar um ID (Melhoria futura: buscar o último ID no DB)
+            
             novaEscola.setId(new Random().nextInt(1000) + 5); 
             
             novaEscola.setNome(nomeEscola);
-            // Série não está na tela, mas é NOT NULL. Setamos um valor padrão seguro.
+            // Série setado um valor padrão seguro.
             novaEscola.setSerie("N/A"); 
 
             // 3. Chama o Service para salvar

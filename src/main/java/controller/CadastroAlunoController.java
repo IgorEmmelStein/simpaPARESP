@@ -214,21 +214,21 @@ public class CadastroAlunoController implements Initializable {
             calcularIdade(newValue);
         });
 
-        // 1. AÇÃO FAMÍLIA (Adicionar Detalhes)
+        // AÇÃO FAMÍLIA (Adicionar Detalhes)
         if (adicionarDetalhesButton != null) {
             adicionarDetalhesButton.setOnAction(event -> {
                 abrirTelaDetalhes("TelaCadastroFamilia", "Cadastro de Detalhes Familiares");
             });
         }
 
-        // 2. AÇÃO SAÚDE (AGORA DEVE FUNCIONAR)
+        //AÇÃO SAÚDE
         if (adicionarSaudeButton != null) {
             adicionarSaudeButton.setOnAction(event -> {
                 abrirTelaDetalhes("TelaCadastroSaude", "Cadastro de Detalhes de Saúde");
             });
         }
 
-        // 3. AÇÃO PARENTE
+        // AÇÃO PARENTE
         if (adicionarParenteButon != null) {
             adicionarParenteButon.setOnAction(event -> {
                 abrirTelaDetalhes("TelaCadastroParente", "Cadastro de Parente");
@@ -244,7 +244,7 @@ public class CadastroAlunoController implements Initializable {
 
     private void abrirTelaDetalhes(String fxmlFileName, String title) {
 
-        // 1. Verifica se o aluno principal já foi salvo
+        // Verifica se o aluno principal já foi salvo
         if (alunoEmEdicao == null || alunoEmEdicao.getId() == 0) {
             Alert alert = new Alert(AlertType.WARNING);
             alert.setTitle("Atenção");
@@ -258,7 +258,7 @@ public class CadastroAlunoController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/mycompany/simpa/" + fxmlFileName + ".fxml"));
             Parent root = loader.load();
 
-            // 2. Lógica de Seleção e Mapeamento de Controller
+            //Lógica de Seleção e Mapeamento de Controller
             if ("TelaCadastroFamilia".equals(fxmlFileName)) {
                 // Mapeia para o Controller de Família (Detalhes)
                 controller.CadastroFamiliaController controller = loader.getController();
@@ -289,7 +289,7 @@ public class CadastroAlunoController implements Initializable {
                 controller.setFamiliaId(familiaId);
             }
 
-            // 3. Abre o Modal
+            //Abre o Modal
             Stage stage = new Stage();
             stage.setTitle(title);
             stage.setScene(new Scene(root));

@@ -23,21 +23,19 @@ public class IntegranteFamiliaService {
     /**
      * Valida e salva um Integrante de Família (inserção ou atualização).
      *
-     * @param integrante O objeto IntegranteFamilia a ser salvo.
-     * @param usuarioLogado O usuário que está tentando realizar a operação.
-     * @throws BusinessException Se alguma regra de negócio for violada.
+     *
      */
     public void salvar(IntegranteFamilia integrante, Usuario usuarioLogado) throws BusinessException, DBException {
 
-        // 1. Verificação de Permissão (RF012)
+        //Verificação de Permissão (RF012)
         if (!(usuarioLogado instanceof UsuarioVulnerabilidadeSocial) && !usuarioLogado.podeAlterarIncluirGeral()) {
             throw new BusinessException("Acesso negado. O teu perfil não tem permissão para gerenciar integrantes da família.");
         }
 
-        // 2. Validação dos Dados Essenciais
+        // validação dos Dados Essenciais
         validarCamposObrigatorios(integrante);
 
-        // 3. Lógica de Negócio (Inserir ou Atualizar)
+        // logica de Negócio (Inserir ou Atualizar)
         try {
             if (integrante.getId() == 0) {
                 // Inserir novo integrante
@@ -56,20 +54,20 @@ public class IntegranteFamiliaService {
 
     public void atualizar(IntegranteFamilia integrante, Usuario usuarioLogado) throws BusinessException, DBException {
 
-        // 1. Verificação de Permissão (RF012): Usamos a regra de inclusão/alteração geral
+        // Verificação de Permissão 
         if (!usuarioLogado.podeAlterarIncluirGeral()) {
             throw new BusinessException("Acesso negado. O teu perfil não tem permissão para alterar integrantes da família.");
         }
 
-        // 2. Validação de Regra de Negócio
+        // validação de Regra de Negócio
         if (integrante.getId() <= 0) {
             throw new BusinessException("Impossível atualizar: ID do integrante inválido ou ausente.");
         }
 
-        // 3. Validação dos Dados Essenciais (Reaproveita o método de validação)
+        //Validação dos Dados Essenciais (Reaproveita o método de validação)
         validarCamposObrigatorios(integrante);
 
-        // 4. Chamada ao DAO
+        // Chamada ao DAO
         try {
             if (!integranteFamiliaDAO.atualizar(integrante)) { // Chama o método atualizar do DAO
                 throw new BusinessException("Falha ao atualizar o integrante: Registro não encontrado no banco de dados.");
@@ -82,16 +80,16 @@ public class IntegranteFamiliaService {
 
     public void inserir(IntegranteFamilia integrante, Usuario usuarioLogado) throws BusinessException, DBException {
 
-        // 1. Verificação de Permissão (RF012)
+        // Verificação de Permissão (RF012)
         // O usuário precisa ser de Vulnerabilidade Social ou Administrador para inserir
         if (!(usuarioLogado instanceof UsuarioVulnerabilidadeSocial) && !usuarioLogado.podeAlterarIncluirGeral()) {
             throw new BusinessException("Acesso negado. O teu perfil não tem permissão para gerenciar integrantes da família.");
         }
 
-        // 2. Validação dos Dados Essenciais (Reaproveita a validação)
+        // Validação dos Dados Essenciais (Reaproveita a validação)
         validarCamposObrigatorios(integrante);
 
-        // 3. Lógica de Inserção
+        // lógica de Inserção
         try {
             // Assume que o ID é 0 para inserção
             int novoId = integranteFamiliaDAO.inserir(integrante);
@@ -126,7 +124,7 @@ public class IntegranteFamiliaService {
         }
     }
 
-    // --- Métodos de Consulta e Exclusão ---
+    
     /**
      * Lista todos os integrantes associados a uma Família.
      */
@@ -136,10 +134,8 @@ public class IntegranteFamiliaService {
         }
         return integranteFamiliaDAO.listarPorFamiliaId(familiaId);
     }
-
-    /**
-     * Exclui um integrante da família.
-     */
+    //exlcuir parentes
+   
     public void excluir(int integranteId, Usuario usuarioLogado) throws BusinessException, DBException {
         // Permissão para excluir deve ser alta (Admin ou Social, dependendo da política)
         if (!usuarioLogado.podeAlterarIncluirGeral() && !usuarioLogado.podeExcluirGeral()) {

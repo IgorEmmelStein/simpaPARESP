@@ -102,9 +102,6 @@ public class AdministradorDAO {
         }
     }
     
-    
-    
-    // Próximos métodos incluem inserir(), atualizar(), etc. para gerenciar administradores,
-    // mas o método de busca por nome é o mais crítico para o LOGIN.
+ 
 }
 

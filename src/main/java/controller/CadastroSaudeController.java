@@ -35,9 +35,9 @@ public class CadastroSaudeController implements Initializable {
     private Aluno alunoEmEdicao; 
 
     // -------------------------------------------------------------------------
-    // MÉTODOS DE INICIALIZAÇÃO E SETUP
+    // MÉTODOS DE INICIALIZAÇÃO
     // -------------------------------------------------------------------------
-    @Override // A CORREÇÃO CRÍTICA PARA AS LINHAS 42-44
+    @Override 
     public void initialize(URL url, ResourceBundle rb) {
         salvarButton.setOnAction(event -> salvar());
         
@@ -71,7 +71,7 @@ public class CadastroSaudeController implements Initializable {
         Usuario usuarioLogado = controller.LoginController.getUsuarioLogado();
 
         try {
-            // 1. Verificações (CORRIGIDO: A estrutura agora é legível pelo compilador)
+            // Verificações (CORRIGIDO: A estrutura agora é legível pelo compilador)
             if (usuarioLogado == null) {
                 throw new BusinessException("É necessário logar para salvar dados.");
             }
@@ -79,13 +79,12 @@ public class CadastroSaudeController implements Initializable {
                 throw new BusinessException("É necessário associar os dados a um aluno existente. Salve o cadastro principal primeiro.");
             }
 
-            // 2. Mapeamento dos dados da tela para o objeto Aluno existente
-            // CORREÇÃO: Uso de txtMedicamentos, txtAlergias, txtObsMedicas (nomes FXML)
+            // Mapeamento dos dados da tela para o objeto Aluno existente
             alunoEmEdicao.setMedicamentosUso(txtMedicamentos.getText());
             alunoEmEdicao.setAlergias(txtAlergias.getText());
             alunoEmEdicao.setObservacoesMedicas(txtObsMedicas.getText());
 
-            // 3. Mapeamento da Data de Vacinação e Lógica de 'Em Dia'
+            // Mapeamento da Data de Vacinação e Lógica de 'Em Dia'
             LocalDate dataVacinacaoLocal = vacinacaoDatePicker.getValue();
             Date dataVacinacao = null;
             boolean emDia = false;
@@ -93,18 +92,17 @@ public class CadastroSaudeController implements Initializable {
             if (dataVacinacaoLocal != null) {
                 dataVacinacao = Date.from(dataVacinacaoLocal.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-                // Regra de Negócio: Chama o Service para verificar se está dentro do prazo de 1 ano
+                // Regra de Negócio:  verificar se está dentro do prazo de 1 ano
                 emDia = alunoService.verificarVacinacaoEmDia(dataVacinacao);
             }
 
             alunoEmEdicao.setDataVacinacao(dataVacinacao); // Coluna DATE
             alunoEmEdicao.setVacinacaoEmDia(emDia); // Coluna TINYINT (1 ou 0)
 
-            // 4. Chamada ao Service para persistir (UPDATE específico na tabela ALUNO)
-            // NOTA: O método 'atualizarSaude' deve estar implementado em AlunoService.java
+            // Chamada ao Service para persistir (UPDATE  na tabela ALUNO)
             alunoService.atualizarSaude(alunoEmEdicao, usuarioLogado);
 
-            // 5. Sucesso
+            // Sucesso
             Alert sucesso = new Alert(AlertType.INFORMATION);
             sucesso.setTitle("Sucesso");
             sucesso.setContentText("Dados de Saúde atualizados com sucesso.");

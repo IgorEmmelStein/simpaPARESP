@@ -67,13 +67,13 @@ public class CadastroParenteController implements Initializable {
     private TableColumn<IntegranteFamilia, String> colTelefone;
     @FXML
     private TableColumn<IntegranteFamilia, String> colEndereco;
-    // NOTE: Se houver um botão "Limpar Campos" no FXML, ele deve ter onAction="#limparCamposParente"
+   
 
     // --- SERVIÇOS E DADOS ---
     private IntegranteFamiliaService integranteService = new IntegranteFamiliaService();
     private int familiaId = 0;
 
-    // NOVO: Rastreia o objeto selecionado para saber se é UPDATE ou INSERT
+    // Rastreia o objeto selecionado para saber se é UPDATE ou INSERT
     private IntegranteFamilia integranteSelecionado;
 
     // -------------------------------------------------------------------------
@@ -111,7 +111,7 @@ public class CadastroParenteController implements Initializable {
     }
 
     private void configurarColunas() {
-        // CORREÇÃO FINAL: Usar o nome da propriedade padronizado
+        // Usar o nome da propriedade padronizado
         colNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
         colParentesco.setCellValueFactory(new PropertyValueFactory<>("parentesco"));
         colRespLegal.setCellValueFactory(new PropertyValueFactory<>("responsavelLegal"));
@@ -145,7 +145,7 @@ public class CadastroParenteController implements Initializable {
 
     // -------------------------------------------------------------------------
     // LÓGICA DE CARREGAMENTO E EDIÇÃO
-    // -------------------------------------------------------------------------
+    // ----------------------------------------------------------------------
     private void carregarIntegrantes() {
         try {
             if (familiaId <= 0) {
@@ -168,7 +168,7 @@ public class CadastroParenteController implements Initializable {
      * Preenche os campos do formulário para edição ao clicar em uma linha.
      */
     private void preencherCampos(IntegranteFamilia integrante) {
-        // ESSENCIAL: Armazena a referência para a operação de UPDATE
+        // Armazena a referência para a operação de UPDATE
         this.integranteSelecionado = integrante;
 
         txtNome.setText(integrante.getNome());
@@ -242,17 +242,17 @@ public class CadastroParenteController implements Initializable {
 
     private void salvar() {
 
-        // 1. Decidir se é INSERÇÃO ou ATUALIZAÇÃO, usando a referência guardada
+        // Decidir se é INSERÇÃO ou ATUALIZAÇÃO, usando a referência guardada
         IntegranteFamilia integrante = integranteSelecionado;
 
         if (integrante == null) {
-            // É um novo parente: cria o objeto e seta o FK
+            
             integrante = new IntegranteFamilia();
             integrante.setFkCodFamilia(this.familiaId);
         }
 
         try {
-            // 2. Mapeamento e Validação
+            // Mapeamento e Validação
             integrante.setNome(txtNome.getText());
             integrante.setCpf(txtCpf.getText());
             integrante.setTelefone(txtTelefone.getText());
@@ -262,28 +262,28 @@ public class CadastroParenteController implements Initializable {
             integrante.setEndereco(txtEndereco.getText());
             integrante.setAnotacoes(txtAnotacoes.getText());
 
-            // 3. Mapeamento dos Booleanos (Sim/Não para TRUE/FALSE)
+            // Mapeamento dos Booleanos (Sim/Não para TRUE/FALSE)
             integrante.setVinculoAfetivo(chkVinculoAfetivo.isSelected());
             integrante.setResponsavelLegal(chkResponsavelLegal.isSelected());
             integrante.setPessoaAutorizada(chkPessoaAutorizada.isSelected());
 
             Usuario usuarioLogado = LoginController.getUsuarioLogado();
 
-            // 4. Chamar o serviço de acordo com a operação
+            // Chamar o serviço de acordo com a operação
             String mensagem;
             if (integrante.getId() == 0) {
-                // Novo parente
+                // Novoparente
                 integranteService.inserir(integrante, usuarioLogado);
                 mensagem = "Parente adicionado com sucesso!";
             } else {
-                // Atualização de parente existente
+                // Atualização de paremte existente
                 integranteService.atualizar(integrante, usuarioLogado);
                 mensagem = "Parente atualizado com sucesso!";
             }
 
             exibirAlerta(AlertType.INFORMATION, "Sucesso", mensagem);
 
-            limparCampos(); // Limpa o formulário e a referência ao integrante selecionado
+            limparCampos(); // Limpa o formulário
             carregarIntegrantes(); // Recarrega a tabela para mostrar o resultado
 
         } catch (BusinessException | DBException e) {

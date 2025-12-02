@@ -14,16 +14,15 @@ public class DBException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Construtor que aceita uma mensagem de erro.
+     *
      * @param msg A mensagem de erro que descreve a falha no acesso ao DB.
      */
     public DBException(String msg) {
         super(msg);
     }
-    
+
     /**
-     * Construtor que aceita a mensagem de erro e a causa original da exceção.
-     * Isso é útil para encapsular exceções SQL nativas.
+     *
      * @param msg A mensagem de erro.
      * @param cause A exceção original (ex: SQLException).
      */

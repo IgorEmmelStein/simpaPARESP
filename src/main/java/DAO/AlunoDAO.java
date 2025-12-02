@@ -48,9 +48,17 @@ public class AlunoDAO {
 
     private static final String SQL_SEARCH
             = "SELECT * FROM aluno WHERE status = 1 AND ("
-            + "nome LIKE ? OR num_nis LIKE ? OR form_acesso LIKE ? OR cpf LIKE ? "
-            + "OR alergias LIKE ? OR med_paresp LIKE ?) "
-            + "ORDER BY nome";
+            + "CAST(pk_cod_pessoa AS CHAR) LIKE ? "
+            + "OR nome LIKE ? "
+            + "OR cpf LIKE ? "
+            + "OR turno LIKE ? "
+            + "OR turma LIKE ? "
+            + "OR DATE_FORMAT(data_acolhimento,'%d/%m/%Y') LIKE ? "
+            // FILTRO VACINAÇÃO
+            + "OR ( ? LIKE '%dia%' AND vacinacao = 1 ) "
+            + "OR ( ? LIKE '%atrasad%' AND vacinacao = 0 ) "
+            + "OR ( ? LIKE '%vacina%' AND vacinacao IN (0,1) ) "
+            + ") ORDER BY nome";
 
     private static final String SQL_DELETE
             = "UPDATE aluno SET status = 0 WHERE pk_cod_pessoa = ?";
@@ -182,31 +190,34 @@ public class AlunoDAO {
         Connection conn = null;
         PreparedStatement st = null;
         ResultSet rs = null;
-        List<Aluno> listaAlunos = new ArrayList<>();
+        List<Aluno> lista = new ArrayList<>();
 
         try {
             conn = ConnectionFactory.getConnection();
             st = conn.prepareStatement(SQL_SEARCH);
 
-            String parametroBusca = "%" + criterio + "%";
+            String busca = "%" + criterio.toLowerCase() + "%";
 
-            st.setString(1, parametroBusca);
-            st.setString(2, parametroBusca);
-            st.setString(3, parametroBusca);
-            st.setString(4, parametroBusca);
-            st.setString(5, parametroBusca);
-            st.setString(6, parametroBusca);
+            // CAMPOS COMUNS
+            for (int i = 1; i <= 6; i++) {
+                st.setString(i, busca);
+            }
+
+            // VACINAÇÃO
+            st.setString(7, busca); // em dia
+            st.setString(8, busca); // atrasada
+            st.setString(9, busca); // vacina
 
             rs = st.executeQuery();
 
             while (rs.next()) {
-                Aluno aluno = mapearAluno(rs);
-                listaAlunos.add(aluno);
+                lista.add(mapearAluno(rs));
             }
-            return listaAlunos;
+
+            return lista;
 
         } catch (SQLException e) {
-            throw new DBException("Erro ao buscar alunos por critério. Detalhe: " + e.getMessage(), e);
+            throw new DBException("Erro ao filtrar vacinação: " + e.getMessage(), e);
         } finally {
             ConnectionFactory.closeConnection(conn, st, rs);
         }

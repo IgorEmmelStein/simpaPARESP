@@ -42,7 +42,7 @@ public class ConnectionFactory {
     // --- Métodos de Fechamento de Recursos (Sobrecarga) ---
 
     /**
-     * Fecha a conexão se estiver aberta e não for nula.
+     * Fecha a conexão se estiver aberta
      */
     public static void closeConnection(Connection conn) {
         if (conn != null) {
@@ -55,7 +55,7 @@ public class ConnectionFactory {
     }
     
     /**
-     * Fecha o Statement (ou PreparedStatement) e a Connection de forma segura.
+     * Fecha o Statement 
      */
     public static void closeConnection(Connection conn, Statement st) {
         if (st != null) {
@@ -70,7 +70,7 @@ public class ConnectionFactory {
     
     /**
      * Fecha o ResultSet, o Statement e a Connection de forma segura.
-     * ESTE MÉTODO CORRIGE O TEU ERRO NA ALUNODAO.
+     *
      */
     public static void closeConnection(Connection conn, Statement st, ResultSet rs) {
         if (rs != null) {

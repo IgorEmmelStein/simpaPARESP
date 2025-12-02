@@ -70,8 +70,8 @@ public class ConsultaController implements Initializable {
     private Button btnAddEscola;
     @FXML
     private Button btnAddUser;
-    
-    @FXML 
+
+    @FXML
     private Label lblBoasVindas;
 
     private Usuario usuarioLogado;
@@ -109,7 +109,7 @@ public class ConsultaController implements Initializable {
 
         btnAddUser.setVisible(false);
         btnAddUser.setManaged(false);
-        
+
         Usuario usuario = LoginController.getUsuarioLogado();
         if (usuario != null && lblBoasVindas != null) {
             // Pega o nome e coloca na tela
@@ -149,6 +149,19 @@ public class ConsultaController implements Initializable {
         colTurno.setCellValueFactory(new PropertyValueFactory<>("turno"));
         colVacinacao.setCellValueFactory(new PropertyValueFactory<>("vacinacaoEmDia"));
         colTurma.setCellValueFactory(new PropertyValueFactory<>("turma"));
+
+        colVacinacao.setCellFactory(column -> new TableCell<Aluno, Boolean>() {
+            @Override
+            protected void updateItem(Boolean item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(item ? "Em dia" : "Atrasada");
+                }
+            }
+        });
     }
 
     private void configurarFormatoData(TableColumn<Aluno, java.util.Date> coluna) {
@@ -366,7 +379,7 @@ public class ConsultaController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/mycompany/simpa/TelaCadastroAluno.fxml"));
             Parent root = loader.load();
 
-            // ESSENCIAL: Passar o objeto Aluno para o Controller da tela de cadastro
+            //  Passa o objeto Aluno para o Controller da tela de cadastro
             CadastroAlunoController controller = loader.getController();
             controller.setAlunoEmEdicao(aluno); // Vamos criar este método no Controller
 
@@ -396,56 +409,47 @@ public class ConsultaController implements Initializable {
             return;
         }
 
-//        if (usuario instanceof classes.Administrador) {
-//            classes.Administrador admin = (classes.Administrador) usuario;
-//
-//            // verifica se este usuário tem a flag isAdmin ativada
-//            boolean permissao = admin.isAdmin();
-//
-//            btnExcluirAluno.setDisable(!permissao);
-//            btnAddUser.setVisible(permissao);
-//            btnAddUser.setManaged(permissao);
-//            btnAddEscola.setVisible(permissao);
-//            btnAddEscola.setManaged(permissao);
-//
-//        }
         if (usuario instanceof classes.Administrador) {
             classes.Administrador admin = (classes.Administrador) usuario;
-            
+
             boolean isAdmin = admin.isAdmin();
             boolean isSaude = admin.isSaude();
             boolean isSocial = admin.isSocial();
-            
-            if(isAdmin){
+
+            if (isAdmin) {
                 btnExcluirAluno.setDisable(false);
-                
+
                 btnAddUser.setVisible(true);
                 btnAddUser.setManaged(true);
-                
+
                 btnAddEscola.setVisible(true);
                 btnAddEscola.setManaged(true);
-            }else{
-                btnExcluirAluno.setDisable(true); 
-                
-                btnAddUser.setVisible(false);     
-                btnAddUser.setManaged(false);     
-                
-                btnAddEscola.setVisible(false);   
+            } else {
+                btnExcluirAluno.setDisable(true);
+
+                btnAddUser.setVisible(false);
+                btnAddUser.setManaged(false);
+
+                btnAddEscola.setVisible(false);
                 btnAddEscola.setManaged(false);
             }
-            
+
             boolean temAcessoOperacional = isAdmin || isSaude || isSocial;
 
             if (temAcessoOperacional) {
                 btnInserirAluno.setDisable(false);
                 btnExportar.setDisable(false);
-                if (btnExportarCompleto != null) btnExportarCompleto.setDisable(false);
+                if (btnExportarCompleto != null) {
+                    btnExportarCompleto.setDisable(false);
+                }
 
             } else {
 
                 btnInserirAluno.setDisable(true);
                 btnExportar.setDisable(true);
-                if (btnExportarCompleto != null) btnExportarCompleto.setDisable(true);
+                if (btnExportarCompleto != null) {
+                    btnExportarCompleto.setDisable(true);
+                }
             }
         }
     }

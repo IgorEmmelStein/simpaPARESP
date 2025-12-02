@@ -58,19 +58,15 @@ public class LoginController {
         try {
             System.out.println("DEBUG: 1. Tentativa de autenticação para: " + nome);
             
-            // 1. Autentica
+            //Autentica
             usuarioLogado = administradorService.login(nome, senha);
             
             System.out.println("DEBUG: 2. Login BEM-SUCEDIDO.");
 
-            // 2. Troca a tela (A janela mantém-se aberta, apenas o conteúdo muda)
+            //Troca a tela 
             System.out.println("DEBUG: 3. Chamando App.setRoot('TelaConsulta')...");
             App.setRoot("TelaConsulta");
-            
-            // --- APAGUE ESTAS LINHAS ABAIXO NO SEU CÓDIGO ---
-            // Stage stageAtual = (Stage) txtNomeUsuario.getScene().getWindow();
-            // stageAtual.close();
-            // ------------------------------------------------
+         
 
         } catch (BusinessException e) {
             lblErro.setText(e.getMessage());
