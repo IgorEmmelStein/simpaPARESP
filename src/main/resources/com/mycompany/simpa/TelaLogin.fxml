@@ -81,7 +81,7 @@
                   <Insets />
                </VBox.margin></PasswordField>
             
-            <Button fx:id="btnEntrar" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleLogin" prefHeight="40.0" style="-fx-background-color: #9FD575; -fx-background-radius: 8; -fx-font-weight: bold;" text="Entrar" textFill="#24282e">
+            <Button fx:id="btnEntrar" defaultButton="true" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleLogin" prefHeight="40.0" style="-fx-background-color: #9FD575; -fx-background-radius: 8; -fx-font-weight: bold;" text="Entrar" textFill="#24282e">
                <VBox.margin>
                   <Insets top="10.0" />
                </VBox.margin>

@@ -409,17 +409,24 @@ public class CadastroAlunoController implements Initializable {
     
     private void aplicarPermissoes() {
         Usuario usuario = LoginController.getUsuarioLogado();
-        if (usuario == null) return;
+        if (usuario == null){
+            adicionarDetalhesButton.setDisable(true);
+            adicionarSaudeButton.setDisable(true);
+            adicionarParenteButon.setDisable(true);
+            return;
+        }
 
         if (usuario instanceof Administrador) {
             Administrador admin = (Administrador) usuario;
-
             
             boolean acessoSaude = admin.isAdmin() || admin.isSaude();
             adicionarSaudeButton.setDisable(!acessoSaude);
 
             boolean acessoSocial = admin.isAdmin() || admin.isSocial();
             adicionarDetalhesButton.setDisable(!acessoSocial);
+            adicionarParenteButon.setDisable(!acessoSocial);
+
         }
     }
+    
 }
