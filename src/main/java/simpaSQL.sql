@@ -1,120 +1,120 @@
+-- BANCO  FICTICIO
 -- sql rodrigo
-DROP SCHEMA IF EXISTS paresp;
-CREATE SCHEMA IF NOT EXISTS paresp DEFAULT CHARACTER SET utf8;
-USE paresp;
+DROP SCHEMA IF EXISTS `paresp`;
+CREATE SCHEMA IF NOT EXISTS `paresp` DEFAULT CHARACTER SET utf8;
+USE `paresp`;
 
 -- Necessário para que o comando UPDATE (se usado) funcione sem restrições
 SET SQL_SAFE_UPDATES = 0;
 
 -- -----------------------------------------------------
--- Tabela administrador
+-- Tabela `administrador`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS administrador (
-  pk_cod_admin INT(4) NOT NULL AUTO_INCREMENT,
-  senha VARCHAR(60) NOT NULL, -- Tamanho para hash BCrypt
-  telefone CHAR(11) NULL,
-  nome VARCHAR(45) NOT NULL,
-  PRIMARY KEY (pk_cod_admin)
-) ENGINE = InnoDB;
-
-
-
--- -----------------------------------------------------
--- Tabela escola
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS escola (
-  pk_cod_escola INT(6) NOT NULL,
-  nome VARCHAR(45) NOT NULL,
-  serie VARCHAR(3) NOT NULL,
-  PRIMARY KEY (pk_cod_escola)
+CREATE TABLE IF NOT EXISTS `administrador` (
+  `pk_cod_admin` INT(4) NOT NULL AUTO_INCREMENT,
+  `senha` VARCHAR(60) NOT NULL, -- Tamanho para hash BCrypt
+  `telefone` CHAR(11) NULL,
+  `nome` VARCHAR(45) NOT NULL,
+  
+  PRIMARY KEY (`pk_cod_admin`)
 ) ENGINE = InnoDB;
 
 -- -----------------------------------------------------
--- Tabela aluno (INCLUI data_vacinacao)
+-- Tabela `escola`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS aluno (
-  pk_cod_pessoa INT(6) NOT NULL AUTO_INCREMENT,
-  fk_cod_admin INT(4) NOT NULL,
-  fk_cod_escola INT(6) NOT NULL,
-  cpf CHAR(11) NOT NULL,
-  data_acolhimento DATE NOT NULL,
-  form_acesso VARCHAR(15) NOT NULL,
-  vacinacao TINYINT(1) NOT NULL,
-  data_vacinacao DATE NULL, -- NOVA COLUNA: Data específica da última vacina
-  termo_imagem TINYINT(1) NOT NULL,
-  turno VARCHAR(6) NOT NULL,
-  transporte VARCHAR(45) NULL,
-  data_nasc DATE NOT NULL,
-  proj_ferias TINYINT(1) NOT NULL,
-  nome VARCHAR(45) NOT NULL,
-  sexo CHAR(1) NOT NULL,
-  tamanho_vest VARCHAR(3) NOT NULL,
-  tamanho_calc INT(2) NOT NULL,
-  turma VARCHAR(3) NULL,
-  num_nis CHAR(11) NULL,
-  med_paresp VARCHAR(45) NULL,
-  alergias VARCHAR(45) NULL,
-  observacoes VARCHAR(45) NULL,
-  intervencoes VARCHAR(45) NULL,
-  evolucoes VARCHAR(45) NULL,
-  status INT(1) NOT NULL,
-  PRIMARY KEY (pk_cod_pessoa),
-  UNIQUE INDEX cpf_UNIQUE (cpf ASC),
-  CONSTRAINT fk_aluno_administrador
-    FOREIGN KEY (fk_cod_admin)
-    REFERENCES administrador (pk_cod_admin)
+CREATE TABLE IF NOT EXISTS `escola` (
+  `pk_cod_escola` INT(6) NOT NULL,
+  `nome` VARCHAR(45) NOT NULL,
+  `serie` VARCHAR(3) NOT NULL,
+  PRIMARY KEY (`pk_cod_escola`)
+) ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Tabela `aluno` (INCLUI data_vacinacao)
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `aluno` (
+  `pk_cod_pessoa` INT(6) NOT NULL AUTO_INCREMENT,
+  `fk_cod_admin` INT(4) NOT NULL,
+  `fk_cod_escola` INT(6) NOT NULL,
+  `cpf` CHAR(11) NOT NULL,
+  `data_acolhimento` DATE NOT NULL,
+  `form_acesso` VARCHAR(15) NOT NULL,
+  `vacinacao` TINYINT(1) NOT NULL,
+  `data_vacinacao` DATE NULL, -- NOVA COLUNA: Data específica da última vacina
+  `termo_imagem` TINYINT(1) NOT NULL,
+  `turno` VARCHAR(6) NOT NULL,
+  `transporte` VARCHAR(45) NULL,
+  `data_nasc` DATE NOT NULL,
+  `proj_ferias` TINYINT(1) NOT NULL,
+  `nome` VARCHAR(45) NOT NULL,
+  `sexo` CHAR(1) NOT NULL,
+  `tamanho_vest` VARCHAR(3) NOT NULL,
+  `tamanho_calc` INT(2) NOT NULL,
+  `turma` VARCHAR(3) NULL,
+  `num_nis` CHAR(11) NULL,
+  `med_paresp` VARCHAR(45) NULL,
+  `alergias` VARCHAR(45) NULL,
+  `observacoes` VARCHAR(45) NULL,
+  `intervencoes` VARCHAR(45) NULL,
+  `evolucoes` VARCHAR(45) NULL,
+  `status` INT(1) NOT NULL,
+  PRIMARY KEY (`pk_cod_pessoa`),
+  UNIQUE INDEX `cpf_UNIQUE` (`cpf` ASC),
+  CONSTRAINT `fk_aluno_administrador`
+    FOREIGN KEY (`fk_cod_admin`)
+    REFERENCES `administrador` (`pk_cod_admin`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT fk_aluno_escola
-    FOREIGN KEY (fk_cod_escola)
-    REFERENCES escola (pk_cod_escola)
+  CONSTRAINT `fk_aluno_escola`
+    FOREIGN KEY (`fk_cod_escola`)
+    REFERENCES `escola` (`pk_cod_escola`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
 ) ENGINE = InnoDB;
 
 -- -----------------------------------------------------
--- Tabela familia (INCLUI anotacoes)
+-- Tabela `familia` (INCLUI anotacoes)
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS familia (
-  pk_cod_familia INT(6) NOT NULL AUTO_INCREMENT,
-  fk_cod_pessoa INT(6) NOT NULL,
-  qnt_integrantes_fam INT(2) NOT NULL,
-  renda_familiar_total DECIMAL(8,2) NOT NULL,
-  bolsa_familia DECIMAL(8,2) NULL,
-  endereco_familia VARCHAR(45) NOT NULL,
-  bairro_familia VARCHAR(20) NOT NULL,
-  residencia VARCHAR(12) NOT NULL,
-  valor_aluguel DECIMAL(8,2) NULL,
-  telefone_familia CHAR(11) NOT NULL,
-  anotacoes VARCHAR(255) NULL, -- NOVA COLUNA: Anotações sobre a família
-  PRIMARY KEY (pk_cod_familia),
-  CONSTRAINT fk_familia_aluno
-    FOREIGN KEY (fk_cod_pessoa)
-    REFERENCES aluno (pk_cod_pessoa)
+CREATE TABLE IF NOT EXISTS `familia` (
+  `pk_cod_familia` INT(6) NOT NULL AUTO_INCREMENT,
+  `fk_cod_pessoa` INT(6) NOT NULL,
+  `qnt_integrantes_fam` INT(2) NOT NULL,
+  `renda_familiar_total` DECIMAL(8,2) NOT NULL,
+  `bolsa_familia` DECIMAL(8,2) NULL,
+  `endereco_familia` VARCHAR(45) NOT NULL,
+  `bairro_familia` VARCHAR(20) NOT NULL,
+  `residencia` VARCHAR(12) NOT NULL,
+  `valor_aluguel` DECIMAL(8,2) NULL,
+  `telefone_familia` CHAR(11) NOT NULL,
+  `anotacoes` VARCHAR(255) NULL, -- NOVA COLUNA: Anotações sobre a família
+  PRIMARY KEY (`pk_cod_familia`),
+  CONSTRAINT `fk_familia_aluno`
+    FOREIGN KEY (`fk_cod_pessoa`)
+    REFERENCES `aluno` (`pk_cod_pessoa`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
 ) ENGINE = InnoDB;
 
 -- -----------------------------------------------------
--- Tabela integrante_familia (INCLUI anotacoes)
+-- Tabela `integrante_familia` (INCLUI anotacoes)
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS integrante_familia (
-  pk_cod_integrante INT(4) NOT NULL AUTO_INCREMENT,
-  fk_cod_familia INT(6) NOT NULL,
-  nome VARCHAR(45) NOT NULL,
-  cpf CHAR(11) NOT NULL,
-  parentesco VARCHAR(45) NULL,
-  vinculo_afetivo TINYINT(1) NOT NULL,
-  ocupacao VARCHAR(45) NULL,
-  endereco VARCHAR(45) NULL,
-  telefone CHAR(11) NULL,
-  resp_legal TINYINT(1) NOT NULL,
-  pessoa_autorizada TINYINT(1) NOT NULL,
-  anotacoes VARCHAR(255) NULL, -- NOVA COLUNA: Anotações sobre o integrante
-  PRIMARY KEY (pk_cod_integrante),
-  CONSTRAINT fk_integrante_familia_familia
-    FOREIGN KEY (fk_cod_familia)
-    REFERENCES familia (pk_cod_familia)
+CREATE TABLE IF NOT EXISTS `integrante_familia` (
+  `pk_cod_integrante` INT(4) NOT NULL AUTO_INCREMENT,
+  `fk_cod_familia` INT(6) NOT NULL,
+  `nome` VARCHAR(45) NOT NULL,
+  `cpf` CHAR(11) NOT NULL,
+  `parentesco` VARCHAR(45) NULL,
+  `vinculo_afetivo` TINYINT(1) NOT NULL,
+  `ocupacao` VARCHAR(45) NULL,
+  `endereco` VARCHAR(45) NULL,
+  `telefone` CHAR(11) NULL,
+  `resp_legal` TINYINT(1) NOT NULL,
+  `pessoa_autorizada` TINYINT(1) NOT NULL,
+  `anotacoes` VARCHAR(255) NULL, -- NOVA COLUNA: Anotações sobre o integrante
+  PRIMARY KEY (`pk_cod_integrante`),
+  CONSTRAINT `fk_integrante_familia_familia`
+    FOREIGN KEY (`fk_cod_familia`)
+    REFERENCES `familia` (`pk_cod_familia`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
 ) ENGINE = InnoDB;
@@ -252,3 +252,22 @@ INSERT INTO aluno (
 (1, 1, '40000000018', '2025-08-01', 'Encaminhamento', 0, NULL, 1, 'Tarde', 'Van', '2014-06-18', 0, 'Renan Santos', 'M', 'M', 37, '4C', '40000000018', NULL, NULL, NULL, 'Reunião familiar.', NULL, 1),
 (1, 1, '40000000019', '2025-09-15', 'Busca Ativa', 1, '2025-04-04', 0, 'Manhã', 'Carro', '2015-03-10', 1, 'Sofia Teixeira', 'F', 'G', 39, '5A', '40000000019', NULL, NULL, NULL, NULL, NULL, 1),
 (1, 2, '40000000020', '2025-10-25', 'Cadastro', 1, '2024-09-09', 1, 'Tarde', 'Ônibus Escolar', '2016-10-10', 0, 'Thiago Cruz', 'M', 'M', 35, '2C', '40000000020', NULL, NULL, NULL, NULL, NULL, 1);
+
+ALTER TABLE administrador -- agora com as permissoes dos usuários.
+ADD COLUMN perm_saude TINYINT(1) NOT NULL DEFAULT 0,
+ADD COLUMN perm_social TINYINT(1) NOT NULL DEFAULT 0,
+ADD COLUMN perm_admin TINYINT(1) NOT NULL DEFAULT 0;
+
+UPDATE administrador 
+SET perm_admin = 1, perm_saude = 1, perm_social = 1
+WHERE nome = 'Admin Principal';
+
+INSERT INTO administrador (nome, telefone, senha, perm_saude, perm_social, perm_admin) 
+VALUES (
+    'Enfermeira', 
+    '51999991111', 
+    '$2a$10$Q3uUCzp8pe5ttMF6HrXD.ey3UzCQHQnXQLbhrLxsGdlglvpeJY2c2', -- Hash de "123456"
+    1, -- perm_saude (TEM ACESSO)
+    0, -- perm_social (SEM ACESSO)
+    0  -- perm_admin (SEM ACESSO)
+);
